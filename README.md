@@ -21,8 +21,9 @@ You can find the deployed project at [VBB-Deployment](main.d364h8tamcqe39.amplif
 ![React](https://img.shields.io/badge/react-v16.7.0--alpha.2-blue.svg)
 ![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)
 
-- Fork and clone the repo to install it as your own remote.
-  - **note** please [be sure to set your remote](https://help.github.jp/enterprise/2.11/user/articles/changing-a-remote-s-url/) for this repo to point to your Labs Team Front End Repository.
+
+## Getting Started
+- Clone
 - run: `npm install` to download all dependencies.
 - run: `npm start` to start your local development server.
 
