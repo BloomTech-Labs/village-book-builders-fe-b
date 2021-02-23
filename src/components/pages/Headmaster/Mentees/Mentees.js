@@ -72,9 +72,34 @@ const Mentees = props => {
         <Divider />
         <List
           itemLayout="horizontal"
+          size="small"
+          pagination={{
+            defaultPageSize: 10,
+            showSizeChanger: false,
+          }}
           dataSource={menteesSelection}
           renderItem={item => (
-            <List.Item>
+            <List.Item
+              actions={[
+                <Button
+                  onClick={e => moreInfoHandler(e, item)}
+                  // className="listItemButton"
+                  size="middle"
+                  type="default"
+                >
+                  More Info
+                </Button>,
+                <Button
+                  onClick={e => editingHandler(e, item)}
+                  // className="listItemButton"
+                  danger
+                  size="middle"
+                  type="default"
+                >
+                  Edit
+                </Button>,
+              ]}
+            >
               <div className="listItemWrapper">
                 <div className="listItemMeta">
                   <List.Item.Meta
@@ -82,25 +107,6 @@ const Mentees = props => {
                     title={item.first_name + ' ' + item.last_name}
                     description={item.academic_description}
                   />
-                </div>
-                <div className="listItemButtonWrapper">
-                  <Button
-                    onClick={e => moreInfoHandler(e, item)}
-                    className="listItemButton"
-                    size="middle"
-                    type="default"
-                  >
-                    More Info
-                  </Button>
-                  <Button
-                    onClick={e => editingHandler(e, item)}
-                    className="listItemButton"
-                    danger
-                    size="middle"
-                    type="default"
-                  >
-                    Edit
-                  </Button>
                 </div>
               </div>
             </List.Item>
