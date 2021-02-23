@@ -41,13 +41,13 @@ const Mentees = props => {
     }
   };
 
-  // if (Array.isArray(menteesSelection)) {
-  //   menteesSelection = menteesSelection.filter(
-  //     item =>
-  //       item.first_name.toLowerCase().includes(search.toLowerCase()) ||
-  //       item.last_name.toLowerCase().includes(search.toLowerCase())
-  //   );
-  // }
+  // filter out based on searchInput
+  menteesSelection = menteesSelection.filter(mentee => {
+    const fullname = `${mentee.first_name} ${mentee.last_name}`.toLowerCase();
+    if (fullname.includes(search.toLowerCase())) {
+      return mentee;
+    }
+  });
 
   useEffect(() => {
     props.fetchMentees();
@@ -57,12 +57,12 @@ const Mentees = props => {
     <div className="menteeContainer">
       <h1 id="menteeTitle">Mentee Management</h1>
       <div className="exploreWrapper">
-        <Button
+        {/* <Button
           style={{ width: '80%', marginBottom: '10pt', alignSelf: 'center' }}
           align="center"
         >
           Create New Library
-        </Button>
+        </Button> */}
         <Input.Search
           value={search}
           placeholder="Search by Name"
@@ -79,11 +79,7 @@ const Mentees = props => {
                 <div className="listItemMeta">
                   <List.Item.Meta
                     avatar={<Avatar src={item.mentee_picture} />}
-                    title={
-                      <a href="https://ant.design">
-                        {item.first_name + ' ' + item.last_name}
-                      </a>
-                    }
+                    title={item.first_name + ' ' + item.last_name}
                     description={item.academic_description}
                   />
                 </div>
