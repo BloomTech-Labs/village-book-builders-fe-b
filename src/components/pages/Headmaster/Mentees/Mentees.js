@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Divider, Input, Modal, List, Avatar } from 'antd';
+import { Button, Divider, Input, Modal, List, Avatar, Tooltip } from 'antd';
 import { connect } from 'react-redux';
+import { FaExclamationCircle, FaCheckCircle } from 'react-icons/fa';
 import { checkToken, fetchMentees } from '../../../../state/actions/index';
 import MenteeForm from './MenteeForm';
 import MenteeProfile from './MenteeProfile';
 import '../../../../style.css';
+import MenteeAssignmentStatusIcon from './MenteeAssignmentStatusIcon';
 
 const Mentees = props => {
   let menteesSelection = [...props.mentees];
@@ -98,6 +100,7 @@ const Mentees = props => {
                 >
                   Edit
                 </Button>,
+                <MenteeAssignmentStatusIcon mentee={item} />,
               ]}
             >
               <div className="listItemWrapper">
@@ -112,7 +115,6 @@ const Mentees = props => {
             </List.Item>
           )}
         />
-        ,
       </div>
       <Modal
         className="menteeModal"
