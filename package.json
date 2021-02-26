@@ -17,6 +17,7 @@
     "json-web-token": "3.2.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.32",
+    "plotly.js": "^1.54.6",
     "react": "^16.13.1",
     "react-bootstrap": "^1.4.0",
     "react-dom": "^16.13.1",
