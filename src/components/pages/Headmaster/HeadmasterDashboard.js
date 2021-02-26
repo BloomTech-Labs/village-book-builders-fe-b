@@ -16,6 +16,7 @@ import MatchingCalendar from './MentorMenteeMatching/MatchingCalendar';
 import { fetchHeadmasterProfile } from '../../../state/actions';
 import Logout from '../../Logout.js';
 import Mentees from './Mentees/Mentees.js';
+import FilterSessionsByLibrary from './FilterSessionsByLibrary';
 import { Layout, Menu, PageHeader, Button, Avatar } from 'antd';
 import {
   HomeOutlined,
@@ -30,9 +31,9 @@ import {
 const HeadmasterDashboard = props => {
   const { profile } = props;
 
-  useEffect(() => {
-    props.fetchHeadmasterProfile(1); // change this later with login
-  }, []);
+  // useEffect(() => {
+  //   props.fetchHeadmasterProfile(1); // change this later with login
+  // }, []);
   // console.log(profile);
 
   const { Content, Sider } = Layout;
@@ -64,6 +65,7 @@ const HeadmasterDashboard = props => {
                 {profile.last_name}
               </div>
             </div>
+            <FilterSessionsByLibrary /> {/*is this the right spot ??? */}
             <Menu.Item key="1" icon={<HomeOutlined />}>
               <NavLink to="/dashboard">Home</NavLink>
             </Menu.Item>
