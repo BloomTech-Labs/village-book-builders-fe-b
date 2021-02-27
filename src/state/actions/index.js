@@ -6,6 +6,7 @@
 import axios from 'axios';
 import { axiosWithAuth } from '../../utils/axiosWithAuth';
 import { useHistory } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 import * as actionTypes from './actionTypes';
 const baseURL = process.env.REACT_APP_BASE_URL;
@@ -340,4 +341,92 @@ export const fetchProgramProfile = id => dispatch => {
         payload: err,
       })
     );
+};
+
+// -----------------------
+// HEADMASTER Calendar
+// -----------------------
+/**
+ * This function makes a POST requeust to the backend
+ * to create a calendar event
+ *
+ * @param {{ id: string
+ * title: string,
+ * start: string,
+ * end: string, }} plainEventObject
+ */
+export const createCalendarEvent = plainEventObject => dispatch => {
+  console.log('[STUB] requesting event update:', plainEventObject);
+  let newEventId = uuidv4();
+  let objWithId = { ...plainEventObject, id: newEventId };
+
+  return axiosWithAuth()
+    .post('/match', objWithId)
+    .then(res => {
+      dispatch({
+        type: actionTypes.CREATE_CALENDAR_EVENT,
+        payload: res.data,
+      });
+    })
+    .catch(err => console.dir(err));
+};
+
+/**
+ * This function will make a GET request to the backend
+ * will update calendar events in redux state
+ *
+ * @param {string} startStr
+ * @param {string} endStr
+ */
+export const requestCalendarEvents = (startStr, endStr) => dispatch => {
+  console.log(`[STUB] requesting events from ${startStr} to ${endStr}`);
+
+  return axiosWithAuth()
+    .get('/match')
+    .then(res => {
+      dispatch({
+        type: actionTypes.RECIEVED_EVENTS,
+        payload: res.data,
+      });
+    })
+    .catch(err => console.dir(err));
+};
+
+/**
+ * This function will make a PATCH request to the backend
+ * to update the given event
+ *
+ * @param {{ id: string
+ * title: string,
+ * start: string,
+ * end: string, }} plainEventObject
+ */
+export const updateCalendarEvent = plainEventObject => dispatch => {
+  console.log('[STUB] requesting event update:', plainEventObject);
+
+  return axiosWithAuth()
+    .put(`/match/${plainEventObject.id}`, plainEventObject)
+    .then(res => {
+      console.log(res.data);
+      dispatch({
+        type: actionTypes.UPDATE_CALENDAR_EVENT,
+        payload: res.data,
+      });
+    })
+    .catch(err => console.dir(err));
+};
+
+export const removeCalendarEvent = eventId => dispatch => {
+  console.log('[STUB] requesting event deletion:', eventId);
+
+  return axiosWithAuth()
+    .delete(`/match/${eventId}`)
+    .then(res => {
+      console.log('delete results', res.data);
+      dispatch({
+        type: actionTypes.DELETE_CALENDAR_EVENT,
+        payload: eventId,
+      });
+    })
+    .catch(err => console.dir(err));
 };
