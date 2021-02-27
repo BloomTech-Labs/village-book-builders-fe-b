@@ -1,5 +1,3 @@
-// import action TYPES
-
 import {
   CREATE_CALENDAR_EVENT,
   DELETE_CALENDAR_EVENT,
@@ -37,15 +35,16 @@ const CalReducer = (state = initialState, action) => {
       };
 
     case DELETE_CALENDAR_EVENT:
-      // const deletedEventIndex = state.calendarEvents.indexOf(action.payload.eventId);
-      // const deleteEventIndex = state.calendarEvents.indexOf()
-      const newFilteredEvents = state.calendarEvents.filter(
-        event => event.id !== action.payload
+      //copy state array
+      const tempArr = [...state.calendarEvents];
+      // filter from copy to remove in event
+      const eventsArrayExcludingDeleted = tempArr.filter(
+        item => item.id !== action.payload
       );
-
+      // return altered state
       return {
         ...state,
-        calendarEvents: newFilteredEvents,
+        calendarEvents: eventsArrayExcludingDeleted,
       };
 
     case RECIEVED_EVENTS:

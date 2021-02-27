@@ -2,7 +2,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -11,21 +11,23 @@ import {
   requestCalendarEvents,
   updateCalendarEvent,
 } from '../../../../state/actions';
-import Modal from 'antd/lib/modal/Modal';
-import { Button, Divider } from 'antd';
+import EventDetailsModal from './EventDetailsModal';
 
 export default function HeadmasterCalendar() {
-  const calendarState = useSelector(state => state.CalReducer);
+  const { calendarEvents } = useSelector(state => state.CalReducer);
   const dispatch = useDispatch();
+  // used for event deletion
+  const CalendarRef = useRef(null);
   // details modal visibility state
   const [isModalVisible, setIsModalVisible] = useState(false);
   // inner content for modal
   const [eventDetails, setEventDetails] = useState({});
 
   const showModal = eventData => {
+    console.log('showModal EventData', eventData);
     setIsModalVisible(true);
 
-    const tempEventDetails = calendarState.calendarEvents.filter(
+    const tempEventDetails = calendarEvents.filter(
       eventDetailsFiltered => eventDetailsFiltered.id == eventData.id
     );
     setEventDetails(tempEventDetails[0]);
@@ -41,8 +43,26 @@ export default function HeadmasterCalendar() {
     setEventDetails({});
   };
 
-  // redux dispatchers
-  // calendar functions
+  const handleDelete = eventID => {
+    // user wants to delete event
+    console.log(`user wants to delete event ID:: ${eventID}`);
+    let calendarApi = CalendarRef.current.getApi();
+    calendarApi.unselect(); // clearing the current selection.
+    const eventToDelete = calendarApi.getEventById(eventID);
+    // console.log('eventToDelete', eventToDelete);
+
+    const confirmDelete = window.confirm(
+      'Are you sure you want to delete the meeting?'
+    );
+    if (confirmDelete) {
+      eventToDelete.remove(); // will render immediately. will call handleEventRemove
+    } else {
+      handleCancel();
+    }
+  };
+
+  //! redux dispatchers
+  //* calendar functions
   const handleEventAdd = addInfo => {
     const newCalEvent = addInfo.event.toPlainObject();
     //! change during creation modal
@@ -50,6 +70,7 @@ export default function HeadmasterCalendar() {
       createCalendarEvent({
         ...newCalEvent,
         extendedProps: {
+          //* deconstruct formState here
           mentor: ['jose', 'ethan'],
           mentee: ['Mark', 'Rob'],
           topic: 'sciences',
@@ -77,15 +98,14 @@ export default function HeadmasterCalendar() {
   };
 
   const handleEventRemove = removeInfo => {
+    dispatch(removeCalendarEvent(removeInfo.event.id));
     handleOk();
-    console.log('removeINFO::', removeInfo);
-    // const eventDetails = removeInfo.event.toPlainObject();
-    dispatch(removeCalendarEvent(removeInfo.id));
   };
 
   return (
     <>
       <FullCalendar
+        ref={CalendarRef}
         plugins={[timeGridPlugin, interactionPlugin, dayGridPlugin]}
         height="90vh"
         headerToolbar={{
@@ -104,68 +124,22 @@ export default function HeadmasterCalendar() {
         eventContent={renderEventContent}
         datesSet={handleDates} // gets specified range
         select={handleDateSelect} // choose date from cal, open modal
-        events={calendarState.calendarEvents} // real redux state here
+        events={calendarEvents} // real redux state here
         eventClick={handleEventClick} // open modal with details
         eventAdd={handleEventAdd} // redux here
         eventChange={handleEventChange} // called for drag-n-drop/resize
-        eventRemove={handleEventRemove} // redux here
+        eventRemove={handleEventRemove} // redux
       />
       <EventDetailsModal
         eventDetails={eventDetails}
         handleCancel={handleCancel}
         handleOk={handleOk}
         isModalVisible={isModalVisible}
-        handleEventRemove={handleEventRemove}
+        handleDelete={handleDelete}
       />
     </>
   );
 }
-
-/**
- * This React.FC returns a modal with calendar event details
- * @param {{
- * eventDetails: object,
- * handleOk: function,
- * handleCancel: function,
- * isModalVisible: boolean}} Args
- */
-const EventDetailsModal = ({
-  eventDetails,
-  handleOk,
-  handleCancel,
-  isModalVisible,
-  handleEventRemove,
-}) => {
-  return (
-    <Modal
-      title={eventDetails.title ? eventDetails.title : 'Event Details'}
-      visible={isModalVisible}
-      onOk={handleOk}
-      onCancel={handleCancel}
-      footer={[
-        <Button
-          key="delete"
-          type="primary"
-          danger
-          onClick={() => {
-            handleEventRemove(eventDetails);
-          }}
-        >
-          Delete
-        </Button>,
-        <Button key="edit" onClick={handleCancel}>
-          Edit
-        </Button>,
-        <Divider orientation="center" type="vertical" />,
-        <Button key="ok" type="primary" onClick={handleOk}>
-          Close
-        </Button>,
-      ]}
-    >
-      <p>{JSON.stringify(eventDetails, null, 2)}</p>
-    </Modal>
-  );
-};
 
 /**
  * This React.FC displays the event content to the calendar
@@ -187,16 +161,16 @@ function renderEventContent(eventInfo) {
   );
 }
 
-// visually adds event to calendar
 const handleDateSelect = selectInfo => {
-  // asks for the users title
-  // this would activate the new session modal...
+  // this would open a create meeting modal
   let title = prompt('Please enter a new title for your event');
   let calendarApi = selectInfo.view.calendar;
 
   calendarApi.unselect(); // clear date selection
 
+  // if form passes validation
   if (title) {
+    // keep this part
     calendarApi.addEvent(
       {
         id: uuidv4(),
@@ -205,7 +179,7 @@ const handleDateSelect = selectInfo => {
         end: selectInfo.endStr,
         allDay: selectInfo.allDay,
       },
-      true
+      true // temporary event, replaced by redux state
     );
   }
 };

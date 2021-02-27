@@ -90,18 +90,6 @@ export const fetchVillage = id => dispatch => {
     .catch(err => console.dir(err));
 };
 
-export const fetchCalendar = () => dispatch => {
-  dispatch({ type: actionTypes.FETCH_CALENDAR_START });
-  axiosWithAuth()
-    .get(`/match`)
-    .then(res => {
-      dispatch({ type: actionTypes.FETCH_CALENDAR_SUCCESS, payload: res.data });
-    })
-    .catch(err =>
-      dispatch({ type: actionTypes.FETCH_CALENDAR_FAILURE, payload: err })
-    );
-};
-
 export const editVillage = (id, data) => () => {
   axiosWithAuth()
     .put(`/village/${id}`, data)
@@ -247,7 +235,7 @@ export const editSchool = (id, data) => dispatch => {
 export const fetchMentors = () => dispatch => {
   dispatch({ type: actionTypes.FETCH_MENTOR_START });
   axiosWithAuth()
-    .get(`https://vbb-mock-api.herokuapp.com/mentor`)
+    .get(`/mentor`)
     .then(res => {
       dispatch({ type: actionTypes.FETCH_MENTOR_SUCCESS, payload: res.data });
     })
@@ -344,7 +332,7 @@ export const fetchProgramProfile = id => dispatch => {
 };
 
 // -----------------------
-// HEADMASTER Calendar
+//! HEADMASTER Calendar
 // -----------------------
 /**
  * This function makes a POST requeust to the backend
@@ -416,17 +404,19 @@ export const updateCalendarEvent = plainEventObject => dispatch => {
     .catch(err => console.dir(err));
 };
 
+/**
+ * This action creator will make a DELETE request to the backend to remove a given event
+ *
+ * @param {string} eventId
+ */
 export const removeCalendarEvent = eventId => dispatch => {
-  console.log('[STUB] requesting event deletion:', eventId);
+  console.log('[STUB] requesting event deletion:', String(eventId));
 
   return axiosWithAuth()
     .delete(`/match/${eventId}`)
-    .then(res => {
-      console.log('delete results', res.data);
-      dispatch({
-        type: actionTypes.DELETE_CALENDAR_EVENT,
-        payload: eventId,
-      });
+    .then(() => {
+      // console.log('Deleted event successfully on backend!');
+      dispatch({ type: actionTypes.DELETE_CALENDAR_EVENT, payload: eventId });
     })
     .catch(err => console.dir(err));
 };
