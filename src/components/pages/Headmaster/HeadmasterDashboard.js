@@ -113,7 +113,7 @@ const HeadmasterDashboard = props => {
           ></PageHeader>
           <Content style={{ padding: '2rem', backgroundColor: 'white' }}>
             <Switch>
-              <Route path="/dashboard" component={HeadmasterHome} />
+              <Route path="/dashboard" component={MatchingCalendar} />
               <Route path="/mentor-pairings" component={Mentees} />
               <Route exact path="/profile" component={HeadmasterProfile} />
               <Route path="/profile/edit/:id" component={ProfileForm} />
@@ -143,6 +143,10 @@ const HeadmasterDashboard = props => {
                 component={SchoolForm}
               />
               <Route path="/library" />
+              <Route
+                path="/mentor-mentee-matching"
+                component={MatchingCalendar}
+              />
               <Route path="/logout" component={Logout} />
             </Switch>
           </Content>

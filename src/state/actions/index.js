@@ -92,7 +92,7 @@ export const fetchVillage = id => dispatch => {
 export const fetchCalendar = () => dispatch => {
   dispatch({ type: actionTypes.FETCH_CALENDAR_START });
   axiosWithAuth()
-    .get(`http://localhost:3000/match`)
+    .get(`/match`)
     .then(res => {
       dispatch({ type: actionTypes.FETCH_CALENDAR_SUCCESS, payload: res.data });
     })
