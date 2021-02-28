@@ -16,7 +16,7 @@ import MatchingCalendar from './MentorMenteeMatching/MatchingCalendar';
 import { fetchHeadmasterProfile } from '../../../state/actions';
 import Logout from '../../Logout.js';
 import Mentees from './Mentees/Mentees.js';
-import FilterSessionsByLibrary from './FilterSessionsByLibrary';
+// import FilterSessionsByLibrary from './FilterSessionsByLibrary';
 import { Layout, Menu, PageHeader, Button, Avatar } from 'antd';
 import {
   HomeOutlined,
@@ -93,8 +93,9 @@ const HeadmasterDashboard = props => {
             </Menu.Item>
 
             <Menu.Item key="9">
-              <Link to="/sessions-by-library">Sessions</Link>
+              <Link to="/sessions">Sessions</Link>
             </Menu.Item>
+
           </Menu>
           <div>
             <img
@@ -153,8 +154,8 @@ const HeadmasterDashboard = props => {
               />
               <Route
                 exact
-                path="/sessions-by-library"
-                component={FilterSessionsByLibrary}
+                path="/village/edit/:villageId"
+                component={VillageForm}
               />
 
               <Route path="/logout" component={Logout} />

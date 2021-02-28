@@ -27,6 +27,7 @@ import {
   FormOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
+import FilterSessionsByLibrary from './FilterSessionsByLibrary';
 
 const HeadmasterDashboard = props => {
   const { profile } = props;
@@ -95,6 +96,7 @@ const HeadmasterDashboard = props => {
             <Menu.Item key="9">
               <Link to="/sessions-by-library">Sessions</Link>
             </Menu.Item>
+
           </Menu>
           <div>
             <img

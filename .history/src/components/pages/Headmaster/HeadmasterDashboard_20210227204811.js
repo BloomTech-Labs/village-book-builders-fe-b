@@ -91,10 +91,6 @@ const HeadmasterDashboard = props => {
             <Menu.Item key="7" icon={<LogoutOutlined />}>
               <Link to="/logout">Logout</Link>
             </Menu.Item>
-
-            <Menu.Item key="9">
-              <Link to="/sessions-by-library">Sessions</Link>
-            </Menu.Item>
           </Menu>
           <div>
             <img
@@ -106,6 +102,7 @@ const HeadmasterDashboard = props => {
           </div>
         </Sider>
         <Layout>
+
           <PageHeader
             title={`Hello, Headmaster ${profile.last_name}`}
             extra={[
@@ -114,7 +111,7 @@ const HeadmasterDashboard = props => {
               </Button>,
             ]}
           ></PageHeader>
-
+          
           <Content style={{ padding: '2rem', backgroundColor: 'white' }}>
             <Switch>
               <Route path="/dashboard" component={MatchingCalendar} />
@@ -151,12 +148,6 @@ const HeadmasterDashboard = props => {
                 path="/mentor-mentee-matching"
                 component={MatchingCalendar}
               />
-              <Route
-                exact
-                path="/sessions-by-library"
-                component={FilterSessionsByLibrary}
-              />
-
               <Route path="/logout" component={Logout} />
             </Switch>
           </Content>
