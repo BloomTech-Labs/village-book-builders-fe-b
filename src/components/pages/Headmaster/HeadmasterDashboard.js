@@ -88,13 +88,15 @@ const HeadmasterDashboard = props => {
             <Menu.Item key="6" icon={<FormOutlined />}>
               <NavLink to="/student-search">Student Registration</NavLink>
             </Menu.Item>
+            <Menu.Item key="9">
+              <Link to="/sessions-by-library">Sessions by library Id</Link>
+              <Link to="/sessions-by-library">Sessions</Link>
+            </Menu.Item>
             <Menu.Item key="7" icon={<LogoutOutlined />}>
               <Link to="/logout">Logout</Link>
             </Menu.Item>
 
-            <Menu.Item key="9">
-              <Link to="/sessions-by-library">Sessions</Link>
-            </Menu.Item>
+            <Menu.Item key="9"></Menu.Item>
           </Menu>
           <div>
             <img
@@ -126,6 +128,10 @@ const HeadmasterDashboard = props => {
                 component={StudentProfileForm}
               />
               <Route path="/student-search" component={StudentSearch} />
+              <Route
+                path="/sessions-by-library"
+                component={FilterSessionsByLibrary}
+              />
               <Route path="/mentor-list" component={MentorList} />
               <Route path="/studentregistration" component={StudentForm} />
               <Route

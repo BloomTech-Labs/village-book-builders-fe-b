@@ -26,9 +26,10 @@ const FilterSessionsByLibrary = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
+        <h3>List of Sessions by Library</h3>
         <FormImput
           type="text"
-          placeholder="library id"
+          placeholder="Please enter library id"
           name="libray_id"
           value={libId}
           pattern="[0-9]*"
