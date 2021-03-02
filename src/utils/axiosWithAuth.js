@@ -8,7 +8,7 @@ export const axiosWithAuth = () => {
   // console.log("AxiosAuth --> token:", token);
 
   return axios.create({
-    baseURL: 'https://vbb-mock-api.herokuapp.com',
+    baseURL: process.env.REACT_APP_API_URI,
     headers: {
       Authorization: token,
     },
