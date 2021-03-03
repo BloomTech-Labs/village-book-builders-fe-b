@@ -1,0 +1,89 @@
+.heading-section{
+  /* background: green ; */
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  /* align-items: center; */
+}
+button{
+  width: 10rem;
+  margin-top:0.5rem;
+  background-color:lightgreen;
+}
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 768px) {
+  .session_card{
+    margin: 1rem;
+    padding: 1rem;
+    width: 30%;
+    background: whitesmoke;
+    /* background: red; */
+} 
+}
+@media only screen and (min-width:768px){
+  .myWrapper{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content:center;
+    align-items: center;
+}
+}
+ 
+/* for phones and tables  */
+@media only screen and (max-width: 768px) {
+  .session_card{
+    margin: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    width: 70%;
+    background: whitesmoke;
+} 
+}
+@media only screen and (max-width:768px){
+  .myWrapper{
+    width: 100%;
+    justify-content:space-evenly;
+    align-items: center;
+    /* background:orange; */
+}
+} 
+
+/* for extra-small devices  */
+@media only screen and (max-width:600px){
+  .session_card{
+    margin: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    width: 70%;
+    background: whitesmoke;
+}
+}
+@media only screen and (max-width:600px){
+  .myWrapper{
+    width: 100%;
+    justify-content:space-evenly;
+    align-items: center;
+    /* background:green; */
+}
+}
+
+
+
+
+/* Extra small devices (phones, 600px and down)
+@media only screen and (max-width: 600px) {...}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+/* @media only screen and (min-width: 600px) {...} */
+
+/* Medium devices (landscape tablets, 768px and up) */
+/* @media only screen and (min-width: 768px) {...} */
+
+/* Large devices (laptops/desktops, 992px and up) */
+/* @media only screen and (min-width: 992px) {...} */
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+/* @media only screen and (min-width: 1200px) {...}  */

@@ -95,8 +95,6 @@ const HeadmasterDashboard = props => {
             <Menu.Item key="7" icon={<LogoutOutlined />}>
               <Link to="/logout">Logout</Link>
             </Menu.Item>
-
-            <Menu.Item key="9"></Menu.Item>
           </Menu>
           <div>
             <img

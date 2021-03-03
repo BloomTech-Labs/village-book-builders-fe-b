@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Button from '../../common/Button';
+import Display from '../../common/Display';
 import FormImput from '../../common/FormInput';
-import axios from 'axios';
+import { axiosWithAuth } from '../../../utils/axiosWithAuth';
+import '../../../../src/styles/findCessionsById.css';
 
 const FilterSessionsByLibrary = () => {
   const [libId, setId] = useState(0);
@@ -13,9 +15,11 @@ const FilterSessionsByLibrary = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    axios
-      .get(`http://localhost:5000/users/${libId}`)
+    axiosWithAuth()
+      .get('/program')
+      // .get('http://localhost:5000/users')
       .then(res => setSessions(res.data))
+      // .then(console.log(Sessions))
       .catch(err => console.log(err.response));
   };
 
@@ -25,27 +29,33 @@ const FilterSessionsByLibrary = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <h3>List of Sessions by Library</h3>
-        <FormImput
-          type="text"
-          placeholder="Please enter library id"
-          name="libray_id"
-          value={libId}
-          pattern="[0-9]*"
-          onChange={handleChange}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-      <div>
-        {Sessions.map(item => (
-          <div>
-            <small>session:{item.name}</small>
-            <small>time: {item.time}</small>
-            <small>mentor: {item.mentor}</small>
-            <small>mentee:{item.mentee}</small>
-          </div>
-        ))}
+      <div className="heading-section">
+        <form onSubmit={handleSubmit}>
+          <h3>List of Sessions by Library</h3>
+          <FormImput
+            lableId="1"
+            // type="text"
+            placeholder="Please enter library id"
+            name="libray_id"
+            // value={libId}
+            // pattern="[0-9]*"
+            onChange={handleChange}
+          />
+          <button type="submit">Show Sessions </button>
+        </form>
+      </div>
+
+      <div className="myWrapper">
+        {Sessions.map((item, key = item.key) => {
+          return (
+            <Display
+              //  id={item.id}
+              name={item.name}
+              location={item.location}
+              libraryId={item.libraryId}
+            />
+          );
+        })}
       </div>
     </div>
   );
