@@ -24,7 +24,7 @@ export const checkToken = data => dispatch => {
 export const login = data => dispatch => {
   axios
     // will need to update this to baseURL, there seems to be a link issue with the .env file
-    .post('https://vbb-mock-api.herokuapp.com/auth/login', data)
+    .post(`${process.env.REACT_APP_API_URI}/auth/login`, data)
     .then(res => {
       // console.log('LOGIN ACTION SUCCESS --> token', res.data);
       window.localStorage.setItem('token', res.data.access_token);

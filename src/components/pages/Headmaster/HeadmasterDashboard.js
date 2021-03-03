@@ -50,7 +50,7 @@ const HeadmasterDashboard = props => {
             console.log(collapsed, type);
           }}
         >
-          <Menu mode="inline" defaultSelectedKeys={['4']}>
+          <Menu mode="inline" defaultSelectedKeys={['1']}>
             <div
               style={{
                 display: 'flex',
@@ -131,10 +131,6 @@ const HeadmasterDashboard = props => {
                 component={SchoolForm}
               />
               <Route path="/library" />
-              <Route
-                path="/mentor-mentee-matching"
-                component={MatchingCalendar}
-              />
               <Route path="/logout" component={Logout} />
             </Switch>
           </Content>
