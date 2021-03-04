@@ -21,7 +21,7 @@ function StudentForm() {
 
   const addStudent = newStudent => {
     axiosWithAuth(addStudent)
-      .post('https://vbb-mock-api.herokuapp.com/mentee', newStudent)
+      .post(`${process.env.REACT_APP_API_URI}/mentee`, newStudent)
       .then(response => {
         history.push('/');
       })

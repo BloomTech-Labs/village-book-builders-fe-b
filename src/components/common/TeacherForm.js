@@ -3,7 +3,6 @@ import { Form, Input, Button, message } from 'antd';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
-
 // This reusable component is strictly for the "Teacher" input feilds
 
 const initialFormValues = {
@@ -31,7 +30,7 @@ function TeacherForm() {
 
   const addTeacher = newTeacher => {
     axios
-      .post('https://vbb-mock-api.herokuapp.com/teacher', newTeacher)
+      .post(`${process.env.REACT_APP_API_URI}/teacher`, newTeacher)
       .then(response => {
         history.push('/');
       })
@@ -46,7 +45,6 @@ function TeacherForm() {
       style={{ display: 'flex', justifyContent: 'center', paddingTop: '2rem' }}
     >
       <Form form={form} onFinish={onFinish} name="register" scrollToFirstError>
-
         <h1>Teacher Registration Form</h1>
 
         <Form.Item
