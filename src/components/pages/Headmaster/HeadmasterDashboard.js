@@ -13,6 +13,7 @@ import HeadmasterProfile from './HeadmasterProfile/Profile.js';
 import ProfileForm from './HeadmasterProfile/ProfileForm.js';
 import MentorList from '../Mentor/MentorList.js';
 import MatchingCalendar from './MentorMenteeMatching/MatchingCalendar';
+//import EditMatching from './MentorMenteeMatching/EditMatching';
 import { fetchHeadmasterProfile } from '../../../state/actions';
 import Logout from '../../Logout.js';
 import Mentees from './Mentees/Mentees.js';
@@ -26,6 +27,7 @@ import {
   FormOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
+import EditMatching from './MentorMenteeMatching/EditMatching';
 
 const HeadmasterDashboard = props => {
   const { profile } = props;

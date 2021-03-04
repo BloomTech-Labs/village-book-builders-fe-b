@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import MiniMentorList from './MiniMentorList';
 import MiniMenteeList from './MiniMenteeList';
 import { fetchCalendar } from '../../../../state/actions/index';
+import EditMatching from './EditMatching';
 
 const initialState = {
   date: '',
