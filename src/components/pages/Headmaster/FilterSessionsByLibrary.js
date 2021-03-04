@@ -41,7 +41,9 @@ const FilterSessionsByLibrary = () => {
             // pattern="[0-9]*"
             onChange={handleChange}
           />
-          <button type="submit">Show Sessions </button>
+          <button className="button-styling" type="submit">
+            Show Sessions{' '}
+          </button>
         </form>
       </div>
 
