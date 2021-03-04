@@ -5,11 +5,8 @@
 // Declare action TYPES at the top of the file
 import axios from 'axios';
 import { axiosWithAuth } from '../../utils/axiosWithAuth';
-import { useHistory } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-
 import * as actionTypes from './actionTypes';
-const baseURL = process.env.REACT_APP_BASE_URL;
 
 export const checkToken = data => dispatch => {
   dispatch({
@@ -23,7 +20,7 @@ export const checkToken = data => dispatch => {
 // -------------------------
 export const login = data => dispatch => {
   axios
-    // will need to update this to baseURL, there seems to be a link issue with the .env file
+    // ! cannot use env.var until backend has auth implemented
     .post('https://vbb-mock-api.herokuapp.com/auth/login', data)
     .then(res => {
       // console.log('LOGIN ACTION SUCCESS --> token', res.data);
@@ -37,7 +34,7 @@ export const login = data => dispatch => {
       console.log(
         'LOGIN ACTION FAILURE--> with this data & baseURL:',
         data,
-        baseURL
+        process.env.REACT_APP_BASE_URL
       );
       console.dir(err);
     });
