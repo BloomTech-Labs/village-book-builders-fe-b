@@ -33,7 +33,7 @@ const MenteeProfile = ({ currentMentee }) => {
       })
       .catch(err => {
         console.log(err);
-        setMentorName('Could not fetch mentor name. Please try again later.');
+        setMentorName('No Mentor assigned.');
       });
   };
 
