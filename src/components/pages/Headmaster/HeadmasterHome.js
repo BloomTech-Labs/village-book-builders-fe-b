@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchHeadmasterProfile } from '../../../state/actions';
-
 const HeadmasterHome = props => {
   const { profile } = props;
 

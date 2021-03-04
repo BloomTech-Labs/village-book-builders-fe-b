@@ -17,6 +17,7 @@ import { fetchHeadmasterProfile } from '../../../state/actions';
 import Logout from '../../Logout.js';
 import Mentees from './Mentees/Mentees.js';
 import { Layout, Menu, PageHeader, Button, Avatar } from 'antd';
+import Signup from './Signup';
 import {
   HomeOutlined,
   UserOutlined,
@@ -64,6 +65,7 @@ const HeadmasterDashboard = props => {
                 {profile.last_name}
               </div>
             </div>
+            <Signup />
             <Menu.Item key="1" icon={<HomeOutlined />}>
               <NavLink to="/dashboard">Home</NavLink>
             </Menu.Item>
@@ -91,6 +93,7 @@ const HeadmasterDashboard = props => {
               <Link to="/logout">Logout</Link>
             </Menu.Item>
           </Menu>
+
           <div>
             <img
               style={{ padding: '2rem 1rem' }}
