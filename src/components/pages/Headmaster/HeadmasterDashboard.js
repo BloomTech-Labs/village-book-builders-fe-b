@@ -131,10 +131,6 @@ const HeadmasterDashboard = props => {
                 component={SchoolForm}
               />
               <Route path="/library" />
-              <Route
-                path="/mentor-mentee-matching"
-                component={MatchingCalendar}
-              />
               <Route path="/logout" component={Logout} />
             </Switch>
           </Content>
