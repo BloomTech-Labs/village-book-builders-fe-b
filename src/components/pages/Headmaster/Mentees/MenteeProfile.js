@@ -1,15 +1,42 @@
-import { List, Avatar, Divider, Skeleton, Table, Tag } from 'antd';
+import { Avatar, Divider, Skeleton, Table, Tag } from 'antd';
+import axios from 'axios';
 import moment from 'moment';
-import React from 'react';
-import { debugLog } from '../../../../utils/debugMode';
+import React, { useEffect, useState } from 'react';
 import '../../../../style.css';
 
 const MenteeProfile = ({ currentMentee }) => {
-  debugLog(
-    'Prop drilled from Mentees.js',
-    currentMentee,
-    moment.utc(currentMentee.dob).format('dddd, MMMM Do of YYYY')
-  );
+  const [mentorName, setMentorName] = useState('loading...');
+  const {
+    mentee_picture,
+    first_name,
+    last_name,
+    email,
+    primary_language,
+    gender,
+    mentorId,
+    dob,
+    english_lvl,
+    reading_lvl,
+    math_lvl,
+    school_lvl,
+    academic_description,
+    support_needed,
+    availability,
+    dynamic_questions,
+  } = currentMentee;
+
+  const fetchMentorName = () => {
+    axios
+      .get(`${process.env.REACT_APP_API_URI}/mentor/${mentorId}`)
+      .then(({ data }) => {
+        setMentorName(`${data.first_name} ${data.last_name}`);
+      })
+      .catch(err => {
+        console.log(err);
+        setMentorName('No Mentor assigned.');
+      });
+  };
+
   const columns = [
     {
       title: 'Contact Hours - From',
@@ -43,6 +70,11 @@ const MenteeProfile = ({ currentMentee }) => {
       ),
     },
   ];
+
+  useEffect(() => {
+    fetchMentorName();
+  }, []);
+
   return (
     <div className="menteeProfileWrapper">
       {!currentMentee ? (
@@ -50,47 +82,45 @@ const MenteeProfile = ({ currentMentee }) => {
       ) : (
         <>
           <Avatar
-            src={currentMentee.mentee_picture}
+            src={mentee_picture}
             size={250}
             style={{ alignSelf: 'center' }}
           />
           <Divider size="large" />
           <h1 style={{ alignSelf: 'center' }}>
-            {currentMentee.first_name + ' ' + currentMentee.last_name}
+            {first_name + ' ' + last_name}
           </h1>
           <Divider plain>Email</Divider>
-          <p>{currentMentee.email}</p>
+          <p>{email}</p>
           <Divider plain>Languages (left to rigth)</Divider>
-          <p>{currentMentee.primary_language}</p>
+          <p>{primary_language}</p>
           <Divider plain>Gender</Divider>
-          <p>{currentMentee.gender}</p>
+          <p>{gender}</p>
           <Divider plain>Date of Birth</Divider>
-          <p>{moment.utc(currentMentee.dob).format('dddd, MMMM Do of YYYY')}</p>
+          <p>{moment.utc(dob).format('dddd, MMMM Do of YYYY')}</p>
           <Divider plain>Mentor</Divider>
-          <p>
-            {currentMentee.mentorId ? currentMentee.mentorId : 'Unassigned'}
-          </p>
+          <p>{mentorName}</p>
           <Divider plain>Grades</Divider>
-          <p>{`English :${currentMentee.english_lvl}`}</p>
-          <p>{`Math :${currentMentee.math_lvl}`}</p>
-          <p>{`Reading :${currentMentee.reading_lvl}`}</p>
-          <p>{`School :${currentMentee.school_lvl}`}</p>
+          <p>{`English: ${english_lvl}`}</p>
+          <p>{`Math: ${math_lvl}`}</p>
+          <p>{`Reading: ${reading_lvl}`}</p>
+          <p>{`School: ${school_lvl}`}</p>
           <Divider plain>Academic Description</Divider>
-          <p>{currentMentee.academic_description}</p>
+          <p>{academic_description}</p>
           <Divider plain>Support Areas</Divider>
-          <p>{currentMentee.support_needed}</p>
+          <p>{support_needed}</p>
           <Divider plain>Availability</Divider>
           <Table
             align="center"
             pagination={false}
             size="small"
             tableLayout="fixed"
-            dataSource={[currentMentee.availability]}
+            dataSource={[availability]}
             columns={columns}
             key="table"
           />
           <Divider plain>Other Questions</Divider>
-          {currentMentee.dynamic_questions.map(question => {
+          {dynamic_questions.map(question => {
             return (
               <div key={question.qId}>
                 <Divider plain>{question.question}</Divider>
