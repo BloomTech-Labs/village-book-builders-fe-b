@@ -59,12 +59,6 @@ const Mentees = props => {
     <div className="menteeContainer">
       <h1 id="menteeTitle">Mentee Management</h1>
       <div className="exploreWrapper">
-        {/* <Button
-          style={{ width: '80%', marginBottom: '10pt', alignSelf: 'center' }}
-          align="center"
-        >
-          Create New Library
-        </Button> */}
         <Input.Search
           value={search}
           placeholder="Search by Name"
