@@ -25,7 +25,6 @@ import HeadmasterProfile from './HeadmasterProfile/Profile.js';
 import ProfileForm from './HeadmasterProfile/ProfileForm.js';
 import Mentees from './Mentees/Mentees.js';
 import Signup from './Signup';
-
 import HeadmasterCalendar from './MentorMenteeMatching/HeadmasterCalendar';
 
 const HeadmasterDashboard = props => {
@@ -34,7 +33,6 @@ const HeadmasterDashboard = props => {
   useEffect(() => {
     props.fetchHeadmasterProfile(1); // change this later with login
   }, []);
-  // console.log(profile);
 
   const { Content, Sider } = Layout;
 
