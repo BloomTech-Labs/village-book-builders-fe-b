@@ -9,8 +9,6 @@ import { editHeadmasterProfile } from '../../../../state/actions';
 import { debugLog } from '../../../../utils/debugMode';
 import { Button } from 'antd';
 
-const baseURL = 'https://cors-anywhere.herokuapp.com/http://54.158.134.245/api';
-
 const initialState = {
   first_name: '',
   gender: {
@@ -48,7 +46,7 @@ const ProfileForm = props => {
 
   useEffect(() => {
     axios // ! This should later become available through axiosWithAuth() only once we figure out the Auth with Stakeholder's backend
-      .get(`${baseURL}/headmaster/1`)
+      .get(`${process.env.REACT_APP_API_URI}/headmaster/1`)
       .then(res => {
         form.setFieldsValue(res.data);
         setFormData(res.data);
