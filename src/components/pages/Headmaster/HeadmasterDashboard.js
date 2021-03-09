@@ -83,8 +83,7 @@ const HeadmasterDashboard = props => {
               <NavLink to="/student-search">Student Registration</NavLink>
             </Menu.Item>
             <Menu.Item key="9">
-              <Link to="/sessions-by-library">Sessions by library Id</Link>
-              <Link to="/sessions-by-library">Sessions</Link>
+              <Link to="/sessions-by-library">Get problems</Link>
             </Menu.Item>
             <Menu.Item key="7" icon={<LogoutOutlined />}>
               <Link to="/logout">Logout</Link>
@@ -120,10 +119,6 @@ const HeadmasterDashboard = props => {
                 component={StudentProfileForm}
               />
               <Route path="/student-search" component={StudentSearch} />
-              <Route
-                path="/sessions-by-library"
-                component={FilterSessionsByLibrary}
-              />
               <Route path="/mentor-list" component={MentorList} />
               <Route path="/studentregistration" component={StudentForm} />
               <Route path="/school-village">
