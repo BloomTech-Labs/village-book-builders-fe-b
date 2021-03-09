@@ -135,9 +135,7 @@ const Signup = () => {
   const handleDropdownVillage = value => {
     setForms({ ...forms, village: value });
   };
-  const handleDropdownLibrary = value => {
-    setForms({ ...forms, library: value });
-  };
+
   const handleDropdownComputer = value => {
     setForms({ ...forms, computer: value });
   };
@@ -335,10 +333,10 @@ const Signup = () => {
               <Form.Item label="Library">
                 <Select
                   name="library"
-                  onChange={handleDropdownLibrary}
+                  onChange={selectLibrary}
                   placeholder="--choose library--"
                 >
-                  {village.map(l => (
+                  {library.map(l => (
                     <Option key={l.id} value={l.name}>
                       {l.name}
                     </Option>
