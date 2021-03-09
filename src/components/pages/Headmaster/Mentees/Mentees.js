@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Divider, Input, Modal, List, Avatar } from 'antd';
+import { Button, Divider, Input, Modal, List, Avatar, Tooltip } from 'antd';
 import { connect } from 'react-redux';
+import { FaExclamationCircle, FaCheckCircle } from 'react-icons/fa';
 import { checkToken, fetchMentees } from '../../../../state/actions/index';
 import MenteeForm from './MenteeForm';
 import MenteeProfile from './MenteeProfile';
 import '../../../../style.css';
+import MenteeAssignmentStatusIcon from './MenteeAssignmentStatusIcon';
 
 const Mentees = props => {
   let menteesSelection = [...props.mentees];
@@ -41,13 +43,13 @@ const Mentees = props => {
     }
   };
 
-  // if (Array.isArray(menteesSelection)) {
-  //   menteesSelection = menteesSelection.filter(
-  //     item =>
-  //       item.first_name.toLowerCase().includes(search.toLowerCase()) ||
-  //       item.last_name.toLowerCase().includes(search.toLowerCase())
-  //   );
-  // }
+  // filter out based on searchInput
+  menteesSelection = menteesSelection.filter(mentee => {
+    const fullname = `${mentee.first_name} ${mentee.last_name}`.toLowerCase();
+    if (fullname.includes(search.toLowerCase())) {
+      return mentee;
+    }
+  });
 
   useEffect(() => {
     props.fetchMentees();
@@ -57,12 +59,6 @@ const Mentees = props => {
     <div className="menteeContainer">
       <h1 id="menteeTitle">Mentee Management</h1>
       <div className="exploreWrapper">
-        <Button
-          style={{ width: '80%', marginBottom: '10pt', alignSelf: 'center' }}
-          align="center"
-        >
-          Create New Library
-        </Button>
         <Input.Search
           value={search}
           placeholder="Search by Name"
@@ -72,45 +68,47 @@ const Mentees = props => {
         <Divider />
         <List
           itemLayout="horizontal"
+          size="small"
+          pagination={{
+            defaultPageSize: 10,
+            showSizeChanger: false,
+          }}
           dataSource={menteesSelection}
           renderItem={item => (
-            <List.Item>
+            <List.Item
+              actions={[
+                <Button
+                  onClick={e => moreInfoHandler(e, item)}
+                  // className="listItemButton"
+                  size="middle"
+                  type="default"
+                >
+                  More Info
+                </Button>,
+                <Button
+                  onClick={e => editingHandler(e, item)}
+                  // className="listItemButton"
+                  danger
+                  size="middle"
+                  type="default"
+                >
+                  Edit
+                </Button>,
+                <MenteeAssignmentStatusIcon mentee={item} />,
+              ]}
+            >
               <div className="listItemWrapper">
                 <div className="listItemMeta">
                   <List.Item.Meta
                     avatar={<Avatar src={item.mentee_picture} />}
-                    title={
-                      <a href="https://ant.design">
-                        {item.first_name + ' ' + item.last_name}
-                      </a>
-                    }
+                    title={item.first_name + ' ' + item.last_name}
                     description={item.academic_description}
                   />
-                </div>
-                <div className="listItemButtonWrapper">
-                  <Button
-                    onClick={e => moreInfoHandler(e, item)}
-                    className="listItemButton"
-                    size="middle"
-                    type="default"
-                  >
-                    More Info
-                  </Button>
-                  <Button
-                    onClick={e => editingHandler(e, item)}
-                    className="listItemButton"
-                    danger
-                    size="middle"
-                    type="default"
-                  >
-                    Edit
-                  </Button>
                 </div>
               </div>
             </List.Item>
           )}
         />
-        ,
       </div>
       <Modal
         className="menteeModal"

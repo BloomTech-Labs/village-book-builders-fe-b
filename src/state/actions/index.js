@@ -5,10 +5,8 @@
 // Declare action TYPES at the top of the file
 import axios from 'axios';
 import { axiosWithAuth } from '../../utils/axiosWithAuth';
-import { useHistory } from 'react-router-dom';
-
+import { v4 as uuidv4 } from 'uuid';
 import * as actionTypes from './actionTypes';
-const baseURL = process.env.REACT_APP_BASE_URL;
 
 export const checkToken = data => dispatch => {
   dispatch({
@@ -22,7 +20,7 @@ export const checkToken = data => dispatch => {
 // -------------------------
 export const login = data => dispatch => {
   axios
-    // will need to update this to baseURL, there seems to be a link issue with the .env file
+    // ! cannot use env.var until backend has auth implemented
     .post('https://vbb-mock-api.herokuapp.com/auth/login', data)
     .then(res => {
       // console.log('LOGIN ACTION SUCCESS --> token', res.data);
@@ -36,7 +34,7 @@ export const login = data => dispatch => {
       console.log(
         'LOGIN ACTION FAILURE--> with this data & baseURL:',
         data,
-        baseURL
+        process.env.REACT_APP_BASE_URL
       );
       console.dir(err);
     });
@@ -87,18 +85,6 @@ export const fetchVillage = id => dispatch => {
       dispatch({ type: actionTypes.FETCH_VILLAGE, payload: res.data });
     })
     .catch(err => console.dir(err));
-};
-
-export const fetchCalendar = () => dispatch => {
-  dispatch({ type: actionTypes.FETCH_CALENDAR_START });
-  axiosWithAuth()
-    .get(`http://localhost:3000/match`)
-    .then(res => {
-      dispatch({ type: actionTypes.FETCH_CALENDAR_SUCCESS, payload: res.data });
-    })
-    .catch(err =>
-      dispatch({ type: actionTypes.FETCH_CALENDAR_FAILURE, payload: err })
-    );
 };
 
 export const editVillage = (id, data) => () => {
@@ -246,7 +232,7 @@ export const editSchool = (id, data) => dispatch => {
 export const fetchMentors = () => dispatch => {
   dispatch({ type: actionTypes.FETCH_MENTOR_START });
   axiosWithAuth()
-    .get(`https://vbb-mock-api.herokuapp.com/mentor`)
+    .get(`/mentor`)
     .then(res => {
       dispatch({ type: actionTypes.FETCH_MENTOR_SUCCESS, payload: res.data });
     })
@@ -340,4 +326,94 @@ export const fetchProgramProfile = id => dispatch => {
         payload: err,
       })
     );
+};
+
+// -----------------------
+//! HEADMASTER Calendar
+// -----------------------
+/**
+ * This function makes a POST requeust to the backend
+ * to create a calendar event
+ *
+ * @param {{ id: string
+ * title: string,
+ * start: string,
+ * end: string, }} plainEventObject
+ */
+export const createCalendarEvent = plainEventObject => dispatch => {
+  console.log('[STUB] requesting event update:', plainEventObject);
+  let newEventId = uuidv4();
+  let objWithId = { ...plainEventObject, id: newEventId };
+
+  return axiosWithAuth()
+    .post('/match', objWithId)
+    .then(res => {
+      dispatch({
+        type: actionTypes.CREATE_CALENDAR_EVENT,
+        payload: res.data,
+      });
+    })
+    .catch(err => console.dir(err));
+};
+
+/**
+ * This function will make a GET request to the backend
+ * will update calendar events in redux state
+ *
+ * @param {string} startStr
+ * @param {string} endStr
+ */
+export const requestCalendarEvents = (startStr, endStr) => dispatch => {
+  console.log(`[STUB] requesting events from ${startStr} to ${endStr}`);
+
+  return axiosWithAuth()
+    .get('/match')
+    .then(res => {
+      dispatch({
+        type: actionTypes.RECIEVED_EVENTS,
+        payload: res.data,
+      });
+    })
+    .catch(err => console.dir(err));
+};
+
+/**
+ * This function will make a PATCH request to the backend
+ * to update the given event
+ *
+ * @param {{ id: string
+ * title: string,
+ * start: string,
+ * end: string, }} plainEventObject
+ */
+export const updateCalendarEvent = plainEventObject => dispatch => {
+  console.log('[STUB] requesting event update:', plainEventObject);
+
+  return axiosWithAuth()
+    .put(`/match/${plainEventObject.id}`, plainEventObject)
+    .then(res => {
+      console.log(res.data);
+      dispatch({
+        type: actionTypes.UPDATE_CALENDAR_EVENT,
+        payload: res.data,
+      });
+    })
+    .catch(err => console.dir(err));
+};
+
+/**
+ * This action creator will make a DELETE request to the backend to remove a given event
+ *
+ * @param {string} eventId
+ */
+export const removeCalendarEvent = eventId => dispatch => {
+  console.log('[STUB] requesting event deletion:', String(eventId));
+
+  return axiosWithAuth()
+    .delete(`/match/${eventId}`)
+    .then(() => {
+      // console.log('Deleted event successfully on backend!');
+      dispatch({ type: actionTypes.DELETE_CALENDAR_EVENT, payload: eventId });
+    })
+    .catch(err => console.dir(err));
 };

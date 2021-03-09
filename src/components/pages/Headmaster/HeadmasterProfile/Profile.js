@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import { fetchHeadmasterProfile } from '../../../../state/actions';
 import { Button } from 'antd';
 
-// const baseURL = 'https://cors-anywhere.herokuapp.com/http://54.158.134.245/api';
-
 const HeadmasterProfile = props => {
   const { profile } = props;
   useEffect(() => {

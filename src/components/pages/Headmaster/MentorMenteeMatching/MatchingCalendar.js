@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import MiniMentorList from './MiniMentorList';
 import MiniMenteeList from './MiniMenteeList';
 import { fetchCalendar } from '../../../../state/actions/index';
+import HeadmasterCalendar from './HeadmasterCalendar';
 
 const initialState = {
   date: '',
@@ -135,17 +136,13 @@ const MatchingCalendar = props => {
 
   return (
     <div>
-      <h1>Mentor - Mentee Matching</h1>
-      <div className="calStyling">
-        <Calendar
-          dateCellRender={dateCellRender}
-          monthCellRender={monthCellRender}
-          onPanelChange={onPanelChange}
-        />
+      {/* <h1>Mentor - Mentee Matching</h1> */}
+      <div>
+        <HeadmasterCalendar />
       </div>
-      <h3>Please complete all the fields below to fill a time slot.</h3>
+      {/* <h3>Please complete all the fields below to fill a time slot.</h3> */}
 
-      <Form onFinish={onFinish}>
+      {/* <Form onFinish={onFinish}>
         <Form.Item label="Mentor">
           <Input.Group>
             <Form.Item
@@ -204,11 +201,6 @@ const MatchingCalendar = props => {
           </Input.Group>
         </Form.Item>
 
-        {/* https://ant.design/components/date-picker/#header
-        default onChange
-        function onChange(date, dateString) {
-          console.log(date, dateString);
-        } */}
         <Form.Item label="Date">
           <Input.Group>
             <Form.Item
@@ -227,11 +219,11 @@ const MatchingCalendar = props => {
         <Form.Item>
           <Button htmlType="submit">Submit</Button>
         </Form.Item>
-      </Form>
-      <div className="miniListContainer">
+      </Form> */}
+      {/* <div className="miniListContainer">
         <MiniMentorList />
         <MiniMenteeList />
-      </div>
+      </div> */}
     </div>
   );
 };

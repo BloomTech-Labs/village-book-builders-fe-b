@@ -5,14 +5,14 @@ import 'antd/dist/antd.css';
 import { Form, Input, Checkbox, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
-import { login } from '../../../state/actions';
+import { login as loginAction } from '../../../state/actions';
 
 const initialState = {
   email: '',
   password: '',
 };
 
-const Login = ({ login, loggedIn }) => {
+const Login = ({ loginAction, loggedIn }) => {
   const [formData, setFormData] = useState(initialState);
   const [form] = Form.useForm();
 
@@ -20,7 +20,7 @@ const Login = ({ login, loggedIn }) => {
 
   const handleSubmit = async () => {
     // console.log('LOGIN COMPONENT handleSubmit --> ', formData);
-    login(formData);
+    loginAction(formData);
   };
 
   const handleChange = e => {
@@ -106,4 +106,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { login })(Login);
+export default connect(mapStateToProps, { loginAction })(Login);
