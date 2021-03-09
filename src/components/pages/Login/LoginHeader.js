@@ -3,6 +3,9 @@ import Login from './Login';
 import 'antd/dist/antd.css';
 import { PageHeader, Button, Layout } from 'antd';
 
+/**
+ * This Component contains the Login form as well.
+ */
 function LoginHeader() {
   const { Content } = Layout;
 
@@ -30,6 +33,7 @@ function LoginHeader() {
           ></PageHeader>
         </Content>
       </Layout>
+      {/* Login Form */}
       <Login />
     </div>
   );
