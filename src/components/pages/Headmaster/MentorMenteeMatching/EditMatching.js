@@ -36,7 +36,7 @@ const EditMatching = props => {
     console.log(time, timeString);
   }
 
-  const [componentSize, setComponentSize] = useState;
+  const [componentSize, setComponentSize] = useState();
 
   const onFormLayoutChange = ({ size }) => {
     setComponentSize(size);
@@ -124,4 +124,4 @@ const EditMatching = props => {
   );
 };
 
-export default connect(EditMatching);
+export default EditMatching;

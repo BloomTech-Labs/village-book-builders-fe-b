@@ -1,33 +1,31 @@
+import {
+  BookOutlined,
+  CalendarOutlined,
+  FormOutlined,
+  HomeOutlined,
+  LogoutOutlined,
+  UnorderedListOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import { Avatar, Button, Layout, Menu, PageHeader } from 'antd';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, NavLink, Route, Switch } from 'react-router-dom';
+import { fetchHeadmasterProfile } from '../../../state/actions';
+import Logout from '../../Logout.js';
 import StudentProfileForm from '../../pages/Student/StudentProfileForm';
+import MentorList from '../Mentor/MentorList.js';
+import SchoolForm from '../School/SchoolForm.js';
+import Schools from '../School/Schools.component.js';
 import StudentForm from '../Student/StudentForm';
-import HeadmasterHome from './HeadmasterHome';
 import StudentSearch from '../Student/StudentSearch';
 import Village from '../Village/Village.component.js';
 import VillageForm from '../Village/VillageForm.js';
-import Schools from '../School/Schools.component.js';
-import SchoolForm from '../School/SchoolForm.js';
 import HeadmasterProfile from './HeadmasterProfile/Profile.js';
 import ProfileForm from './HeadmasterProfile/ProfileForm.js';
-import MentorList from '../Mentor/MentorList.js';
-import MatchingCalendar from './MentorMenteeMatching/MatchingCalendar';
-//import EditMatching from './MentorMenteeMatching/EditMatching';
-import { fetchHeadmasterProfile } from '../../../state/actions';
-import Logout from '../../Logout.js';
-import Mentees from './Mentees/Mentees.js';
-import { Layout, Menu, PageHeader, Button, Avatar } from 'antd';
-import {
-  HomeOutlined,
-  UserOutlined,
-  CalendarOutlined,
-  UnorderedListOutlined,
-  BookOutlined,
-  FormOutlined,
-  LogoutOutlined,
-} from '@ant-design/icons';
 import EditMatching from './MentorMenteeMatching/EditMatching';
+import Mentees from './Mentees/Mentees.js';
+import HeadmasterCalendar from './MentorMenteeMatching/HeadmasterCalendar';
 
 const HeadmasterDashboard = props => {
   const { profile } = props;
@@ -53,7 +51,7 @@ const HeadmasterDashboard = props => {
             console.log(collapsed, type);
           }}
         >
-          <Menu mode="inline" defaultSelectedKeys={['4']}>
+          <Menu mode="inline" defaultSelectedKeys={['1']}>
             <div
               style={{
                 display: 'flex',
@@ -77,11 +75,6 @@ const HeadmasterDashboard = props => {
             </Menu.Item>
             <Menu.Item key="4" icon={<UnorderedListOutlined />}>
               <NavLink to="/mentor-list">Mentor List</NavLink>
-            </Menu.Item>
-            <Menu.Item key="8" icon={<UnorderedListOutlined />}>
-              <NavLink to="/mentor-mentee-matching">
-                Mentor Mentee Matching
-              </NavLink>
             </Menu.Item>
             <Menu.Item key="5" icon={<BookOutlined />}>
               <NavLink to="/school-village">School/Village</NavLink>
@@ -113,7 +106,7 @@ const HeadmasterDashboard = props => {
           ></PageHeader>
           <Content style={{ padding: '2rem', backgroundColor: 'white' }}>
             <Switch>
-              <Route path="/dashboard" component={HeadmasterHome} />
+              <Route path="/dashboard" component={HeadmasterCalendar} />
               <Route path="/mentor-pairings" component={Mentees} />
               <Route exact path="/profile" component={HeadmasterProfile} />
               <Route path="/profile/edit/:id" component={ProfileForm} />
@@ -124,10 +117,6 @@ const HeadmasterDashboard = props => {
               <Route path="/student-search" component={StudentSearch} />
               <Route path="/mentor-list" component={MentorList} />
               <Route path="/studentregistration" component={StudentForm} />
-              <Route
-                path="/mentor-mentee-matching"
-                component={MatchingCalendar}
-              />
               <Route path="/school-village">
                 <Village />
                 <Schools />
