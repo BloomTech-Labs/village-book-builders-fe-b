@@ -1,5 +1,6 @@
-import { connect } from 'react-redux';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+import axios from 'axios';
 // import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import {
@@ -12,15 +13,72 @@ import {
   Modal,
 } from 'antd';
 
+const initialMatch = {
+  mentee: '',
+  mentor: '',
+  time: '',
+  date: '',
+};
+
 const EditMatching = props => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [form, setForm] = useState({
-    date: '',
-    start: '',
-    end: '',
-    type: 'success',
-    content: '',
-  });
+  const [match, setMatch] = useState(initialMatch);
+  const [mentors, setMentors] = useState([]);
+  const [mentees, setMentees] = useState([]);
+  // const history = useHistory();
+
+  console.log(match);
+  const { id } = useParams();
+
+  useEffect(() => {
+    getMentormatch();
+    fetchMentor();
+    fetchMentee();
+  }, []);
+
+  console.log(match);
+  const getMentormatch = () => {
+    //  setLoading(true)
+    axios.get(`http://localhost:5000/match/${id}`).then(res => {
+      setMatch(res.data);
+      console.log(res.data);
+    });
+  };
+
+  const changeHandler = ev => {
+    // ev.persist();
+    // let value = ev.target.value;
+    // console.log(ev.target);
+
+    setMatch({
+      ...match,
+      [ev.target.name]: ev.target.value,
+    });
+  };
+
+  function onChange(time, timeString) {
+    console.log(time, timeString);
+  }
+
+  const submitHandler = e => {
+    e.preventDefault();
+    console.log('Edited');
+
+    axios
+      .put(`http://localhost:5000/match/${id}`)
+      .then(res => {
+        console.log(res);
+        console.log(res.status);
+        // history.push('/match')
+      })
+      .catch(err => console.log(err));
+  };
+
+  const [componentSize, setComponentSize] = useState();
+
+  const onFormLayoutChange = ({ size }) => {
+    setComponentSize(size);
+  };
 
   // Modal
   const showModal = () => {
@@ -34,15 +92,19 @@ const EditMatching = props => {
   };
   //Modal
 
-  function onChange(time, timeString) {
-    console.log(time, timeString);
+  function fetchMentor() {
+    axios.get(`http://localhost:5000/mentor`).then(res => {
+      setMentors(res.data);
+      console.log('mentor data', res.data);
+    });
   }
 
-  const [componentSize, setComponentSize] = useState();
-
-  const onFormLayoutChange = ({ size }) => {
-    setComponentSize(size);
-  };
+  function fetchMentee() {
+    axios.get(`http://localhost:5000/mentee`).then(res => {
+      setMentees(res.data);
+      console.log('mentee data', res.data);
+    });
+  }
 
   return (
     <>
@@ -74,21 +136,24 @@ const EditMatching = props => {
           >
             <div style={{ width: '100%' }}>
               <Form.Item label="Mentor">
-                <Select>
-                  <Select.Option value="demo">Rob</Select.Option>
-                  <Select.Option value="demo">Kasi</Select.Option>
-                  <Select.Option value="demo">Mark</Select.Option>
+                <Select name="mentor" onChange={changeHandler}>
+                  {mentors.map(mentor => (
+                    <Select.Option key={mentor.id} value={mentor.first_name}>
+                      {mentor.first_name}
+                    </Select.Option>
+                  ))}
                 </Select>
               </Form.Item>
             </div>
 
             <div style={{ width: '100%' }}>
               <Form.Item label="Mentee">
-                <Select>
-                  <Select.Option value="demo">Remon</Select.Option>
-                  <Select.Option value="demo">Jose</Select.Option>
-                  <Select.Option value="demo">Ethan</Select.Option>
-                  <Select.Option value="demo">Thierno</Select.Option>
+                <Select name="mentee" onChange={changeHandler}>
+                  {mentees.map(mentee => (
+                    <Select.Option key={mentee.id} value={mentee.first_name}>
+                      {mentee.first_name}
+                    </Select.Option>
+                  ))}
                 </Select>
               </Form.Item>
             </div>
