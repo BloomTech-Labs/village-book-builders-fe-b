@@ -83,7 +83,7 @@ const HeadmasterDashboard = props => {
               <NavLink to="/student-search">Student Registration</NavLink>
             </Menu.Item>
             <Menu.Item key="9">
-              <Link to="/sessions-by-library">Get problems</Link>
+              <Link to="/sessions-by-library">List of Computers</Link>
             </Menu.Item>
             <Menu.Item key="7" icon={<LogoutOutlined />}>
               <Link to="/logout">Logout</Link>
