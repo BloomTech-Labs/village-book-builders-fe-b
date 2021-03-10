@@ -22,6 +22,7 @@ const EditMatching = props => {
     content: '',
   });
 
+  // Modal
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -31,6 +32,7 @@ const EditMatching = props => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+  //Modal
 
   function onChange(time, timeString) {
     console.log(time, timeString);
@@ -44,7 +46,7 @@ const EditMatching = props => {
 
   return (
     <>
-      <Button type="primary" onClick={showModal}>
+      <Button type="primary" onClick={showModal} style={{ margin: '20px' }}>
         Edit
       </Button>
 
@@ -63,6 +65,12 @@ const EditMatching = props => {
             }}
             onValuesChange={onFormLayoutChange}
             size={componentSize}
+            style={{
+              background: '#FFDCC3',
+              border: '#FFDCC3 solid 2px',
+              padding: '10px',
+              borderRadius: '10px',
+            }}
           >
             <div style={{ width: '100%' }}>
               <Form.Item label="Mentor">
@@ -91,14 +99,24 @@ const EditMatching = props => {
               </Form.Item>
             </div>
 
-            <div style={{ width: '100%' }}>
-              <Form.Item label="Time">
+            <div
+              style={{
+                padding: '5px',
+                margin: '10px',
+                marginLeft: '5%',
+                display: 'flex',
+                flexWrap: ' wrap',
+              }}
+            >
+              <Form.Item label="Start">
                 <TimePicker
                   use12Hours
                   format="h:mm A"
                   onChange={onChange}
                   style={{ width: 140 }}
                 />
+              </Form.Item>
+              <Form.Item label="End">
                 <TimePicker
                   use12Hours
                   format="h:mm A"
