@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import MentorandMenteeR from './MentorandMenteeR';
 
 import {
   Layout,
@@ -227,20 +226,6 @@ const Signup = () => {
                       {s.first_name}
                     </Option>
                   ))}
-                </Select>
-              </Form.Item>
-            </div>
-
-            <div style={{ width: '90%', marginLeft: '5%' }}>
-              <Form.Item label="Contact methods">
-                <Select
-                  name="methods"
-                  onChange={handleDropdownMethods}
-                  placeholder="---methods---"
-                >
-                  <Option value="phone">Phone</Option>
-                  <Option value="duo">Duo</Option>
-                  <Option value="wechat">wechat</Option>
                 </Select>
               </Form.Item>
             </div>
