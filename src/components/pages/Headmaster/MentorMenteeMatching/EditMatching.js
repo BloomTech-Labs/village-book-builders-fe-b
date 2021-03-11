@@ -45,20 +45,24 @@ const EditMatching = props => {
     });
   };
 
-  const changeHandler = ev => {
-    // ev.persist();
-    // let value = ev.target.value;
-    // console.log(ev.target);
+  // changehandler
 
-    setMatch({
-      ...match,
-      [ev.target.name]: ev.target.value,
-    });
+  const selectMentor = value => {
+    setMatch({ ...match, mentor: value });
   };
 
-  function onChange(time, timeString) {
-    console.log(time, timeString);
-  }
+  const selectMentee = value => {
+    setMatch({ ...match, mentee: value });
+  };
+
+  const timeStart = value => {
+    setMatch({ ...match, start: value });
+  };
+
+  const timeChange = value => {
+    setMatch({ ...match, end: value });
+  };
+  // changehandler
 
   const submitHandler = e => {
     e.preventDefault();
@@ -136,7 +140,7 @@ const EditMatching = props => {
           >
             <div style={{ width: '100%' }}>
               <Form.Item label="Mentor">
-                <Select name="mentor" onChange={changeHandler}>
+                <Select name="mentor" onChange={selectMentor}>
                   {mentors.map(mentor => (
                     <Select.Option key={mentor.id} value={mentor.first_name}>
                       {mentor.first_name}
@@ -148,7 +152,7 @@ const EditMatching = props => {
 
             <div style={{ width: '100%' }}>
               <Form.Item label="Mentee">
-                <Select name="mentee" onChange={changeHandler}>
+                <Select name="mentee" onChange={selectMentee}>
                   {mentees.map(mentee => (
                     <Select.Option key={mentee.id} value={mentee.first_name}>
                       {mentee.first_name}
@@ -177,15 +181,20 @@ const EditMatching = props => {
                 <TimePicker
                   use12Hours
                   format="h:mm A"
-                  onChange={onChange}
+                  name={'start'}
+                  value={match.start}
+                  onChange={timeStart}
                   style={{ width: 140 }}
                 />
               </Form.Item>
+
               <Form.Item label="End">
                 <TimePicker
                   use12Hours
                   format="h:mm A"
-                  onChange={onChange}
+                  name={'end'}
+                  value={match.end}
+                  onChange={timeChange}
                   style={{ width: 140 }}
                 />
               </Form.Item>
@@ -196,6 +205,7 @@ const EditMatching = props => {
                 type="primary"
                 htmlType="submit"
                 style={{ width: '100%' }}
+                onClick={submitHandler}
               >
                 Save
               </Button>
