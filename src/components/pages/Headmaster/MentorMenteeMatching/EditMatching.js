@@ -8,7 +8,7 @@ import { Form, Button, Select, DatePicker, TimePicker, Modal } from 'antd';
 const initialMatch = {
   mentee: '',
   mentor: '',
-  time: '',
+  start: '',
   date: '',
 };
 
