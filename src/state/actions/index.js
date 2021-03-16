@@ -21,20 +21,20 @@ export const checkToken = data => dispatch => {
 export const login = data => dispatch => {
   axios
     // ! cannot use env.var until backend has auth implemented
-    .post('https://vbb-mock-api.herokuapp.com/auth/login', data)
+    .post(`${process.env.REACT_APP_API_URI}/login`, data)
     .then(res => {
       // console.log('LOGIN ACTION SUCCESS --> token', res.data);
-      window.localStorage.setItem('token', res.data.access_token);
+      window.localStorage.setItem('token', res.data.accessToken);
       dispatch({
         type: actionTypes.AUTH_SUCCESS,
-        payload: res.data.access_token,
+        payload: res.data.accessToken,
       });
     })
     .catch(err => {
       console.log(
         'LOGIN ACTION FAILURE--> with this data & baseURL:',
         data,
-        process.env.REACT_APP_BASE_URL
+        process.env.REACT_APP_API_URI
       );
       console.dir(err);
     });
@@ -51,16 +51,17 @@ export const logout = () => dispatch => {
 
 export const editHeadmasterProfile = (id, data) => dispatch => {
   axiosWithAuth()
-    .put(`/headmaster/${id}`, data)
+    .put(`/headmasters/${id}`, data)
     .then(res => {
       // ? refactor all the window.location.replace's so this doesn't force a refresh. see how login does it for example.
       window.location.replace('/profile/');
     })
     .catch(err => console.dir(err));
 };
+
 export const fetchHeadmasterProfile = id => dispatch => {
   axiosWithAuth()
-    .get(`/headmaster/${id}`) // change this later
+    .get(`/headmasters/${id}`) // change this later
     .then(res => {
       console.log('fetchHeadmasterProfile action --> ', res.data);
       dispatch({
@@ -76,12 +77,9 @@ export const fetchHeadmasterSchool = () => dispatch => {
 };
 
 export const fetchVillage = id => dispatch => {
-  // console.log("ACTIONSindexFetchVillage --> test", process.env.REACT_APP_BASEURL)
   axiosWithAuth()
-    // .get(`${baseURL}/headmaster/village/${id}`)
-    .get(`/village/${id}`)
+    .get(`/villages/${id}`)
     .then(res => {
-      // console.log('IndexActionFetchVillage -> res:', res);
       dispatch({ type: actionTypes.FETCH_VILLAGE, payload: res.data });
     })
     .catch(err => console.dir(err));
@@ -89,7 +87,7 @@ export const fetchVillage = id => dispatch => {
 
 export const editVillage = (id, data) => () => {
   axiosWithAuth()
-    .put(`/village/${id}`, data)
+    .put(`/villages/${id}`, data)
     .then(() => {
       window.location.replace('/school-village/');
     })
@@ -103,7 +101,7 @@ export const editVillage = (id, data) => () => {
 export const fetchMentees = () => dispatch => {
   dispatch({ type: actionTypes.FETCH_MENTEE_START });
   axiosWithAuth()
-    .get(`/mentee`)
+    .get(`/mentees`)
     .then(res => {
       dispatch({ type: actionTypes.FETCH_MENTEE_SUCCESS, payload: res.data });
     })
@@ -115,9 +113,8 @@ export const fetchMentees = () => dispatch => {
 export const fetchMenteesByDateSearch = search => dispatch => {
   dispatch({ type: actionTypes.FETCH_MENTEE_BY_DOB_START });
   axiosWithAuth()
-    .get(`/mentee?dob=${search}`)
+    .get(`/mentees?dob=${search}`)
     .then(res => {
-      console.log('inside the action', res.data);
       dispatch({
         type: actionTypes.FETCH_MENTEE_BY_DOB_SUCCESS,
         payload: res.data,
@@ -134,7 +131,7 @@ export const fetchMenteesByDateSearch = search => dispatch => {
 export const editMenteeProfile = (id, data) => dispatch => {
   dispatch({ type: actionTypes.EDIT_MENTEE_PROFILE_START });
   axiosWithAuth()
-    .put(`/mentee/${id}`, data)
+    .put(`/mentees/${id}`, data)
     .then(res => {
       dispatch({
         type: actionTypes.EDIT_MENTEE_PROFILE_SUCCESS,
@@ -147,10 +144,9 @@ export const editMenteeProfile = (id, data) => dispatch => {
 };
 
 export const fetchMenteeProfile = id => dispatch => {
-  console.log('hols');
   dispatch({ type: actionTypes.FETCH_MENTEE_PROFILE_START });
   axiosWithAuth()
-    .get(`/mentee/${id}`)
+    .get(`/mentees/${id}`)
     .then(res => {
       dispatch({
         type: actionTypes.FETCH_MENTEE_PROFILE_SUCCESS,
@@ -165,9 +161,8 @@ export const fetchMenteeProfile = id => dispatch => {
 export const fetchMenteesBySearch = search => dispatch => {
   dispatch({ type: actionTypes.FETCH_MENTEE_BY_LAST_NAME_START });
   axiosWithAuth()
-    .get(`/mentee?last_name=${search}`)
+    .get(`/mentees?last_name=${search}`)
     .then(res => {
-      console.log('inside the action', res.data);
       dispatch({
         type: actionTypes.FETCH_MENTEE_BY_LAST_NAME_SUCCESS,
         payload: res.data,
@@ -197,32 +192,28 @@ export const fetchStudentResources = () => dispatch => {
 
 export const fetchSchools = () => dispatch => {
   axiosWithAuth()
-    .get(`/school`)
+    .get(`/schools`)
     .then(res => {
-      // console.log("FETCH SCHOOLS:", res.data);
       dispatch({
         type: actionTypes.FETCH_HEADMASTER_SCHOOLS,
         payload: res.data,
       });
     })
     .catch(err => {
-      // console.log("FETCHSCHOOLS Failed")
       console.dir(err);
     });
 };
 
 export const fetchSchool = id => dispatch => {
   axiosWithAuth()
-    .get(`/school/${id}`)
-    .then(res => {
-      // console.log(res.data);
-    })
+    .get(`/schools/${id}`)
+    .then(res => {})
     .catch(err => console.dir(err));
 };
 
 export const editSchool = (id, data) => dispatch => {
   axiosWithAuth()
-    .put(`/school/${id}`, data)
+    .put(`/schools/${id}`, data)
     .then(res => {
       window.location.replace('/school-village/');
     })
@@ -232,7 +223,7 @@ export const editSchool = (id, data) => dispatch => {
 export const fetchMentors = () => dispatch => {
   dispatch({ type: actionTypes.FETCH_MENTOR_START });
   axiosWithAuth()
-    .get(`/mentor`)
+    .get(`/mentors`)
     .then(res => {
       dispatch({ type: actionTypes.FETCH_MENTOR_SUCCESS, payload: res.data });
     })
@@ -247,7 +238,7 @@ export const fetchMentors = () => dispatch => {
 
 export const editLibrary = (id, data) => dispatch => {
   axiosWithAuth()
-    .put(`/library/${id}`, data)
+    .put(`/libraries/${id}`, data)
     .then(() => {
       window.location.replace('/admin/libraries');
     })
@@ -256,7 +247,7 @@ export const editLibrary = (id, data) => dispatch => {
 
 export const addLibrary = (id, data) => dispatch => {
   axiosWithAuth()
-    .post(`/library`, data)
+    .post(`/libraries`, data)
     .then(() => {
       window.location.replace('/admin/libraries');
     })
@@ -269,9 +260,8 @@ export const addLibrary = (id, data) => dispatch => {
 
 export const editTeacherProfile = (id, data) => dispatch => {
   axiosWithAuth()
-    .put(`/teacher/${id}`, data)
+    .put(`/teachers/${id}`, data)
     .then(res => {
-      // ? refactor all the window.location.replaces so this doesn't force a refresh. see how login does it for example.
       window.location.replace('/profile/');
     })
     .catch(err => console.dir(err));
@@ -279,7 +269,7 @@ export const editTeacherProfile = (id, data) => dispatch => {
 
 export const fetchTeacherProfile = id => dispatch => {
   axiosWithAuth()
-    .get(`/teacher/${id}`) // change this later
+    .get(`/teachers/${id}`) // change this later
     .then(res => {
       console.log('fetchTeacherProfile action --> ', res.data);
       dispatch({
@@ -312,9 +302,8 @@ export const editProgramProfile = (id, data) => dispatch => {
 export const fetchProgramProfile = id => dispatch => {
   dispatch({ type: actionTypes.FETCH_PROGRAM_PROFILE_START });
   axiosWithAuth()
-    .get(`/program/${id}`) // change this later
+    .get(`/programs/${id}`) // change this later
     .then(res => {
-      console.log('fetchProgramProfile action --> ', res.data);
       dispatch({
         type: actionTypes.FETCH_PROGRAM_PROFILE_SUCCESS,
         payload: res.data,
@@ -346,7 +335,7 @@ export const createCalendarEvent = plainEventObject => dispatch => {
   let objWithId = { ...plainEventObject, id: newEventId };
 
   return axiosWithAuth()
-    .post('/match', objWithId)
+    .post('/sessions', objWithId)
     .then(res => {
       dispatch({
         type: actionTypes.CREATE_CALENDAR_EVENT,
@@ -367,7 +356,7 @@ export const requestCalendarEvents = (startStr, endStr) => dispatch => {
   console.log(`[STUB] requesting events from ${startStr} to ${endStr}`);
 
   return axiosWithAuth()
-    .get('/match')
+    .get('/sessions')
     .then(res => {
       dispatch({
         type: actionTypes.RECIEVED_EVENTS,
@@ -390,7 +379,7 @@ export const updateCalendarEvent = plainEventObject => dispatch => {
   console.log('[STUB] requesting event update:', plainEventObject);
 
   return axiosWithAuth()
-    .put(`/match/${plainEventObject.id}`, plainEventObject)
+    .put(`/sessions/${plainEventObject.id}`, plainEventObject)
     .then(res => {
       console.log(res.data);
       dispatch({
@@ -410,7 +399,7 @@ export const removeCalendarEvent = eventId => dispatch => {
   console.log('[STUB] requesting event deletion:', String(eventId));
 
   return axiosWithAuth()
-    .delete(`/match/${eventId}`)
+    .delete(`/sessions/${eventId}`)
     .then(() => {
       // console.log('Deleted event successfully on backend!');
       dispatch({ type: actionTypes.DELETE_CALENDAR_EVENT, payload: eventId });
