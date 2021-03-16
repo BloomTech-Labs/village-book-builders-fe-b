@@ -44,10 +44,12 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
   console.log(match);
   const getMentormatch = () => {
     //  setLoading(true)
-    axios.get(`http://localhost:5000/match/${eventDetails.id}`).then(res => {
-      setMatch(res.data);
-      console.log(res.data);
-    });
+    axios
+      .get(`${process.env.REACT_APP_API_URI}/sessions/${eventDetails.id}`)
+      .then(res => {
+        setMatch(res.data);
+        console.log(res.data);
+      });
   };
 
   // changehandler
@@ -74,7 +76,7 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
     console.log('Edited');
 
     axios
-      .put(`http://localhost:5000/match/${eventDetails.id}`)
+      .put(`${process.env.REACT_APP_API_URI}/sessions/${eventDetails.id}`)
       .then(res => {
         console.log(res);
         console.log(res.status);
@@ -102,14 +104,14 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
   //Modal
 
   function fetchMentor() {
-    axios.get(`http://localhost:5000/mentor`).then(res => {
+    axios.get(`${process.env.REACT_APP_API_URI}/mentors`).then(res => {
       setMentors(res.data);
       console.log('mentor data', res.data);
     });
   }
 
   function fetchMentee() {
-    axios.get(`http://localhost:5000/mentee`).then(res => {
+    axios.get(`${process.env.REACT_APP_API_URI}/mentees`).then(res => {
       setMentees(res.data);
       console.log('mentee data', res.data);
     });
