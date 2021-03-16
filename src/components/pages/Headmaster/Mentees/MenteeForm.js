@@ -135,7 +135,7 @@ const MenteeForm = ({ currentMentee }) => {
         <Form.Item
           label="Picture URL"
           name="mentee_picture"
-          rules={[{ required: true, message: 'Bio is required.' }]}
+          rules={[{ required: false, message: 'Bio is required.' }]}
         >
           <Input
             type="text"
@@ -202,7 +202,7 @@ const MenteeForm = ({ currentMentee }) => {
           name="academic_description"
           rules={[
             {
-              required: true,
+              required: false,
               message: 'academic description level is required.',
             },
           ]}
@@ -233,7 +233,7 @@ const MenteeForm = ({ currentMentee }) => {
           label="General Availability"
           name="general_availability"
           rules={[
-            { required: true, message: 'General Availability is required' },
+            { required: false, message: 'General Availability is required' },
           ]}
         >
           <Input
@@ -248,7 +248,10 @@ const MenteeForm = ({ currentMentee }) => {
           label="Mentor Program Goals"
           name="goals_mentor_program"
           rules={[
-            { required: true, message: 'Goals of mentor program is required.' },
+            {
+              required: false,
+              message: 'Goals of mentor program is required.',
+            },
           ]}
         >
           <Input
@@ -261,7 +264,7 @@ const MenteeForm = ({ currentMentee }) => {
         <Form.Item
           label="Personal Goals"
           name="goals_personal"
-          rules={[{ required: true, message: 'Personal goals are required.' }]}
+          rules={[{ required: false, message: 'Personal goals are required.' }]}
         >
           <Input
             type="text"
@@ -275,7 +278,7 @@ const MenteeForm = ({ currentMentee }) => {
           name="goals_school_community"
           rules={[
             {
-              required: true,
+              required: false,
               message: 'Goals for schools community are required.',
             },
           ]}
@@ -292,7 +295,7 @@ const MenteeForm = ({ currentMentee }) => {
           name="mentor_advisor_point_of_contact"
           rules={[
             {
-              required: true,
+              required: false,
               message: 'Mentor advisor point of contact is required.',
             },
           ]}
