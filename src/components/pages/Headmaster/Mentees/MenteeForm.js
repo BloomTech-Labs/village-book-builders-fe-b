@@ -42,7 +42,12 @@ const MenteeForm = ({ currentMentee }) => {
 
   return (
     <Form>
-      <Form onFinish={handleSubmit} form={form} fields={formData}>
+      <Form
+        onFinish={handleSubmit}
+        form={form}
+        initialValues={{ first_name: formData.first_name }}
+        //  form={form} fields={formData}
+      >
         <Form.Item
           label="First Name"
           name="first_name"
