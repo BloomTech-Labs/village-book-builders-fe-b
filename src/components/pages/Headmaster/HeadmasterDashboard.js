@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 import { Avatar, Button, Layout, Menu, PageHeader } from 'antd';
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { Link, NavLink, Route, Switch } from 'react-router-dom';
 import { fetchHeadmasterProfile } from '../../../state/actions';
 import Logout from '../../Logout.js';
@@ -23,20 +23,19 @@ import Village from '../Village/Village.component.js';
 import VillageForm from '../Village/VillageForm.js';
 import HeadmasterProfile from './HeadmasterProfile/Profile.js';
 import ProfileForm from './HeadmasterProfile/ProfileForm.js';
-import EditMatching from './MentorMenteeMatching/EditMatching';
 import Mentees from './Mentees/Mentees.js';
 import FilterSessionsByLibrary from './FilterSessionsByLibrary';
 import HeadmasterCalendar from './MentorMenteeMatching/HeadmasterCalendar';
 
 const HeadmasterDashboard = props => {
   const { profile } = props;
-
-  // useEffect(() => {
-  //   props.fetchHeadmasterProfile(1); // change this later with login
-  // }, []);
-  // console.log(profile);
-
   const { Content, Sider } = Layout;
+
+  const authState = useSelector(state => state.authReducer);
+  const userState = useSelector(state => state.headmasterReducer);
+
+  console.log('AUTH STATE', authState);
+  console.log('USER STATE', userState);
 
   return (
     <div>
