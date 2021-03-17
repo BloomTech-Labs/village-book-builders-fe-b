@@ -11,8 +11,8 @@ import {
   requestCalendarEvents,
   updateCalendarEvent,
 } from '../../../../state/actions';
-import EventDetailsModal from './EventDetailsModal';
 import EditMatching from './EditMatching';
+import EventDetailsModal from './EventDetailsModal';
 
 export default function HeadmasterCalendar() {
   const { calendarEvents } = useSelector(state => state.CalReducer);
@@ -82,6 +82,7 @@ export default function HeadmasterCalendar() {
         location: 1,
         village: 2,
         library: 3,
+        computerId: 1,
       })
     );
   };
@@ -115,16 +116,27 @@ export default function HeadmasterCalendar() {
         headerToolbar={{
           left: 'title',
           center: '',
-          right: 'prev,today,next dayGridMonth,timeGridWeek,timeGridDay',
+          right:
+            'prev,today,next dayGridMonth,timeGridWeek,timeGridDay downloadButton printButton',
         }}
         initialView="timeGridWeek"
         editable={true}
         selectable={true}
         selectMirror={true}
+        slotEventOverlap={true} //! prevent displayed events from overlapping
+        slotDuration="00:30:00" //TODO find better method
+        slotMinTime="07:00:00" //? first time slot available
+        slotMaxTime="20:00:00" //? 7pm-8pm last session
+        expandRows={true}
         dayMaxEvents={true}
         navLinks={true}
         nowIndicator={true}
+        eventDurationEditable={false} // cannot edit duration through dragging
+        droppable={false}
+        showNonCurrentDates={false} //? grey out dates on month view
         // custom stuffs
+        slotLabelContent={renderSlotLabelContent}
+        slotLaneContent={<div style={{ height: '76px' }}></div>}
         eventContent={renderEventContent}
         datesSet={handleDates} // gets specified range
         select={handleDateSelect} // choose date from cal, open modal
@@ -133,6 +145,17 @@ export default function HeadmasterCalendar() {
         eventAdd={handleEventAdd} // redux here
         eventChange={handleEventChange} // called for drag-n-drop/resize
         eventRemove={handleEventRemove} // redux
+        //* custom buttons
+        customButtons={{
+          downloadButton: {
+            text: 'Download',
+            click: () => console.log('USER WANTS TO Download'),
+          },
+          printButton: {
+            text: 'Print',
+            click: () => console.log('USER WANTS TO PRINT'),
+          },
+        }}
       />
 
       {eventDetails !== {} ? (
@@ -155,15 +178,30 @@ export default function HeadmasterCalendar() {
   );
 }
 
+const renderSlotLabelContent = args => {
+  // console.log('SLOT LABEL', args);
+  return (
+    <div style={{ textAlign: 'left' }}>
+      <h6>TimeSlot:</h6>
+      {/*
+       //TODO find better method
+      */}
+      {args.text} - {args.text[0]}:30
+    </div>
+  );
+};
+
 /**
  * This React.FC displays the event content to the calendar
  * @param {*} eventInfo
  */
 function renderEventContent(eventInfo) {
-  // console.log(eventInfo.event?.extendedProps);
+  // console.log('RENDER EVENT INFO', eventInfo);
+
   return (
-    <>
-      <b>{eventInfo.timeText}</b>
+    <div>
+      <b>Computer: {eventInfo.event?.extendedProps?.computerId || '-1'}</b>
+      <br />
       <i>
         {' '}
         Mentees:{' '}
@@ -171,7 +209,7 @@ function renderEventContent(eventInfo) {
           eventInfo.event?.extendedProps?.mentee[0]) ||
           ' N/A'}
       </i>
-    </>
+    </div>
   );
 }
 
