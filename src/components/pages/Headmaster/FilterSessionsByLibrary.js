@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import Button from '../../common/Button';
 import Display from '../../common/Display';
 import FormImput from '../../common/FormInput';
@@ -17,9 +18,8 @@ const FilterSessionsByLibrary = () => {
     event.preventDefault();
     axiosWithAuth()
       .get('/program')
-      // .get('http://localhost:5000/users')
+      // .get("/program$1") for local backend endpoint
       .then(res => setSessions(res.data))
-      // .then(console.log(Sessions))
       .catch(err => console.log(err.response));
   };
 

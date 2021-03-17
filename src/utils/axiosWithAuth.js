@@ -10,6 +10,7 @@ export const axiosWithAuth = () => {
   return axios.create({
     baseURL:
       process.env.REACT_APP_API_URI || 'https://vbb-mock-api.herokuapp.com',
+    // process.env.REACT_APP_API_URL || 'http://localhost:5000/', for local backend
     headers: {
       Authorization: token,
     },
