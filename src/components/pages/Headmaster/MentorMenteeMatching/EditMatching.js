@@ -17,16 +17,16 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
   const [match, setMatch] = useState(() => {
     if (showEditmodal === true && eventDetails != {}) {
       return {
-        mentee: eventDetails.extendedProps.mentee[0] || '',
-        mentor: eventDetails.extendedProps.mentor[0] || '',
-        time: eventDetails.start,
+        mentor: eventDetails.mentorId || '',
+        mentee: eventDetails.menteeId || '',
         start: eventDetails.start,
-        date: eventDetails.start,
+        end: eventDetails.end,
+        location: eventDetails.locationß,
       };
     }
   });
 
-  console.log(eventDetails, 'Event Details');
+  console.log(eventDetails, 'EventDetails');
   const [mentors, setMentors] = useState([]);
   const [mentees, setMentees] = useState([]);
   // const history = useHistory();
@@ -44,7 +44,7 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
   console.log(match);
   const getMentormatch = () => {
     //  setLoading(true)
-    axios.get(`http://localhost:5000/match/${eventDetails.id}`).then(res => {
+    axios.get(`http://localhost:5000/sessions/${eventDetails.id}`).then(res => {
       setMatch(res.data);
       console.log(res.data);
     });
@@ -74,7 +74,7 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
     console.log('Edited');
 
     axios
-      .put(`http://localhost:5000/match/${eventDetails.id}`)
+      .put(`http://localhost:5000/sessions/${eventDetails.id}`)
       .then(res => {
         console.log(res);
         console.log(res.status);
@@ -102,14 +102,14 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
   //Modal
 
   function fetchMentor() {
-    axios.get(`http://localhost:5000/mentor`).then(res => {
+    axios.get(`http://localhost:5000/mentors`).then(res => {
       setMentors(res.data);
       console.log('mentor data', res.data);
     });
   }
 
   function fetchMentee() {
-    axios.get(`http://localhost:5000/mentee`).then(res => {
+    axios.get(`http://localhost:5000/mentees`).then(res => {
       setMentees(res.data);
       console.log('mentee data', res.data);
     });
