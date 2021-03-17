@@ -76,15 +76,12 @@ export default function HeadmasterCalendar() {
     dispatch(
       createCalendarEvent({
         ...newCalEvent,
-        extendedProps: {
-          //* deconstruct formState here
-          mentor: ['jose', 'ethan'],
-          mentee: ['Mark', 'Rob'],
-          topic: 'sciences',
-          location: 'country',
-          village: 'village',
-          library: 'country_library_num',
-        },
+        mentor: [1, 2],
+        mentee: [2, 3],
+        topic: 'sciences',
+        location: 1,
+        village: 2,
+        library: 3,
       })
     );
   };
@@ -110,7 +107,7 @@ export default function HeadmasterCalendar() {
   };
 
   return (
-    <>
+    <div style={{ width: '100%', padding: '1rem 1rem 0px 1rem' }}>
       <FullCalendar
         ref={CalendarRef}
         plugins={[timeGridPlugin, interactionPlugin, dayGridPlugin]}
@@ -154,7 +151,7 @@ export default function HeadmasterCalendar() {
         handleDelete={handleDelete}
         toggleEditmodal={toggleEditmodal}
       />
-    </>
+    </div>
   );
 }
 
