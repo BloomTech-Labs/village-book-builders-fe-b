@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 import { Avatar, Button, Layout, Menu, PageHeader } from 'antd';
 import React, { useEffect } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, Route, Switch } from 'react-router-dom';
 import { fetchHeadmasterProfile } from '../../../state/actions';
 import Logout from '../../Logout.js';
@@ -27,15 +27,18 @@ import Mentees from './Mentees/Mentees.js';
 import FilterSessionsByLibrary from './FilterSessionsByLibrary';
 import HeadmasterCalendar from './MentorMenteeMatching/HeadmasterCalendar';
 
-const HeadmasterDashboard = props => {
-  const { profile } = props;
-  const { Content, Sider } = Layout;
-
+const HeadmasterDashboard = () => {
   const authState = useSelector(state => state.authReducer);
-  const userState = useSelector(state => state.headmasterReducer);
+  const profile = useSelector(state => state.headmasterReducer);
 
+  useEffect(() => {
+    fetchHeadmasterProfile(parseInt(authState.userId)); // change this later with login
+  }, []);
+
+  const { Content, Sider } = Layout;
+  console.log('DISPATCH', parseInt(authState.userId));
   console.log('AUTH STATE', authState);
-  console.log('USER STATE', userState);
+  console.log('USER STATE', profile);
 
   return (
     <div>
@@ -150,15 +153,4 @@ const HeadmasterDashboard = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    loggedIn: state.authReducer.loggedIn,
-    userId: state.authReducer.userId,
-    role: state.authReducer.role,
-    profile: state.headmasterReducer.headmasterProfile,
-  };
-};
-
-export default connect(mapStateToProps, { fetchHeadmasterProfile })(
-  HeadmasterDashboard
-);
+export default HeadmasterDashboard;

@@ -43,7 +43,7 @@ const reducer = (state = initialState, action) => {
       return { ...state, schoolData: action.payload };
     case FETCH_HEADMASTER_PROFILE:
       debugLog(action.type, action.payload);
-      return { ...state, headmasterProfile: action.payload };
+      return { ...state, headmasterProfile: action.payload, isLoading: false };
     case FETCH_VILLAGE:
       debugLog(action.type, action.payload);
       return {
