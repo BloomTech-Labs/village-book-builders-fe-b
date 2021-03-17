@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from 'antd/lib/modal/Modal';
 import { Button, Divider } from 'antd';
+import EditMatching from './EditMatching';
 
 /**
  * This React.FC returns a modal with calendar event details
@@ -19,6 +20,7 @@ const EventDetailsModal = ({
   handleCancel,
   isModalVisible,
   handleDelete,
+  toggleEditmodal,
 }) => {
   return (
     <Modal
@@ -37,7 +39,7 @@ const EventDetailsModal = ({
         >
           Delete
         </Button>,
-        <Button key="edit" onClick={handleCancel}>
+        <Button key="edit" onClick={toggleEditmodal}>
           Edit
         </Button>,
         <Divider key="divider" orientation="center" type="vertical" />,

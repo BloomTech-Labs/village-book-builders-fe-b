@@ -23,6 +23,7 @@ import Village from '../Village/Village.component.js';
 import VillageForm from '../Village/VillageForm.js';
 import HeadmasterProfile from './HeadmasterProfile/Profile.js';
 import ProfileForm from './HeadmasterProfile/ProfileForm.js';
+import EditMatching from './MentorMenteeMatching/EditMatching';
 import Mentees from './Mentees/Mentees.js';
 import FilterSessionsByLibrary from './FilterSessionsByLibrary';
 import HeadmasterCalendar from './MentorMenteeMatching/HeadmasterCalendar';
