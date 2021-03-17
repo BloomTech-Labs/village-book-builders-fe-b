@@ -12,6 +12,7 @@ import {
   updateCalendarEvent,
 } from '../../../../state/actions/index';
 import EventDetailsModal from './EventDetailsModal';
+import EditMatching from './EditMatching';
 
 export default function HeadmasterCalendar() {
   const { calendarEvents } = useSelector(state => state.CalReducer);
@@ -22,6 +23,12 @@ export default function HeadmasterCalendar() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   // inner content for modal
   const [eventDetails, setEventDetails] = useState({});
+
+  const [showEditmodal, setShowEditmodal] = useState(false);
+
+  function toggleEditmodal() {
+    setShowEditmodal(prev => !prev);
+  }
 
   const showModal = eventData => {
     console.log('showModal EventData', eventData);
@@ -130,12 +137,22 @@ export default function HeadmasterCalendar() {
         eventChange={handleEventChange} // called for drag-n-drop/resize
         eventRemove={handleEventRemove} // redux
       />
+
+      {eventDetails !== {} ? (
+        <EditMatching
+          showEditmodal={showEditmodal}
+          toggleEditmodal={toggleEditmodal}
+          eventDetails={eventDetails}
+        />
+      ) : null}
+
       <EventDetailsModal
         eventDetails={eventDetails}
         handleCancel={handleCancel}
         handleOk={handleOk}
         isModalVisible={isModalVisible}
         handleDelete={handleDelete}
+        toggleEditmodal={toggleEditmodal}
       />
     </>
   );

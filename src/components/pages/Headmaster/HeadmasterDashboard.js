@@ -23,16 +23,14 @@ import Village from '../Village/Village.component.js';
 import VillageForm from '../Village/VillageForm.js';
 import HeadmasterProfile from './HeadmasterProfile/Profile.js';
 import ProfileForm from './HeadmasterProfile/ProfileForm.js';
+import EditMatching from './MentorMenteeMatching/EditMatching';
 import Mentees from './Mentees/Mentees.js';
 import Signup from './Signup';
+import FilterSessionsByLibrary from './FilterSessionsByLibrary';
 import HeadmasterCalendar from './MentorMenteeMatching/HeadmasterCalendar';
 
 const HeadmasterDashboard = props => {
   const { profile } = props;
-
-  useEffect(() => {
-    props.fetchHeadmasterProfile(1); // change this later with login
-  }, []);
 
   const { Content, Sider } = Layout;
 
@@ -82,6 +80,9 @@ const HeadmasterDashboard = props => {
             <Menu.Item key="6" icon={<FormOutlined />}>
               <NavLink to="/student-search">Student Registration</NavLink>
             </Menu.Item>
+            <Menu.Item key="9">
+              <Link to="/sessions-by-library">Get problems</Link>
+            </Menu.Item>
             <Menu.Item key="7" icon={<LogoutOutlined />}>
               <Link to="/logout">Logout</Link>
             </Menu.Item>
@@ -105,6 +106,7 @@ const HeadmasterDashboard = props => {
               </Button>,
             ]}
           ></PageHeader>
+
           <Content style={{ padding: '2rem', backgroundColor: 'white' }}>
             <Switch>
               <Route path="/dashboard" component={HeadmasterCalendar} />
@@ -132,7 +134,12 @@ const HeadmasterDashboard = props => {
                 path="/school/edit/:schoolId"
                 component={SchoolForm}
               />
-              <Route path="/library" />
+              <Route
+                exact
+                path="/sessions-by-library"
+                component={FilterSessionsByLibrary}
+              />
+
               <Route path="/logout" component={Logout} />
             </Switch>
           </Content>
