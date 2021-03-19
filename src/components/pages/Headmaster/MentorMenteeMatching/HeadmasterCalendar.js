@@ -83,6 +83,7 @@ export default function HeadmasterCalendar() {
         village: 2,
         library: 3,
         computerId: 1,
+
       })
     );
   };
