@@ -1,9 +1,19 @@
-import { Button, Drawer, Dropdown, Layout, Menu, PageHeader } from 'antd';
+import {
+  Divider,
+  Drawer,
+  Dropdown,
+  Layout,
+  List,
+  Menu,
+  Select,
+  Typography,
+} from 'antd';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { AiOutlineDown, AiOutlineMenuUnfold } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
-import { fetchHeadmasterProfile } from '../../../state/actions';
+import { fetchHeadmasterProfile, fetchMentees } from '../../../state/actions';
+import { axiosWithAuth } from '../../../utils/axiosWithAuth';
 import Logout from '../../Logout.js';
 import StudentProfileForm from '../../pages/Student/StudentProfileForm';
 import MentorList from '../Mentor/MentorList.js';
@@ -18,11 +28,15 @@ import HeadmasterHeader from './HeadmasterHeader';
 import HeadmasterProfile from './HeadmasterProfile/Profile.js';
 import ProfileForm from './HeadmasterProfile/ProfileForm.js';
 import Mentees from './Mentees/Mentees.js';
+import CalendarSideBar from './MentorMenteeMatching/CalendarSideBar';
 import HeadmasterCalendar from './MentorMenteeMatching/HeadmasterCalendar';
 import SidebarMenu from './SidebarMenu';
 
+const { SubMenu } = Menu;
+const { Title } = Typography;
+const { Content } = Layout;
+
 const HeadmasterDashboard = () => {
-  const { Content } = Layout;
   const dispatch = useDispatch();
   const authState = useSelector(state => state.authReducer);
   const profile = useSelector(
@@ -34,7 +48,8 @@ const HeadmasterDashboard = () => {
   const onClose = () => setDrawerVisible(prev => !prev);
 
   useEffect(() => {
-    dispatch(fetchHeadmasterProfile(parseInt(authState.userId))); // change this later with login
+    dispatch(fetchHeadmasterProfile(parseInt(authState.userId)));
+    dispatch(fetchMentees());
   }, []);
 
   return (
@@ -57,11 +72,7 @@ const HeadmasterDashboard = () => {
             <Layout style={{ width: '100%', backgroundColor: 'white' }}>
               <Route path="/dashboard">
                 <Layout style={{ backgroundColor: 'white', width: '100%' }}>
-                  <Layout.Sider theme="light">
-                    <Menu mode="inline">
-                      <Menu.Item>test</Menu.Item>
-                    </Menu>
-                  </Layout.Sider>
+                  <CalendarSideBar />
                   <HeadmasterCalendar />
                 </Layout>
               </Route>
