@@ -76,15 +76,12 @@ export default function HeadmasterCalendar() {
     dispatch(
       createCalendarEvent({
         ...newCalEvent,
-        extendedProps: {
-          //* deconstruct formState here
-          mentor: ['jose', 'ethan'],
-          mentee: ['Mark', 'Rob'],
-          topic: 'sciences',
-          location: 'country',
-          village: 'village',
-          library: 'country_library_num',
-        },
+        mentor: [1, 2],
+        mentee: [1, 3],
+        location: 1,
+        village: 2,
+        library: 3,
+        topic: 'sciences',
       })
     );
   };
