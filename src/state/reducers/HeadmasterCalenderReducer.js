@@ -73,6 +73,18 @@ const CalReducer = (state = initialState, action) => {
         calendarEvents: eventsArrayExcludingDeleted,
       };
 
+    case AT.SET_COMPUTERID_FILTER:
+      console.log('FILTERING EVENTS');
+      const newCompEvents = state.calendarEvents.filter(
+        e => e.computerId === action.payload
+      );
+      console.log(newCompEvents);
+      return {
+        ...state,
+        computerId: action.payload,
+        calendarEvents: newCompEvents,
+      };
+
     case AT.SET_EVENT_DETAILS:
       return { ...state, selectedEventDetails: action.payload };
     case AT.CLEAR_EVENT_DETAILS:

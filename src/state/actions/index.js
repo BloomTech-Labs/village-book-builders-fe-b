@@ -63,7 +63,6 @@ export const fetchHeadmasterProfile = id => dispatch => {
   axiosWithAuth()
     .get(`/headmasters/${id}`) // change this later
     .then(res => {
-      console.log('fetchHeadmasterProfile action --> ', res.data);
       dispatch({
         type: actionTypes.FETCH_HEADMASTER_PROFILE,
         payload: res.data,
@@ -391,7 +390,6 @@ export const requestEventsByDateRange = ({
   computerId,
 }) => dispatch => {
   dispatch({ type: actionTypes.FETCH_SPEC_CAL_START });
-  console.log('FETCH SPECIFIC DATES', start, end, computerId);
   return axiosWithAuth()
     .get(
       `/sessions?computerId=${computerId}&location=${locationId}&village=${villageId}&library=${libraryId}&start_gte=${start}&end_lte=${end}`
@@ -457,4 +455,8 @@ export const setChosenEventDetails = eventInfo => dispatch => {
 };
 export const clearChosenEventDetails = () => dispatch => {
   dispatch({ type: actionTypes.CLEAR_EVENT_DETAILS });
+};
+
+export const changeCalComputerIdFilter = id => dispatch => {
+  dispatch({ type: actionTypes.SET_COMPUTERID_FILTER, payload: id });
 };

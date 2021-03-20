@@ -2,11 +2,14 @@ import { Divider, Dropdown, Layout, Menu, Select } from 'antd';
 import SubMenu from 'antd/lib/menu/SubMenu';
 import Title from 'antd/lib/typography/Title';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import * as CA from '../../../../state/actions';
 
 const { Sider } = Layout;
 
 export default function CalendarSideBar() {
+  const dispatch = useDispatch();
+  const computerId = useSelector(state => state.CalReducer.computerId);
   const mentees = useSelector(state => state.headmasterReducer.mentees);
 
   // Publish Menu
@@ -15,18 +18,16 @@ export default function CalendarSideBar() {
   };
 
   const menu = (
-    <Menu onClick={handleMenuClick} style={{ width: '100%' }}>
-      <Menu.Item key="1" style={{ width: '100%' }}>
-        1st item
-      </Menu.Item>
-      <Menu.Item key="2">2nd item</Menu.Item>
-      <Menu.Item key="3">3rd item</Menu.Item>
-    </Menu>
+    <Menu onClick={handleMenuClick} style={{ width: '100%' }}></Menu>
   );
 
+  let totalComputers = [];
+  for (let i = 0; i < 8; i++) {
+    totalComputers[i] = i + 1;
+  }
   // computer selection handler
   const handleChange = value => {
-    console.log(`COMPUTER Selected ${value}`);
+    dispatch(CA.changeCalComputerIdFilter(value));
   };
 
   return (
@@ -66,15 +67,16 @@ export default function CalendarSideBar() {
         >
           <Title level={4}>Computers</Title>
           <Select
-            defaultValue="1"
+            defaultValue={computerId}
             onChange={handleChange}
             style={{ width: '100%' }}
             size="large"
           >
-            <Select.Option value="1">Computer 1</Select.Option>
-            <Select.Option value="2">Computer 2</Select.Option>
-            <Select.Option value="3">Computer 3</Select.Option>
-            <Select.Option value="4">Computer 4</Select.Option>
+            {totalComputers.map(comp => (
+              <Select.Option key={comp} value={comp} style={{ width: '100%' }}>
+                Computer {comp}
+              </Select.Option>
+            ))}
           </Select>
         </div>
       </div>

@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import * as CA from '../../../../state/actions';
 import EditMatching from './EditMatching';
 import EventDetailsModal from './EventDetailsModal';
+import { Spin } from 'antd';
 
 export default function HeadmasterCalendar() {
   const dispatch = useDispatch();
@@ -141,73 +142,75 @@ export default function HeadmasterCalendar() {
       computerId,
     };
     dispatch(CA.requestInitialCalendarEvents(params));
-  }, [dispatch, villageId, libraryId]);
+  }, [dispatch, villageId, libraryId, computerId]);
 
   return (
     <div style={{ width: '100%', padding: '1rem 1rem 0px 1rem' }}>
-      <FullCalendar
-        ref={CalendarRef}
-        plugins={[timeGridPlugin, interactionPlugin, dayGridPlugin]}
-        height="90vh"
-        headerToolbar={{
-          left: 'title',
-          center: '',
-          right:
-            'prev,today,next dayGridMonth,timeGridWeek,timeGridDay downloadButton printButton',
-        }}
-        initialView="timeGridWeek"
-        editable={true}
-        selectable={true}
-        selectMirror={true}
-        slotEventOverlap={true} //! prevent displayed events from overlapping
-        slotDuration="00:30:00"
-        slotMinTime="07:00:00" //? first time slot available
-        slotMaxTime="20:00:00" //? 7pm-8pm last session
-        expandRows={true}
-        dayMaxEvents={true}
-        navLinks={true}
-        nowIndicator={true}
-        eventDurationEditable={false} // cannot edit duration through dragging
-        droppable={false}
-        showNonCurrentDates={false} //? grey out dates on month view
-        // custom stuffs
-        slotLabelContent={renderSlotLabelContent}
-        slotLaneContent={<div style={{ height: '76px' }}></div>}
-        eventContent={renderEventContent}
-        datesSet={handleDates} // gets specified range
-        select={handleDateSelect} // choose date from cal, open modal
-        events={calendarEvents} // real redux state here
-        eventClick={handleEventClick} // open modal with details
-        eventAdd={handleEventAdd} // redux here
-        eventChange={handleEventChange} // called for drag-n-drop/resize
-        eventRemove={handleEventRemove} // redux
-        //* custom buttons
-        customButtons={{
-          downloadButton: {
-            text: 'Download',
-            click: () => console.log('USER WANTS TO Download'),
-          },
-          printButton: {
-            text: 'Print',
-            click: () => console.log('USER WANTS TO PRINT'),
-          },
-        }}
-      />
+      <Spin tip="loading..." spinning={isLoading}>
+        <FullCalendar
+          ref={CalendarRef}
+          plugins={[timeGridPlugin, interactionPlugin, dayGridPlugin]}
+          height="90vh"
+          headerToolbar={{
+            left: 'title',
+            center: '',
+            right:
+              'prev,today,next dayGridMonth,timeGridWeek,timeGridDay downloadButton printButton',
+          }}
+          initialView="timeGridWeek"
+          editable={true}
+          // selectable={true}
+          selectMirror={true}
+          slotEventOverlap={true} //! prevent displayed events from overlapping
+          slotDuration="00:30:00"
+          slotMinTime="07:00:00" //? first time slot available
+          slotMaxTime="20:00:00" //? 7pm-8pm last session
+          expandRows={true}
+          dayMaxEvents={true}
+          navLinks={true}
+          nowIndicator={true}
+          eventDurationEditable={false} // cannot edit duration through dragging
+          droppable={false}
+          showNonCurrentDates={false} //? grey out dates on month view
+          // custom stuffs
+          slotLabelContent={renderSlotLabelContent}
+          slotLaneContent={<div style={{ height: '76px' }}></div>}
+          eventContent={renderEventContent}
+          datesSet={handleDates} // gets specified range
+          select={handleDateSelect} // choose date from cal, open modal
+          events={calendarEvents} // real redux state here
+          eventClick={handleEventClick} // open modal with details
+          eventAdd={handleEventAdd} // redux here
+          eventChange={handleEventChange} // called for drag-n-drop/resize
+          eventRemove={handleEventRemove} // redux
+          //* custom buttons
+          customButtons={{
+            downloadButton: {
+              text: 'Download',
+              click: () => console.log('USER WANTS TO Download'),
+            },
+            printButton: {
+              text: 'Print',
+              click: () => console.log('USER WANTS TO PRINT'),
+            },
+          }}
+        />
 
-      {isModalVisible ? (
-        <EditMatching
-          showEditmodal={showEditmodal}
+        {isModalVisible ? (
+          <EditMatching
+            showEditmodal={showEditmodal}
+            toggleEditmodal={toggleEditmodal}
+          />
+        ) : null}
+
+        <EventDetailsModal
+          handleCancel={CloseDetailsModal}
+          handleOk={CloseDetailsModal}
+          isModalVisible={isModalVisible}
+          handleDelete={handleDelete}
           toggleEditmodal={toggleEditmodal}
         />
-      ) : null}
-
-      <EventDetailsModal
-        handleCancel={CloseDetailsModal}
-        handleOk={CloseDetailsModal}
-        isModalVisible={isModalVisible}
-        handleDelete={handleDelete}
-        toggleEditmodal={toggleEditmodal}
-      />
+      </Spin>
     </div>
   );
 }
