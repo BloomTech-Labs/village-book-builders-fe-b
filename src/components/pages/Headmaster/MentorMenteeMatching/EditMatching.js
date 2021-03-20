@@ -4,6 +4,7 @@ import axios from 'axios';
 // import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import { Form, Button, Select, DatePicker, TimePicker, Modal } from 'antd';
+import { useSelector } from 'react-redux';
 
 const initialMatch = {
   mentee: '',
@@ -12,13 +13,17 @@ const initialMatch = {
   date: '',
 };
 
-const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
-  // const [isModalVisible, setIsModalVisible] = useState(false);
+const EditMatching = ({ showEditmodal, toggleEditmodal }) => {
+  const eventDetails = useSelector(
+    state => state.CalReducer.selectedEventDetails
+  );
+
+  // const [match, setMatch] = useState({ ...eventDetails });
   const [match, setMatch] = useState(() => {
-    if (showEditmodal === true && eventDetails != {}) {
+    if (eventDetails != {}) {
       return {
-        mentee: eventDetails.extendedProps.mentee[0] || '',
-        mentor: eventDetails.extendedProps.mentor[0] || '',
+        mentee: eventDetails?.mentee || '',
+        mentor: eventDetails?.mentor || '',
         time: eventDetails.start,
         start: eventDetails.start,
         date: eventDetails.start,

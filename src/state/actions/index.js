@@ -406,3 +406,10 @@ export const removeCalendarEvent = eventId => dispatch => {
     })
     .catch(err => console.dir(err));
 };
+
+export const setChosenEventDetails = eventInfo => dispatch => {
+  dispatch({ type: actionTypes.SET_EVENT_DETAILS, payload: eventInfo });
+};
+export const clearChosenEventDetails = () => dispatch => {
+  dispatch({ type: actionTypes.CLEAR_EVENT_DETAILS });
+};

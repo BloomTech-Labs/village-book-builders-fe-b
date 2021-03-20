@@ -2,27 +2,41 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import {
-  createCalendarEvent,
-  removeCalendarEvent,
-  requestCalendarEvents,
-  updateCalendarEvent,
-} from '../../../../state/actions';
+import * as CA from '../../../../state/actions';
 import EditMatching from './EditMatching';
 import EventDetailsModal from './EventDetailsModal';
 
 export default function HeadmasterCalendar() {
-  const { calendarEvents } = useSelector(state => state.CalReducer);
   const dispatch = useDispatch();
+  const {
+    isLoading,
+    isError,
+    computerId,
+    calendarEvents,
+    selectedEventDetails,
+    errors,
+    unsavedChanges,
+  } = useSelector(state => state.CalReducer);
+  // const
+
+  console.table({
+    isLoading,
+    isError,
+    unsavedChanges,
+    computerId,
+    errors,
+    selectedEventDetails,
+    calendarEvents,
+  });
   // used for event deletion
   const CalendarRef = useRef(null);
   // details modal visibility state
   const [isModalVisible, setIsModalVisible] = useState(false);
   // inner content for modal
-  const [eventDetails, setEventDetails] = useState({});
+  // const [eventDetails, setEventDetails] = useState({});
 
   const [showEditmodal, setShowEditmodal] = useState(false);
 
@@ -30,24 +44,10 @@ export default function HeadmasterCalendar() {
     setShowEditmodal(prev => !prev);
   }
 
-  const showModal = eventData => {
-    console.log('showModal EventData', eventData);
-    setIsModalVisible(true);
-
-    const tempEventDetails = calendarEvents.filter(
-      eventDetailsFiltered => eventDetailsFiltered.id == eventData.id
-    );
-    setEventDetails(tempEventDetails[0]);
-  };
-
-  const handleOk = () => {
+  const CloseDetailsModal = () => {
     setIsModalVisible(false);
-    setEventDetails({});
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    setEventDetails({});
+    dispatch(CA.clearChosenEventDetails());
+    // setEventDetails({});
   };
 
   const handleDelete = eventID => {
@@ -64,7 +64,7 @@ export default function HeadmasterCalendar() {
     if (confirmDelete) {
       eventToDelete.remove(); // will render immediately. will call handleEventRemove
     } else {
-      handleCancel();
+      CloseDetailsModal();
     }
   };
 
@@ -74,7 +74,7 @@ export default function HeadmasterCalendar() {
     const newCalEvent = addInfo.event.toPlainObject();
     //! change during creation modal
     dispatch(
-      createCalendarEvent({
+      CA.createCalendarEvent({
         ...newCalEvent,
         mentor: [1, 2],
         mentee: [2, 3],
@@ -83,30 +83,36 @@ export default function HeadmasterCalendar() {
         village: 2,
         library: 3,
         computerId: 1,
-
       })
     );
   };
 
   const handleEventClick = clickInfo => {
     if (!!clickInfo.event) {
-      showModal(clickInfo.event);
+      dispatch(
+        CA.setChosenEventDetails(
+          calendarEvents.filter(event => event.id == clickInfo.event.id)
+        )
+      );
+      setIsModalVisible(true);
     }
   };
 
   const handleDates = rangeInfo => {
     // returns all calendar events
-    dispatch(requestCalendarEvents(rangeInfo.startStr, rangeInfo.endStr));
+    dispatch(CA.requestCalendarEvents(rangeInfo.startStr, rangeInfo.endStr));
   };
 
   const handleEventChange = changeInfo => {
-    dispatch(updateCalendarEvent(changeInfo.event.toPlainObject()));
+    dispatch(CA.updateCalendarEvent(changeInfo.event.toPlainObject()));
   };
 
   const handleEventRemove = removeInfo => {
-    dispatch(removeCalendarEvent(removeInfo.event.id));
-    handleOk();
+    dispatch(CA.removeCalendarEvent(removeInfo.event.id));
+    CloseDetailsModal();
   };
+
+  useEffect(() => {}, []);
 
   return (
     <div style={{ width: '100%', padding: '1rem 1rem 0px 1rem' }}>
@@ -159,18 +165,16 @@ export default function HeadmasterCalendar() {
         }}
       />
 
-      {eventDetails !== {} ? (
+      {isModalVisible ? (
         <EditMatching
           showEditmodal={showEditmodal}
           toggleEditmodal={toggleEditmodal}
-          eventDetails={eventDetails}
         />
       ) : null}
 
       <EventDetailsModal
-        eventDetails={eventDetails}
-        handleCancel={handleCancel}
-        handleOk={handleOk}
+        handleCancel={CloseDetailsModal}
+        handleOk={CloseDetailsModal}
         isModalVisible={isModalVisible}
         handleDelete={handleDelete}
         toggleEditmodal={toggleEditmodal}
@@ -200,7 +204,7 @@ function renderEventContent(eventInfo) {
   // console.log('RENDER EVENT INFO', eventInfo);
 
   return (
-    <div>
+    <div key={eventInfo.event?.id} className="calendar__eventDisplay">
       <b>Computer: {eventInfo.event?.extendedProps?.computerId || '-1'}</b>
       <br />
       <i>

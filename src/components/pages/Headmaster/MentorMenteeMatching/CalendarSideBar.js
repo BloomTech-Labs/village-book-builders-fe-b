@@ -4,6 +4,8 @@ import Title from 'antd/lib/typography/Title';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+const { Sider } = Layout;
+
 export default function CalendarSideBar() {
   const mentees = useSelector(state => state.headmasterReducer.mentees);
 
@@ -28,7 +30,7 @@ export default function CalendarSideBar() {
   };
 
   return (
-    <Layout.Sider
+    <Sider
       theme="light"
       style={{
         borderRight: '1px solid #f0f0f0',
@@ -119,6 +121,6 @@ export default function CalendarSideBar() {
             ))}
         </SubMenu>
       </Menu>
-    </Layout.Sider>
+    </Sider>
   );
 }
