@@ -38,7 +38,7 @@ const HeadmasterDashboard = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
 
   const onClose = () => setDrawerVisible(prev => !prev);
-  console.log(profile);
+
   useEffect(() => {
     dispatch(fetchHeadmasterProfile(parseInt(authState.userId)));
     dispatch(fetchMentees());

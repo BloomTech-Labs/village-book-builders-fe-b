@@ -11,22 +11,17 @@ import * as CA from '../../../../state/actions';
 import EditMatching from './EditMatching';
 import EventDetailsModal from './EventDetailsModal';
 import returnCleanCalObject from '../../../../utils/ReturnCleanCalObj';
+import { EventContent } from './EventContent';
+import styles from './calendar.module.css';
 
 export default function HeadmasterCalendar() {
   const dispatch = useDispatch();
-  const {
-    isLoading,
-    isError,
-    computerId,
-    calendarEvents,
-    selectedEventDetails,
-    errors,
-    unsavedChanges,
-  } = useSelector(state => state.CalReducer);
+  const { isLoading, computerId, calendarEvents } = useSelector(
+    state => state.CalReducer
+  );
   const { villageId, schoolId, libraryId } = useSelector(
     state => state.headmasterReducer.headmasterProfile
   );
-  const { mentees, mentors } = useSelector(state => state.headmasterReducer);
 
   // used for event deletion
   const CalendarRef = useRef(null);
@@ -115,7 +110,7 @@ export default function HeadmasterCalendar() {
   };
 
   const handleEventChange = changeInfo => {
-    const sanitizedEvent = returnCleanCalObject(changeInfo);
+    const sanitizedEvent = returnCleanCalObject(changeInfo.event);
     // pass schema conformant data to state/api
     dispatch(CA.updateCalendarEvent(sanitizedEvent));
   };
@@ -162,12 +157,7 @@ export default function HeadmasterCalendar() {
   const RenderEventContent = eventInfo => {
     const sanitizedEvent = returnCleanCalObject(eventInfo.event);
 
-    return (
-      <div key={sanitizedEvent.id} className="calendar__eventDisplay">
-        <p>Mentor: loading..</p>
-        <p>Student: loading..</p>
-      </div>
-    );
+    return <EventContent event={sanitizedEvent} />;
   };
 
   return (
@@ -201,7 +191,7 @@ export default function HeadmasterCalendar() {
           custom
           stuffs
           slotLabelContent={renderSlotLabelContent}
-          slotLaneContent={<div style={{ height: '76px' }}></div>}
+          slotLaneContent={<div style={{ height: '60px' }}></div>}
           eventContent={RenderEventContent}
           datesSet={handleDates} // gets specified range
           select={handleDateSelect} // choose date from cal, open modal
@@ -245,7 +235,7 @@ export default function HeadmasterCalendar() {
 const renderSlotLabelContent = args => {
   // console.log('SLOT LABEL', args);
   return (
-    <div style={{ textAlign: 'left' }}>
+    <div className={styles.slot__label}>
       <h6>TimeSlot:</h6>
       {args.text} - {parseInt(args.text[0]) + 1}:00
     </div>

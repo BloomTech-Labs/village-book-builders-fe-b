@@ -9,7 +9,7 @@ const { Sider } = Layout;
 
 export default function CalendarSideBar() {
   const dispatch = useDispatch();
-  const computerId = useSelector(state => state.CalReducer.computerId);
+  const { unsavedChanges, computerId } = useSelector(state => state.CalReducer);
   const mentees = useSelector(state => state.headmasterReducer.mentees);
 
   // Publish Menu
@@ -17,11 +17,17 @@ export default function CalendarSideBar() {
     console.log('click', e);
   };
 
+  //! this caused computedMatch error but still works
   const menu = (
-    <Menu onClick={handleMenuClick} style={{ width: '100%' }}></Menu>
+    <Menu onClick={handleMenuClick}>
+      <Menu.Item key="1">1st menu item</Menu.Item>
+      <Menu.Item key="2">2nd menu item</Menu.Item>
+      <Menu.Item key="3">3rd menu item</Menu.Item>
+    </Menu>
   );
 
   let totalComputers = [];
+  // need a property on the library for computerCount
   for (let i = 0; i < 8; i++) {
     totalComputers[i] = i + 1;
   }
@@ -52,10 +58,11 @@ export default function CalendarSideBar() {
         />
         <Dropdown.Button
           size="large"
+          disabled={!unsavedChanges}
           overlay={menu}
           onClick={() => console.log('PUBLISHED::')}
         >
-          Publish & Notify
+          {unsavedChanges ? 'Publish & Notify' : 'No Edits Made'}
         </Dropdown.Button>
         <Divider orientation="center" />
         {/* COMPUTERS */}
