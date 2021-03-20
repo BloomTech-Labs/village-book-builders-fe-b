@@ -1,8 +1,9 @@
-import FullCalendar from '@fullcalendar/react';
+import FullCalendar, { formatDate, formatRange } from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import React, { useEffect, useRef, useState } from 'react';
+import moment from 'moment-timezone';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import * as CA from '../../../../state/actions';
@@ -121,8 +122,26 @@ export default function HeadmasterCalendar() {
   };
 
   useEffect(() => {
-    dispatch(CA.requestInitialCalendarEvents());
-  }, []);
+    if (libraryId === undefined || villageId === undefined) return;
+
+    const {
+      start,
+      end,
+    } = CalendarRef.current._calendarApi.currentDataManager.data.dateProfile.activeRange;
+
+    const formatStart = moment(start).toISOString();
+    const formatEnd = moment(end).toISOString();
+
+    const params = {
+      start: formatStart,
+      end: formatEnd,
+      locationId: schoolId,
+      villageId,
+      libraryId,
+      computerId,
+    };
+    dispatch(CA.requestInitialCalendarEvents(params));
+  }, [dispatch, villageId, libraryId]);
 
   return (
     <div style={{ width: '100%', padding: '1rem 1rem 0px 1rem' }}>

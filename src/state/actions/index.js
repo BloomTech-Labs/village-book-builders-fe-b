@@ -352,12 +352,21 @@ export const createCalendarEvent = plainEventObject => dispatch => {
  * @param {string} startStr
  * @param {string} endStr
  */
-export const requestInitialCalendarEvents = () => dispatch => {
+export const requestInitialCalendarEvents = ({
+  start,
+  end,
+  locationId,
+  villageId,
+  libraryId,
+  computerId,
+}) => dispatch => {
   dispatch({ type: actionTypes.FETCH_CALENDAR_START });
   // console.log(`[STUB] requesting events from ${startStr} to ${endStr}`);
 
   return axiosWithAuth()
-    .get('/sessions?computerId=1')
+    .get(
+      `/sessions?computerId=${computerId}&location=${locationId}&village=${villageId}&library=${libraryId}&start_gte=${start}&end_lte=${end}`
+    )
     .then(res => {
       // console.log(res.data);
       dispatch({
