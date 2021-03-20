@@ -16,7 +16,7 @@ import { debugLog } from '../../utils/debugMode.js'; //
 
 const initialState = {
   villageData: {},
-  schoolData: [],
+  schoolData: {},
   headmasterProfile: {},
   mentees: [],
   mentors: [],

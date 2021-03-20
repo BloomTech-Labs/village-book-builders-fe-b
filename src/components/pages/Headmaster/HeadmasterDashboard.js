@@ -2,7 +2,12 @@ import { Drawer, Layout } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
-import { fetchHeadmasterProfile, fetchMentees } from '../../../state/actions';
+import {
+  fetchHeadmasterProfile,
+  fetchMentees,
+  fetchMentors,
+  fetchSchool,
+} from '../../../state/actions';
 import Logout from '../../Logout.js';
 import StudentProfileForm from '../../pages/Student/StudentProfileForm';
 import MentorList from '../Mentor/MentorList.js';
@@ -33,11 +38,16 @@ const HeadmasterDashboard = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
 
   const onClose = () => setDrawerVisible(prev => !prev);
-
+  console.log(profile);
   useEffect(() => {
     dispatch(fetchHeadmasterProfile(parseInt(authState.userId)));
     dispatch(fetchMentees());
+    dispatch(fetchMentors());
   }, []);
+  useEffect(() => {
+    if (profile.schoolId === undefined) return;
+    dispatch(fetchSchool(profile.schoolId));
+  }, [profile]);
 
   return (
     <>

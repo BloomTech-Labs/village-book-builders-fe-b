@@ -2,13 +2,15 @@
 import * as AT from '../actions/actionTypes';
 
 const initialState = {
-  isLoading: false,
+  isLoading: true,
   isError: false,
   computerId: 1,
   calendarEvents: [],
   selectedEventDetails: {},
   errors: {},
   unsavedChanges: false,
+  draftEvents: [],
+  eventsToDelete: [],
 };
 
 const CalReducer = (state = initialState, action) => {

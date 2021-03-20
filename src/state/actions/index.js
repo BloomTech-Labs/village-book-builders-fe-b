@@ -206,7 +206,12 @@ export const fetchSchools = () => dispatch => {
 export const fetchSchool = id => dispatch => {
   axiosWithAuth()
     .get(`/schools/${id}`)
-    .then(res => {})
+    .then(res => {
+      dispatch({
+        type: actionTypes.FETCH_HEADMASTER_SCHOOLS,
+        payload: res.data,
+      });
+    })
     .catch(err => console.dir(err));
 };
 
@@ -316,9 +321,9 @@ export const fetchProgramProfile = id => dispatch => {
     );
 };
 
-// -----------------------
+//! -----------------------
 //! HEADMASTER Calendar
-// -----------------------
+//! -----------------------
 /**
  * This function makes a POST requeust to the backend
  * to create a calendar event

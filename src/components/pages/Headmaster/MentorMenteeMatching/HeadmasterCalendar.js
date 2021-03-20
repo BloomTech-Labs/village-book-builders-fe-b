@@ -1,15 +1,16 @@
-import FullCalendar, { formatDate, formatRange } from '@fullcalendar/react';
+import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import React, { useEffect, useRef, useState } from 'react';
+import { Spin } from 'antd';
 import moment from 'moment-timezone';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import * as CA from '../../../../state/actions';
 import EditMatching from './EditMatching';
 import EventDetailsModal from './EventDetailsModal';
-import { Spin } from 'antd';
+import returnCleanCalObject from '../../../../utils/ReturnCleanCalObj';
 
 export default function HeadmasterCalendar() {
   const dispatch = useDispatch();
@@ -25,13 +26,12 @@ export default function HeadmasterCalendar() {
   const { villageId, schoolId, libraryId } = useSelector(
     state => state.headmasterReducer.headmasterProfile
   );
+  const { mentees, mentors } = useSelector(state => state.headmasterReducer);
 
   // used for event deletion
   const CalendarRef = useRef(null);
   // details modal visibility state
   const [isModalVisible, setIsModalVisible] = useState(false);
-  // inner content for modal
-  // const [eventDetails, setEventDetails] = useState({});
 
   const [showEditmodal, setShowEditmodal] = useState(false);
 
@@ -67,10 +67,17 @@ export default function HeadmasterCalendar() {
   //* calendar functions
   const handleEventAdd = addInfo => {
     const newCalEvent = addInfo.event.toPlainObject();
+    console.log('NEW EVENT', newCalEvent);
+    const actualEnd = moment(newCalEvent.end)
+      .add({ minutes: 30 })
+      .toISOString();
+    console.log('ACTUAL END', actualEnd);
     //! change during creation modal
     dispatch(
       CA.createCalendarEvent({
         ...newCalEvent,
+        actualEnd: actualEnd,
+        originalEnd: newCalEvent.end,
         mentor: [1, 2],
         mentee: [2, 3],
         topic: 'sciences',
@@ -108,11 +115,7 @@ export default function HeadmasterCalendar() {
   };
 
   const handleEventChange = changeInfo => {
-    const rawEvent = changeInfo.event.toPlainObject();
-    // destruct extendedProps, and the rest
-    const sanitizedEvent = { ...rawEvent.extendedProps, ...rawEvent };
-    // we dont need extended props now
-    delete sanitizedEvent.extendedProps;
+    const sanitizedEvent = returnCleanCalObject(changeInfo);
     // pass schema conformant data to state/api
     dispatch(CA.updateCalendarEvent(sanitizedEvent));
   };
@@ -144,6 +147,29 @@ export default function HeadmasterCalendar() {
     dispatch(CA.requestInitialCalendarEvents(params));
   }, [dispatch, villageId, libraryId, computerId]);
 
+  let slotMinors = Array.from(
+    document.querySelectorAll('.fc-timegrid-slot-label.fc-timegrid-slot-minor')
+  );
+
+  for (let i = 0; i < slotMinors.length; i++) {
+    const cell = slotMinors[i];
+    const time = cell.getAttribute('data-time');
+    const endTime = parseInt(time.slice(0, 2));
+    const timeString = `${time.slice(0, 2)}:30 - ${endTime + 1}:30\n`;
+    cell.textContent = `TimeSlot:\n${timeString}`;
+  }
+
+  const RenderEventContent = eventInfo => {
+    const sanitizedEvent = returnCleanCalObject(eventInfo.event);
+
+    return (
+      <div key={sanitizedEvent.id} className="calendar__eventDisplay">
+        <p>Mentor: loading..</p>
+        <p>Student: loading..</p>
+      </div>
+    );
+  };
+
   return (
     <div style={{ width: '100%', padding: '1rem 1rem 0px 1rem' }}>
       <Spin tip="loading..." spinning={isLoading}>
@@ -159,9 +185,10 @@ export default function HeadmasterCalendar() {
           }}
           initialView="timeGridWeek"
           editable={true}
-          // selectable={true}
-          selectMirror={true}
-          slotEventOverlap={true} //! prevent displayed events from overlapping
+          eventDurationEditable={false} // cannot edit duration through dragging
+          selectable={true}
+          // selectMirror={true}
+          slotEventOverlap={false} //! prevent displayed events from overlapping
           slotDuration="00:30:00"
           slotMinTime="07:00:00" //? first time slot available
           slotMaxTime="20:00:00" //? 7pm-8pm last session
@@ -169,13 +196,13 @@ export default function HeadmasterCalendar() {
           dayMaxEvents={true}
           navLinks={true}
           nowIndicator={true}
-          eventDurationEditable={false} // cannot edit duration through dragging
           droppable={false}
           showNonCurrentDates={false} //? grey out dates on month view
-          // custom stuffs
+          custom
+          stuffs
           slotLabelContent={renderSlotLabelContent}
           slotLaneContent={<div style={{ height: '76px' }}></div>}
-          eventContent={renderEventContent}
+          eventContent={RenderEventContent}
           datesSet={handleDates} // gets specified range
           select={handleDateSelect} // choose date from cal, open modal
           events={calendarEvents} // real redux state here
@@ -220,32 +247,10 @@ const renderSlotLabelContent = args => {
   return (
     <div style={{ textAlign: 'left' }}>
       <h6>TimeSlot:</h6>
-      {args.text} - {args.text[0]}:30
+      {args.text} - {parseInt(args.text[0]) + 1}:00
     </div>
   );
 };
-
-/**
- * This React.FC displays the event content to the calendar
- * @param {*} eventInfo
- */
-function renderEventContent(eventInfo) {
-  // console.log('RENDER EVENT INFO', eventInfo);
-
-  return (
-    <div key={eventInfo.event?.id} className="calendar__eventDisplay">
-      <b>Computer: {eventInfo.event?.extendedProps?.computerId || '-1'}</b>
-      <br />
-      <i>
-        {' '}
-        Mentees:{' '}
-        {(eventInfo.event?.extendedProps?.mentee &&
-          eventInfo.event?.extendedProps?.mentee[0]) ||
-          ' N/A'}
-      </i>
-    </div>
-  );
-}
 
 const handleDateSelect = selectInfo => {
   // this would open a create meeting modal
