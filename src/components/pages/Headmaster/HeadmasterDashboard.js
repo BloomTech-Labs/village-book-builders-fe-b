@@ -1,19 +1,8 @@
-import {
-  Divider,
-  Drawer,
-  Dropdown,
-  Layout,
-  List,
-  Menu,
-  Select,
-  Typography,
-} from 'antd';
-import axios from 'axios';
+import { Drawer, Layout } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { fetchHeadmasterProfile, fetchMentees } from '../../../state/actions';
-import { axiosWithAuth } from '../../../utils/axiosWithAuth';
 import Logout from '../../Logout.js';
 import StudentProfileForm from '../../pages/Student/StudentProfileForm';
 import MentorList from '../Mentor/MentorList.js';
@@ -32,8 +21,6 @@ import CalendarSideBar from './MentorMenteeMatching/CalendarSideBar';
 import HeadmasterCalendar from './MentorMenteeMatching/HeadmasterCalendar';
 import SidebarMenu from './SidebarMenu';
 
-const { SubMenu } = Menu;
-const { Title } = Typography;
 const { Content } = Layout;
 
 const HeadmasterDashboard = () => {

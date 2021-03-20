@@ -20,17 +20,10 @@ export default function HeadmasterCalendar() {
     errors,
     unsavedChanges,
   } = useSelector(state => state.CalReducer);
-  // const
+  const { villageId, schoolId, libraryId } = useSelector(
+    state => state.headmasterReducer.headmasterProfile
+  );
 
-  console.table({
-    isLoading,
-    isError,
-    unsavedChanges,
-    computerId,
-    errors,
-    selectedEventDetails,
-    calendarEvents,
-  });
   // used for event deletion
   const CalendarRef = useRef(null);
   // details modal visibility state
@@ -79,10 +72,10 @@ export default function HeadmasterCalendar() {
         mentor: [1, 2],
         mentee: [2, 3],
         topic: 'sciences',
-        location: 1,
-        village: 2,
-        library: 3,
-        computerId: 1,
+        location: schoolId,
+        village: villageId,
+        library: libraryId,
+        computerId: computerId,
       })
     );
   };
@@ -91,20 +84,35 @@ export default function HeadmasterCalendar() {
     if (!!clickInfo.event) {
       dispatch(
         CA.setChosenEventDetails(
-          calendarEvents.filter(event => event.id == clickInfo.event.id)
+          calendarEvents.filter(event => event.id === clickInfo.event.id)[0]
         )
       );
       setIsModalVisible(true);
     }
   };
 
+  // returns calendar event dates for given cal date range
   const handleDates = rangeInfo => {
-    // returns all calendar events
-    dispatch(CA.requestCalendarEvents(rangeInfo.startStr, rangeInfo.endStr));
+    const params = {
+      start: rangeInfo.startStr,
+      end: rangeInfo.endStr,
+      locationId: schoolId,
+      villageId,
+      libraryId,
+      computerId,
+    };
+
+    dispatch(CA.requestEventsByDateRange(params));
   };
 
   const handleEventChange = changeInfo => {
-    dispatch(CA.updateCalendarEvent(changeInfo.event.toPlainObject()));
+    const rawEvent = changeInfo.event.toPlainObject();
+    // destruct extendedProps, and the rest
+    const sanitizedEvent = { ...rawEvent.extendedProps, ...rawEvent };
+    // we dont need extended props now
+    delete sanitizedEvent.extendedProps;
+    // pass schema conformant data to state/api
+    dispatch(CA.updateCalendarEvent(sanitizedEvent));
   };
 
   const handleEventRemove = removeInfo => {
@@ -112,7 +120,9 @@ export default function HeadmasterCalendar() {
     CloseDetailsModal();
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    dispatch(CA.requestInitialCalendarEvents());
+  }, []);
 
   return (
     <div style={{ width: '100%', padding: '1rem 1rem 0px 1rem' }}>
@@ -131,7 +141,7 @@ export default function HeadmasterCalendar() {
         selectable={true}
         selectMirror={true}
         slotEventOverlap={true} //! prevent displayed events from overlapping
-        slotDuration="00:30:00" //TODO find better method
+        slotDuration="00:30:00"
         slotMinTime="07:00:00" //? first time slot available
         slotMaxTime="20:00:00" //? 7pm-8pm last session
         expandRows={true}
@@ -188,9 +198,6 @@ const renderSlotLabelContent = args => {
   return (
     <div style={{ textAlign: 'left' }}>
       <h6>TimeSlot:</h6>
-      {/*
-       //TODO find better method
-      */}
       {args.text} - {args.text[0]}:30
     </div>
   );

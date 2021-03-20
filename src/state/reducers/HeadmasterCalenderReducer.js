@@ -22,7 +22,24 @@ const CalReducer = (state = initialState, action) => {
         isError: false,
         calendarEvents: [...action.payload],
       };
-    case AT.FETCH_CALENDAR_START:
+    case AT.FETCH_CALENDAR_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+        errors: action.payload,
+      };
+
+    case AT.FETCH_SPEC_CAL_START:
+      return { ...state, isLoading: true, isError: false };
+    case AT.FETCH_SPEC_CAL_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        calendarEvents: [...action.payload],
+      };
+    case AT.FETCH_SPEC_CAL_FAILURE:
       return {
         ...state,
         isLoading: false,
@@ -43,7 +60,6 @@ const CalReducer = (state = initialState, action) => {
         ...state,
         calendarEvents: [...filteredEvents, action.payload],
       };
-
     case AT.DELETE_CALENDAR_EVENT:
       //copy state array
       const tempArr = [...state.calendarEvents];
@@ -55,12 +71,6 @@ const CalReducer = (state = initialState, action) => {
       return {
         ...state,
         calendarEvents: eventsArrayExcludingDeleted,
-      };
-
-    case AT.RECIEVED_EVENTS:
-      return {
-        ...state,
-        calendarEvents: action.payload,
       };
 
     case AT.SET_EVENT_DETAILS:

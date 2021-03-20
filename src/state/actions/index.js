@@ -347,23 +347,59 @@ export const createCalendarEvent = plainEventObject => dispatch => {
 
 /**
  * This function will make a GET request to the backend
- * will update calendar events in redux state
+ * to fetch events for computerID: 1
  *
  * @param {string} startStr
  * @param {string} endStr
  */
-export const requestCalendarEvents = (startStr, endStr) => dispatch => {
-  console.log(`[STUB] requesting events from ${startStr} to ${endStr}`);
+export const requestInitialCalendarEvents = () => dispatch => {
+  dispatch({ type: actionTypes.FETCH_CALENDAR_START });
+  // console.log(`[STUB] requesting events from ${startStr} to ${endStr}`);
 
   return axiosWithAuth()
-    .get('/sessions')
+    .get('/sessions?computerId=1')
     .then(res => {
+      // console.log(res.data);
       dispatch({
-        type: actionTypes.RECIEVED_EVENTS,
+        type: actionTypes.FETCH_CALENDAR_SUCCESS,
         payload: res.data,
       });
     })
-    .catch(err => console.dir(err));
+    .catch(err => {
+      dispatch({
+        type: actionTypes.FETCH_CALENDAR_FAILURE,
+        payload: err,
+      });
+    });
+};
+
+export const requestEventsByDateRange = ({
+  start,
+  end,
+  locationId,
+  villageId,
+  libraryId,
+  computerId,
+}) => dispatch => {
+  dispatch({ type: actionTypes.FETCH_SPEC_CAL_START });
+  console.log('FETCH SPECIFIC DATES', start, end, computerId);
+  return axiosWithAuth()
+    .get(
+      `/sessions?computerId=${computerId}&location=${locationId}&village=${villageId}&library=${libraryId}&start_gte=${start}&end_lte=${end}`
+    )
+    .then(res => {
+      // console.log(res.data);
+      dispatch({
+        type: actionTypes.FETCH_SPEC_CAL_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch(err => {
+      dispatch({
+        type: actionTypes.FETCH_SPEC_CAL_FAILURE,
+        payload: err,
+      });
+    });
 };
 
 /**
