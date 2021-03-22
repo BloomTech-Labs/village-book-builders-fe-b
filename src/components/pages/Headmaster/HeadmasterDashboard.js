@@ -27,6 +27,7 @@ import EditMatching from './MentorMenteeMatching/EditMatching';
 import Mentees from './Mentees/Mentees.js';
 import FilterSessionsByLibrary from './FilterSessionsByLibrary';
 import HeadmasterCalendar from './MentorMenteeMatching/HeadmasterCalendar';
+import VillageAddForm from '../Village/VillageAddForm';
 
 const HeadmasterDashboard = props => {
   const { profile } = props;
@@ -130,6 +131,11 @@ const HeadmasterDashboard = props => {
                 exact
                 path="/village/edit/:villageId"
                 component={VillageForm}
+              />
+              <Route
+                exact
+                path="/village/add/:villageId"
+                component={VillageAddForm}
               />
               <Route
                 exact
