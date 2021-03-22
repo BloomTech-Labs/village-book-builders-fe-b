@@ -22,6 +22,7 @@ export default function HeadmasterCalendar() {
   const { villageId, schoolId, libraryId } = useSelector(
     state => state.headmasterReducer.headmasterProfile
   );
+  const { mentors, mentees } = useSelector(state => state.headmasterReducer);
 
   // used for event deletion
   const CalendarRef = useRef(null);
@@ -71,8 +72,8 @@ export default function HeadmasterCalendar() {
     dispatch(
       CA.createCalendarEvent({
         ...newCalEvent,
-        actualEnd: actualEnd,
-        originalEnd: newCalEvent.end,
+        start_actual: actualEnd,
+        end_actual: newCalEvent.end,
         mentor: [1, 2],
         mentee: [2, 3],
         topic: 'sciences',
@@ -142,23 +143,72 @@ export default function HeadmasterCalendar() {
     dispatch(CA.requestInitialCalendarEvents(params));
   }, [dispatch, villageId, libraryId, computerId]);
 
-  let slotMinors = Array.from(
-    document.querySelectorAll('.fc-timegrid-slot-label.fc-timegrid-slot-minor')
-  );
+  // const RenderEventContent = eventInfo => {
+  //   const eventFromState = calendarEvents
+  //     .map(ev => {
+  //       return { id: ev.id, mentor: ev.mentor, mentee: ev.mentee };
+  //     })
+  //     .filter(e => e.id === eventInfo.event.id)[0];
 
-  for (let i = 0; i < slotMinors.length; i++) {
-    const cell = slotMinors[i];
-    const time = cell.getAttribute('data-time');
-    const endTime = parseInt(time.slice(0, 2));
-    const timeString = `${time.slice(0, 2)}:30 - ${endTime + 1}:30\n`;
-    cell.textContent = `TimeSlot:\n${timeString}`;
-  }
+  //   return (
+  //     <div className="calendar__eventDisplay" id={eventInfo.event.id}>
+  //       <p>
+  //         <b>Mentor:</b>{' '}
+  //         <span>{eventFromState.mentor ? eventFromState.mentor.id : 'x'}</span>
+  //       </p>
+  //       <p>
+  //         <b>Student:</b> <span>loading..</span>
+  //       </p>
+  //     </div>
+  //   );
+  // };
 
-  const RenderEventContent = eventInfo => {
-    const sanitizedEvent = returnCleanCalObject(eventInfo.event);
+  // let eventArr = [];
+  // let hasRendered = false;
+  // useEffect(() => {
+  //   if (hasRendered === false) {
+  //     calendarEvents.forEach(evt => {
+  //       let temp = document.getElementById(`${evt.id}`);
+  //       if (temp !== null) {
+  //         // console.log(temp);
+  //         eventArr.push(temp);
+  //       }
+  //     });
+  //   }
 
-    return <EventContent event={sanitizedEvent} />;
-  };
+  //   if (eventArr.length > 1 && mentors.length > 1) {
+  //     // console.log(eventArr);
+
+  //     eventArr.forEach(el => {
+  //       let id = el.getAttribute('id');
+  //       let [event] = calendarEvents.filter(e => e.id === id);
+  //       let mentor, mentee;
+
+  //       if (event.mentor && event.mentee) {
+  //         mentor = mentors.filter(men => men.id === event.mentor[0])[0]
+  //           .first_name;
+  //         mentee = mentees.filter(stu => stu.id === event.mentee[0])[0]
+  //           .first_name;
+  //       }
+
+  //       // console.log(event.mentor, mentor, mentee);
+  //       el.insertAdjacentHTML(
+  //         'beforebegin',
+  //         `
+  //       <p>
+  //         <b>Mentor:</b> <span>${mentor ? mentor : 'loading..'}</span>
+  //       </p>
+  //       <p>
+  //         <b>Student:</b> <span>${mentee ? mentee : 'loading..'}</span>
+  //       </p>
+  //       `
+  //       );
+  //     });
+  //   }
+  //   hasRendered = true;
+  // }, [eventArr, calendarEvents]);
+
+  addMissingSlotLabels();
 
   return (
     <div style={{ width: '100%', padding: '1rem 1rem 0px 1rem' }}>
@@ -181,18 +231,16 @@ export default function HeadmasterCalendar() {
           slotEventOverlap={false} //! prevent displayed events from overlapping
           slotDuration="00:30:00"
           slotMinTime="07:00:00" //? first time slot available
-          slotMaxTime="20:00:00" //? 7pm-8pm last session
+          slotMaxTime="19:00:00" //? 7pm-8pm last session
           expandRows={true}
           dayMaxEvents={true}
           navLinks={true}
           nowIndicator={true}
           droppable={false}
           showNonCurrentDates={false} //? grey out dates on month view
-          custom
-          stuffs
           slotLabelContent={renderSlotLabelContent}
           slotLaneContent={<div style={{ height: '60px' }}></div>}
-          eventContent={RenderEventContent}
+          // eventContent={RenderEventContent} // event content
           datesSet={handleDates} // gets specified range
           select={handleDateSelect} // choose date from cal, open modal
           events={calendarEvents} // real redux state here
@@ -200,6 +248,7 @@ export default function HeadmasterCalendar() {
           eventAdd={handleEventAdd} // redux here
           eventChange={handleEventChange} // called for drag-n-drop/resize
           eventRemove={handleEventRemove} // redux
+          rerenderDelay={400}
           //* custom buttons
           customButtons={{
             downloadButton: {
@@ -233,7 +282,6 @@ export default function HeadmasterCalendar() {
 }
 
 const renderSlotLabelContent = args => {
-  // console.log('SLOT LABEL', args);
   return (
     <div className={styles.slot__label}>
       <h6>TimeSlot:</h6>
@@ -259,8 +307,27 @@ const handleDateSelect = selectInfo => {
         start: selectInfo.startStr,
         end: selectInfo.endStr,
         allDay: selectInfo.allDay,
+        mentor: [],
+        mentee: [],
       },
       true // temporary event, replaced by redux state
     );
+  }
+};
+
+/**
+ * This js function adds slot labels to the calendar
+ */
+const addMissingSlotLabels = () => {
+  let slotMinors = Array.from(
+    document.querySelectorAll('.fc-timegrid-slot-label.fc-timegrid-slot-minor')
+  );
+
+  for (let i = 0; i < slotMinors.length; i++) {
+    const cell = slotMinors[i];
+    const time = cell.getAttribute('data-time');
+    const endTime = parseInt(time.slice(0, 2));
+    const timeString = `${time.slice(0, 2)}:30 - ${endTime + 1}:30\n`;
+    cell.textContent = `TimeSlot:\n${timeString}`;
   }
 };
