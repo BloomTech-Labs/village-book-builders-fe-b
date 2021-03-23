@@ -54,7 +54,7 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
   console.log(match);
   const getMentormatch = () => {
     //  setLoading(true)
-    axios.get(`http://localhost:5000/match/${eventDetails.id}`).then(res => {
+    axios.get(`http://localhost:5000/sesssion/${eventDetails.id}`).then(res => {
       setMatch(res.data);
       console.log(res.data);
     });
@@ -100,7 +100,7 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
     console.log('Edited');
 
     axios
-      .put(`http://localhost:5000/match/${eventDetails.id}`)
+      .put(`http://localhost:5000/sessions/${eventDetails.id}`)
       .then(res => {
         console.log(res);
         console.log(res.status);
@@ -128,14 +128,14 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
   //Modal
 
   function fetchMentor() {
-    axios.get(`http://localhost:5000/664/mentors$1`).then(res => {
+    axios.get(`http://localhost:5000/mentors`).then(res => {
       setMentors(res.data);
       console.log('mentor data', res.data);
     });
   }
 
   function fetchMentee() {
-    axios.get(`http://localhost:5000/mentee`).then(res => {
+    axios.get(`http://localhost:5000/mentees`).then(res => {
       setMentees(res.data);
       console.log('mentee data', res.data);
     });
