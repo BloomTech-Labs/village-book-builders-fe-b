@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Popover } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
-// import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import { Form, Button, Select, DatePicker, TimePicker, Modal } from 'antd';
+import { fetchVillage } from '../../../../state/actions';
 
 const initialMatch = {
   mentee: '',
   mentor: '',
-  start: '',
   date: '',
+  start: '',
+  end: '',
+  library: '',
+  school: '',
+  village: '',
 };
 
 const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
@@ -29,6 +33,9 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
   console.log(eventDetails, 'Event Details');
   const [mentors, setMentors] = useState([]);
   const [mentees, setMentees] = useState([]);
+  const [libraries, setLibraries] = useState([]);
+  const [schools, setSchools] = useState([]);
+  const [villages, setVillages] = useState([]);
   // const history = useHistory();
 
   console.log(match);
@@ -39,6 +46,9 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
     getMentormatch();
     fetchMentor();
     fetchMentee();
+    // fetchSchool();
+    // fetchVillage();
+    // fetchLibrary();
   }, []);
 
   console.log(match);
@@ -66,6 +76,22 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
 
   const timeChange = value => {
     setMatch({ ...match, end: value });
+  };
+
+  // const selectTopic = value => {
+  //   setMatch({ ...match, topic: value });
+  // };
+
+  const selectVillage = value => {
+    setMatch({ ...match, village: value });
+  };
+
+  const selectLibrary = value => {
+    setMatch({ ...match, library: value });
+  };
+
+  const selectSchool = value => {
+    setMatch({ ...match, school: value });
   };
   // changehandler
 
@@ -102,7 +128,7 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
   //Modal
 
   function fetchMentor() {
-    axios.get(`http://localhost:5000/mentor`).then(res => {
+    axios.get(`http://localhost:5000/664/mentors$1`).then(res => {
       setMentors(res.data);
       console.log('mentor data', res.data);
     });
@@ -150,24 +176,39 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
             borderRadius: '10px',
           }}
         >
-          <div style={{ width: '100%' }}>
+          <div style={{ width: '90%', marginLeft: '5%' }}>
             <Form.Item label="Mentor">
               <Select name="mentor" onChange={selectMentor}>
                 {mentors.map(mentor => (
                   <Select.Option key={mentor.id} value={mentor.first_name}>
-                    {mentor.first_name}
+                    <Popover
+                      content={'teststt'}
+                      title="mentor"
+                      trigger="hover"
+                      placement="left"
+                    >
+                      {mentor.first_name} {mentor.last_name}
+                    </Popover>
                   </Select.Option>
                 ))}
               </Select>
             </Form.Item>
           </div>
 
-          <div style={{ width: '100%' }}>
+          <div style={{ width: '90%', marginLeft: '5%' }}>
             <Form.Item label="Mentee">
               <Select name="mentee" onChange={selectMentee}>
                 {mentees.map(mentee => (
                   <Select.Option key={mentee.id} value={mentee.first_name}>
                     {mentee.first_name}
+                    <Popover
+                      content={'teststt'}
+                      title="mentee"
+                      trigger="hover"
+                      placement="left"
+                    >
+                      {mentee.first_name} {mentee.last_name}
+                    </Popover>
                   </Select.Option>
                 ))}
               </Select>
@@ -209,6 +250,57 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
                 onChange={timeChange}
                 style={{ width: 140 }}
               />
+            </Form.Item>
+          </div>
+
+          {/* <div style={{ width: '100%' }}>
+            <Form.Item label="Topic">
+              <Select name="topic" onChange={selectTopic}>
+                {topics.map(topic => (
+                  <Select.Option key={mentee.id} value={mentee.first_name}>
+                    {mentee.first_name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </div> */}
+
+          <div style={{ width: '100%' }}>
+            <Form.Item label="Village">
+              <Select name="village" onChange={selectVillage}>
+                {villages.map(village => (
+                  <Select.Option
+                    key={village.id}
+                    value={village.name}
+                  ></Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </div>
+
+          <div style={{ width: '100%' }}>
+            <Form.Item label="Library">
+              <Select name="library" onChange={selectLibrary}>
+                {libraries.map(library => (
+                  <Select.Option
+                    key={library.id}
+                    value={library.name}
+                  ></Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </div>
+
+          <div style={{ width: '100%' }}>
+            <Form.Item label="School">
+              <Select name="school" onChange={selectSchool}>
+                {schools.map(school => (
+                  <Select.Option
+                    key={school.id}
+                    value={school.name}
+                  ></Select.Option>
+                ))}
+              </Select>
             </Form.Item>
           </div>
         </Form>
