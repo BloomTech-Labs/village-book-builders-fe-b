@@ -8,7 +8,7 @@ const FilterSessionsByLibrary = () => {
 
   useEffect(() => {
     axiosWithAuth()
-      .get('/program')
+      .get('/programs')
       // .get('http://localhost:5000/users')
       .then(res => setSessions(res.data))
       // .then(console.log(Sessions))
