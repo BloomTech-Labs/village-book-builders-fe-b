@@ -8,11 +8,11 @@ You can find the deployed project at [VBB-Deployment](main.d364h8tamcqe39.amplif
 
 ## Contributors
 
-|                                                      [Josh Glanz](https://github.com/)                                                       |                                                       [Manuel Muratalla](https://github.com/)                                                        |                                                      [Tiffany Arellano](https://github.com/)                                                       |                                                       [Joe Idelson](https://github.com/)                                                        |                                                      [Wilma Rodriguez](https://github.com/)                                                       |
-| :-----------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------: |
-| [<img src="https://ca.slack-edge.com/ESZCHB482-W016ECL84RW-afefea5a0c53-512" width = "200" />](https://github.com/Jahteo) | [<img src="https://ca.slack-edge.com/ESZCHB482-W0123RU151V-ffba83afb622-512" width = "200" />](https://github.com/ferror18) | [<img src="https://ca.slack-edge.com/ESZCHB482-W0138D8CX0Q-a7076291a0cf-512" width = "200" />](https://github.com/yirano) | [<img src="https://ca.slack-edge.com/ESZCHB482-W012QNXUFMJ-92e87d69900d-512" width = "200" />](https://github.com/jidelson) | [<img src="https://ca.slack-edge.com/ESZCHB482-W0123RP3C9M-fff2ba750184-512" width = "200" />](https://github.com/kima-92) |
-|                                [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Jahteo)                                |                            [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/ferror18)                             |                          [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/yirano)                           |                          [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/jidelson)                           |                           [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/kima-92)                            |
-|                [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/josh-glantzhucks/)                |                 [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)                 |                [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)                |                 [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)                 |                [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)                |
+|                                                 [Josh Glanz](https://github.com/)                                                 |                                           [Manuel Muratalla](https://github.com/)                                           |                                          [Tiffany Arellano](https://github.com/)                                          |                                             [Joe Idelson](https://github.com/)                                              |                                           [Wilma Rodriguez](https://github.com/)                                           |
+| :-------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------: |
+|     [<img src="https://ca.slack-edge.com/ESZCHB482-W016ECL84RW-afefea5a0c53-512" width = "200" />](https://github.com/Jahteo)     | [<img src="https://ca.slack-edge.com/ESZCHB482-W0123RU151V-ffba83afb622-512" width = "200" />](https://github.com/ferror18) | [<img src="https://ca.slack-edge.com/ESZCHB482-W0138D8CX0Q-a7076291a0cf-512" width = "200" />](https://github.com/yirano) | [<img src="https://ca.slack-edge.com/ESZCHB482-W012QNXUFMJ-92e87d69900d-512" width = "200" />](https://github.com/jidelson) | [<img src="https://ca.slack-edge.com/ESZCHB482-W0123RP3C9M-fff2ba750184-512" width = "200" />](https://github.com/kima-92) |
+|                        [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Jahteo)                        |                    [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/ferror18)                    |                    [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/yirano)                    |                    [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/jidelson)                    |                    [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/kima-92)                    |
+| [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/josh-glantzhucks/) |        [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)        |       [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)       |        [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)        |       [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)        |
 
 <br>
 <br>
@@ -21,8 +21,8 @@ You can find the deployed project at [VBB-Deployment](main.d364h8tamcqe39.amplif
 ![React](https://img.shields.io/badge/react-v16.7.0--alpha.2-blue.svg)
 ![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)
 
-
 ## Getting Started
+
 - Clone
 - run: `npm install` to download all dependencies.
 - run: `npm start` to start your local development server.
@@ -56,11 +56,12 @@ You can find the deployed project at [VBB-Deployment](main.d364h8tamcqe39.amplif
 # APIs (needs updating)
 
 - BASEURL/login
-- BASEURL/library
-- BASEURL/village
-- BASEURL/school
-- BASEURL/mentee
-- BASEURL/headmaster
+- BASEURL/libraries
+- BASEURL/villages
+- BASEURL/schools
+- BASEURL/mentees
+- BASEURL/mentors
+- BASEURL/headmasters
 
 # Installation Instructions
 
@@ -69,6 +70,7 @@ You can find the deployed project at [VBB-Deployment](main.d364h8tamcqe39.amplif
 3 - That is all
 
 ## Other Scripts
+
     * build - creates a build of the application
     * start - starts the production server after a build is created
 

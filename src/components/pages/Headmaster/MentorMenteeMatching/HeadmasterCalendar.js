@@ -2,45 +2,43 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import React, { useRef, useState } from 'react';
+import { Spin } from 'antd';
+import moment from 'moment-timezone';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import {
-  createCalendarEvent,
-  removeCalendarEvent,
-  requestCalendarEvents,
-  updateCalendarEvent,
-} from '../../../../state/actions';
+import * as CA from '../../../../state/actions';
+import EditMatching from './EditMatching';
 import EventDetailsModal from './EventDetailsModal';
+import returnCleanCalObject from '../../../../utils/ReturnCleanCalObj';
+import { EventContent } from './EventContent';
+import styles from './calendar.module.css';
 
 export default function HeadmasterCalendar() {
-  const { calendarEvents } = useSelector(state => state.CalReducer);
   const dispatch = useDispatch();
+  const { isLoading, computerId, calendarEvents } = useSelector(
+    state => state.CalReducer
+  );
+  const { villageId, schoolId, libraryId } = useSelector(
+    state => state.headmasterReducer.headmasterProfile
+  );
+  const { mentors, mentees } = useSelector(state => state.headmasterReducer);
+
   // used for event deletion
   const CalendarRef = useRef(null);
   // details modal visibility state
   const [isModalVisible, setIsModalVisible] = useState(false);
-  // inner content for modal
-  const [eventDetails, setEventDetails] = useState({});
 
-  const showModal = eventData => {
-    console.log('showModal EventData', eventData);
-    setIsModalVisible(true);
+  const [showEditmodal, setShowEditmodal] = useState(false);
 
-    const tempEventDetails = calendarEvents.filter(
-      eventDetailsFiltered => eventDetailsFiltered.id == eventData.id
-    );
-    setEventDetails(tempEventDetails[0]);
-  };
+  function toggleEditmodal() {
+    setShowEditmodal(prev => !prev);
+  }
 
-  const handleOk = () => {
+  const CloseDetailsModal = () => {
     setIsModalVisible(false);
-    setEventDetails({});
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    setEventDetails({});
+    dispatch(CA.clearChosenEventDetails());
+    // setEventDetails({});
   };
 
   const handleDelete = eventID => {
@@ -57,7 +55,7 @@ export default function HeadmasterCalendar() {
     if (confirmDelete) {
       eventToDelete.remove(); // will render immediately. will call handleEventRemove
     } else {
-      handleCancel();
+      CloseDetailsModal();
     }
   };
 
@@ -65,101 +63,232 @@ export default function HeadmasterCalendar() {
   //* calendar functions
   const handleEventAdd = addInfo => {
     const newCalEvent = addInfo.event.toPlainObject();
+    console.log('NEW EVENT', newCalEvent);
+    const actualEnd = moment(newCalEvent.end)
+      .add({ minutes: 30 })
+      .toISOString();
+    console.log('ACTUAL END', actualEnd);
     //! change during creation modal
     dispatch(
-      createCalendarEvent({
+      CA.createCalendarEvent({
         ...newCalEvent,
-        extendedProps: {
-          //* deconstruct formState here
-          mentor: ['jose', 'ethan'],
-          mentee: ['Mark', 'Rob'],
-          topic: 'sciences',
-          location: 'country',
-          village: 'village',
-          library: 'country_library_num',
-        },
+        start_actual: actualEnd,
+        end_actual: newCalEvent.end,
+        mentor: [1, 2],
+        mentee: [2, 3],
+        topic: 'sciences',
+        location: schoolId,
+        village: villageId,
+        library: libraryId,
+        computerId: computerId,
       })
     );
   };
 
   const handleEventClick = clickInfo => {
     if (!!clickInfo.event) {
-      showModal(clickInfo.event);
+      dispatch(
+        CA.setChosenEventDetails(
+          calendarEvents.filter(event => event.id === clickInfo.event.id)[0]
+        )
+      );
+      setIsModalVisible(true);
     }
   };
 
+  // returns calendar event dates for given cal date range
   const handleDates = rangeInfo => {
-    // returns all calendar events
-    dispatch(requestCalendarEvents(rangeInfo.startStr, rangeInfo.endStr));
+    const params = {
+      start: rangeInfo.startStr,
+      end: rangeInfo.endStr,
+      locationId: schoolId,
+      villageId,
+      libraryId,
+      computerId,
+    };
+
+    dispatch(CA.requestEventsByDateRange(params));
   };
 
   const handleEventChange = changeInfo => {
-    dispatch(updateCalendarEvent(changeInfo.event.toPlainObject()));
+    const sanitizedEvent = returnCleanCalObject(changeInfo.event);
+    // pass schema conformant data to state/api
+    dispatch(CA.updateCalendarEvent(sanitizedEvent));
   };
 
   const handleEventRemove = removeInfo => {
-    dispatch(removeCalendarEvent(removeInfo.event.id));
-    handleOk();
+    dispatch(CA.removeCalendarEvent(removeInfo.event.id));
+    CloseDetailsModal();
   };
 
+  useEffect(() => {
+    if (libraryId === undefined || villageId === undefined) return;
+
+    const {
+      start,
+      end,
+    } = CalendarRef.current._calendarApi.currentDataManager.data.dateProfile.activeRange;
+
+    const formatStart = moment(start).toISOString();
+    const formatEnd = moment(end).toISOString();
+
+    const params = {
+      start: formatStart,
+      end: formatEnd,
+      locationId: schoolId,
+      villageId,
+      libraryId,
+      computerId,
+    };
+    dispatch(CA.requestInitialCalendarEvents(params));
+  }, [dispatch, villageId, libraryId, computerId]);
+
+  // const RenderEventContent = eventInfo => {
+  //   const eventFromState = calendarEvents
+  //     .map(ev => {
+  //       return { id: ev.id, mentor: ev.mentor, mentee: ev.mentee };
+  //     })
+  //     .filter(e => e.id === eventInfo.event.id)[0];
+
+  //   return (
+  //     <div className="calendar__eventDisplay" id={eventInfo.event.id}>
+  //       <p>
+  //         <b>Mentor:</b>{' '}
+  //         <span>{eventFromState.mentor ? eventFromState.mentor.id : 'x'}</span>
+  //       </p>
+  //       <p>
+  //         <b>Student:</b> <span>loading..</span>
+  //       </p>
+  //     </div>
+  //   );
+  // };
+
+  // let eventArr = [];
+  // let hasRendered = false;
+  // useEffect(() => {
+  //   if (hasRendered === false) {
+  //     calendarEvents.forEach(evt => {
+  //       let temp = document.getElementById(`${evt.id}`);
+  //       if (temp !== null) {
+  //         // console.log(temp);
+  //         eventArr.push(temp);
+  //       }
+  //     });
+  //   }
+
+  //   if (eventArr.length > 1 && mentors.length > 1) {
+  //     // console.log(eventArr);
+
+  //     eventArr.forEach(el => {
+  //       let id = el.getAttribute('id');
+  //       let [event] = calendarEvents.filter(e => e.id === id);
+  //       let mentor, mentee;
+
+  //       if (event.mentor && event.mentee) {
+  //         mentor = mentors.filter(men => men.id === event.mentor[0])[0]
+  //           .first_name;
+  //         mentee = mentees.filter(stu => stu.id === event.mentee[0])[0]
+  //           .first_name;
+  //       }
+
+  //       // console.log(event.mentor, mentor, mentee);
+  //       el.insertAdjacentHTML(
+  //         'beforebegin',
+  //         `
+  //       <p>
+  //         <b>Mentor:</b> <span>${mentor ? mentor : 'loading..'}</span>
+  //       </p>
+  //       <p>
+  //         <b>Student:</b> <span>${mentee ? mentee : 'loading..'}</span>
+  //       </p>
+  //       `
+  //       );
+  //     });
+  //   }
+  //   hasRendered = true;
+  // }, [eventArr, calendarEvents]);
+
+  addMissingSlotLabels();
+
   return (
-    <>
-      <FullCalendar
-        ref={CalendarRef}
-        plugins={[timeGridPlugin, interactionPlugin, dayGridPlugin]}
-        height="90vh"
-        headerToolbar={{
-          left: 'title',
-          center: '',
-          right: 'prev,today,next dayGridMonth,timeGridWeek,timeGridDay',
-        }}
-        initialView="timeGridWeek"
-        editable={true}
-        selectable={true}
-        selectMirror={true}
-        dayMaxEvents={true}
-        navLinks={true}
-        nowIndicator={true}
-        // custom stuffs
-        eventContent={renderEventContent}
-        datesSet={handleDates} // gets specified range
-        select={handleDateSelect} // choose date from cal, open modal
-        events={calendarEvents} // real redux state here
-        eventClick={handleEventClick} // open modal with details
-        eventAdd={handleEventAdd} // redux here
-        eventChange={handleEventChange} // called for drag-n-drop/resize
-        eventRemove={handleEventRemove} // redux
-      />
-      <EventDetailsModal
-        eventDetails={eventDetails}
-        handleCancel={handleCancel}
-        handleOk={handleOk}
-        isModalVisible={isModalVisible}
-        handleDelete={handleDelete}
-      />
-    </>
+    <div style={{ width: '100%', padding: '1rem 1rem 0px 1rem' }}>
+      <Spin tip="loading..." spinning={isLoading}>
+        <FullCalendar
+          ref={CalendarRef}
+          plugins={[timeGridPlugin, interactionPlugin, dayGridPlugin]}
+          height="90vh"
+          headerToolbar={{
+            left: 'title',
+            center: '',
+            right:
+              'prev,today,next dayGridMonth,timeGridWeek,timeGridDay downloadButton printButton',
+          }}
+          initialView="timeGridWeek"
+          editable={true}
+          eventDurationEditable={false} // cannot edit duration through dragging
+          selectable={true}
+          // selectMirror={true}
+          slotEventOverlap={false} //! prevent displayed events from overlapping
+          slotDuration="00:30:00"
+          slotMinTime="07:00:00" //? first time slot available
+          slotMaxTime="19:00:00" //? 7pm-8pm last session
+          expandRows={true}
+          dayMaxEvents={true}
+          navLinks={true}
+          nowIndicator={true}
+          droppable={false}
+          showNonCurrentDates={false} //? grey out dates on month view
+          slotLabelContent={renderSlotLabelContent}
+          slotLaneContent={<div style={{ height: '60px' }}></div>}
+          // eventContent={RenderEventContent} // event content
+          datesSet={handleDates} // gets specified range
+          select={handleDateSelect} // choose date from cal, open modal
+          events={calendarEvents} // real redux state here
+          eventClick={handleEventClick} // open modal with details
+          eventAdd={handleEventAdd} // redux here
+          eventChange={handleEventChange} // called for drag-n-drop/resize
+          eventRemove={handleEventRemove} // redux
+          rerenderDelay={400}
+          //* custom buttons
+          customButtons={{
+            downloadButton: {
+              text: 'Download',
+              click: () => console.log('USER WANTS TO Download'),
+            },
+            printButton: {
+              text: 'Print',
+              click: () => console.log('USER WANTS TO PRINT'),
+            },
+          }}
+        />
+
+        {isModalVisible ? (
+          <EditMatching
+            showEditmodal={showEditmodal}
+            toggleEditmodal={toggleEditmodal}
+          />
+        ) : null}
+
+        <EventDetailsModal
+          handleCancel={CloseDetailsModal}
+          handleOk={CloseDetailsModal}
+          isModalVisible={isModalVisible}
+          handleDelete={handleDelete}
+          toggleEditmodal={toggleEditmodal}
+        />
+      </Spin>
+    </div>
   );
 }
 
-/**
- * This React.FC displays the event content to the calendar
- * @param {*} eventInfo
- */
-function renderEventContent(eventInfo) {
-  // console.log(eventInfo.event?.extendedProps);
+const renderSlotLabelContent = args => {
   return (
-    <>
-      <b>{eventInfo.timeText}</b>
-      <i>
-        {' '}
-        Mentees:{' '}
-        {(eventInfo.event?.extendedProps?.mentee &&
-          eventInfo.event?.extendedProps?.mentee[0]) ||
-          ' N/A'}
-      </i>
-    </>
+    <div className={styles.slot__label}>
+      <h6>TimeSlot:</h6>
+      {args.text} - {parseInt(args.text[0]) + 1}:00
+    </div>
   );
-}
+};
 
 const handleDateSelect = selectInfo => {
   // this would open a create meeting modal
@@ -178,8 +307,27 @@ const handleDateSelect = selectInfo => {
         start: selectInfo.startStr,
         end: selectInfo.endStr,
         allDay: selectInfo.allDay,
+        mentor: [],
+        mentee: [],
       },
       true // temporary event, replaced by redux state
     );
+  }
+};
+
+/**
+ * This js function adds slot labels to the calendar
+ */
+const addMissingSlotLabels = () => {
+  let slotMinors = Array.from(
+    document.querySelectorAll('.fc-timegrid-slot-label.fc-timegrid-slot-minor')
+  );
+
+  for (let i = 0; i < slotMinors.length; i++) {
+    const cell = slotMinors[i];
+    const time = cell.getAttribute('data-time');
+    const endTime = parseInt(time.slice(0, 2));
+    const timeString = `${time.slice(0, 2)}:30 - ${endTime + 1}:30\n`;
+    cell.textContent = `TimeSlot:\n${timeString}`;
   }
 };

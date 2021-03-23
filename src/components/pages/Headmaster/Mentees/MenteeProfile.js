@@ -27,7 +27,7 @@ const MenteeProfile = ({ currentMentee }) => {
 
   const fetchMentorName = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URI}/mentor/${mentorId}`)
+      .get(`${process.env.REACT_APP_API_URI}/mentors/${mentorId}`)
       .then(({ data }) => {
         setMentorName(`${data.first_name} ${data.last_name}`);
       })

@@ -20,7 +20,7 @@ function TeacherForm() {
 
   const onFinish = values => {
     addTeacher(values);
-    console.log(' ON FINISH', values);
+    // console.log(' ON FINISH', values);
 
     form.resetFields();
     message.success(
@@ -36,7 +36,7 @@ function TeacherForm() {
       })
       .catch(error => alert(error.message))
       .finally(() => {});
-    console.log('.FINALLY --->', newTeacher);
+    // console.log('.FINALLY --->', newTeacher);
     setFormValues(initialFormValues);
   };
 

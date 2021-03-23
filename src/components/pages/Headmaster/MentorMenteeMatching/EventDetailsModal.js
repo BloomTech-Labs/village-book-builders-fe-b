@@ -1,12 +1,13 @@
 import React from 'react';
 import Modal from 'antd/lib/modal/Modal';
 import { Button, Divider } from 'antd';
+import EditMatching from './EditMatching';
+import { useSelector } from 'react-redux';
 
 /**
  * This React.FC returns a modal with calendar event details
  *
  * @param {{
- * eventDetails: object,
  * isModalVisible: boolean,
  * handleOk: ()=> void,
  * handleCancel: ()=> void,
@@ -14,12 +15,15 @@ import { Button, Divider } from 'antd';
  * }} Args
  */
 const EventDetailsModal = ({
-  eventDetails,
   handleOk,
   handleCancel,
   isModalVisible,
   handleDelete,
+  toggleEditmodal,
 }) => {
+  const eventDetails = useSelector(
+    state => state.CalReducer.selectedEventDetails
+  );
   return (
     <Modal
       title={eventDetails.title ? eventDetails.title : 'Event Details'}
@@ -37,7 +41,7 @@ const EventDetailsModal = ({
         >
           Delete
         </Button>,
-        <Button key="edit" onClick={handleCancel}>
+        <Button key="edit" onClick={toggleEditmodal}>
           Edit
         </Button>,
         <Divider key="divider" orientation="center" type="vertical" />,
