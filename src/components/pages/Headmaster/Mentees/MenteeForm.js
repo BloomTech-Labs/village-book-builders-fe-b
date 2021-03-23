@@ -19,7 +19,7 @@ const MenteeForm = ({ currentMentee }) => {
     moment.utc(currentMentee.dob).format('dddd, MMMM Do of YYYY')
   );
 
-  const [formData, setFormData] = useState('');
+  const [formData, setFormData] = useState(currentMentee);
   const pathname = useHistory().location.pathname;
   const params = useParams().id;
   const [form] = Form.useForm();
@@ -42,7 +42,26 @@ const MenteeForm = ({ currentMentee }) => {
 
   return (
     <Form>
-      <Form onFinish={handleSubmit} form={form} fields={formData}>
+      <Form
+        onFinish={handleSubmit}
+        initialValues={{
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          email: formData.email,
+          primary_language: formData.primary_language,
+          english_lvl: formData.english_lvl,
+          math_lvl: formData.math_lvl,
+          reading_lvl: formData.reading_lvl,
+          school_lvl: formData.school_lvl,
+          academic_description: formData.academic_description,
+          support_needed: formData.support_needed,
+          general_availability: formData.general_availability,
+          goals_mentor_program: formData.goals_mentor_program,
+          goals_personal: formData.goals_personal,
+          goals_school_community: formData.goals_school_community,
+          mentor_advisor_point_of_contact: formData.goals_school_community,
+        }}
+      >
         <Form.Item
           label="First Name"
           name="first_name"
@@ -116,7 +135,7 @@ const MenteeForm = ({ currentMentee }) => {
         <Form.Item
           label="Picture URL"
           name="mentee_picture"
-          rules={[{ required: true, message: 'Bio is required.' }]}
+          rules={[{ required: false, message: 'Bio is required.' }]}
         >
           <Input
             type="text"
@@ -183,7 +202,7 @@ const MenteeForm = ({ currentMentee }) => {
           name="academic_description"
           rules={[
             {
-              required: true,
+              required: false,
               message: 'academic description level is required.',
             },
           ]}
@@ -214,7 +233,7 @@ const MenteeForm = ({ currentMentee }) => {
           label="General Availability"
           name="general_availability"
           rules={[
-            { required: true, message: 'General Availability is required' },
+            { required: false, message: 'General Availability is required' },
           ]}
         >
           <Input
@@ -229,7 +248,10 @@ const MenteeForm = ({ currentMentee }) => {
           label="Mentor Program Goals"
           name="goals_mentor_program"
           rules={[
-            { required: true, message: 'Goals of mentor program is required.' },
+            {
+              required: false,
+              message: 'Goals of mentor program is required.',
+            },
           ]}
         >
           <Input
@@ -242,7 +264,7 @@ const MenteeForm = ({ currentMentee }) => {
         <Form.Item
           label="Personal Goals"
           name="goals_personal"
-          rules={[{ required: true, message: 'Personal goals are required.' }]}
+          rules={[{ required: false, message: 'Personal goals are required.' }]}
         >
           <Input
             type="text"
@@ -256,7 +278,7 @@ const MenteeForm = ({ currentMentee }) => {
           name="goals_school_community"
           rules={[
             {
-              required: true,
+              required: false,
               message: 'Goals for schools community are required.',
             },
           ]}
@@ -273,7 +295,7 @@ const MenteeForm = ({ currentMentee }) => {
           name="mentor_advisor_point_of_contact"
           rules={[
             {
-              required: true,
+              required: false,
               message: 'Mentor advisor point of contact is required.',
             },
           ]}
