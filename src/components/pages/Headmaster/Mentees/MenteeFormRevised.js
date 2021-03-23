@@ -13,7 +13,7 @@ const MenteeFormRevised = props => {
   useEffect(() => {
     fetchMentors();
   }, [fetchMentors]);
-  console.log('props-->', props);
+  // console.log('props-->', props);
 
   //Defines data for each column in mentor table
   const columns = [

@@ -1,17 +1,13 @@
+import { Drawer, Layout } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Route, Switch } from 'react-router-dom';
 import {
-  BookOutlined,
-  CalendarOutlined,
-  FormOutlined,
-  HomeOutlined,
-  LogoutOutlined,
-  UnorderedListOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
-import { Avatar, Button, Layout, Menu, PageHeader } from 'antd';
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Link, NavLink, Route, Switch } from 'react-router-dom';
-import { fetchHeadmasterProfile } from '../../../state/actions';
+  fetchHeadmasterProfile,
+  fetchMentees,
+  fetchMentors,
+  fetchSchool,
+} from '../../../state/actions';
 import Logout from '../../Logout.js';
 import StudentProfileForm from '../../pages/Student/StudentProfileForm';
 import MentorList from '../Mentor/MentorList.js';
@@ -21,98 +17,64 @@ import StudentForm from '../Student/StudentForm';
 import StudentSearch from '../Student/StudentSearch';
 import Village from '../Village/Village.component.js';
 import VillageForm from '../Village/VillageForm.js';
+import FilterSessionsByLibrary from './FilterSessionsByLibrary';
+import HeadmasterHeader from './HeadmasterHeader';
 import HeadmasterProfile from './HeadmasterProfile/Profile.js';
 import ProfileForm from './HeadmasterProfile/ProfileForm.js';
-import EditMatching from './MentorMenteeMatching/EditMatching';
 import Mentees from './Mentees/Mentees.js';
-import FilterSessionsByLibrary from './FilterSessionsByLibrary';
+import CalendarSideBar from './MentorMenteeMatching/CalendarSideBar';
 import HeadmasterCalendar from './MentorMenteeMatching/HeadmasterCalendar';
 import VillageAddForm from '../Village/VillageAddForm';
+import SidebarMenu from './SidebarMenu';
 
-const HeadmasterDashboard = props => {
-  const { profile } = props;
 
-  // useEffect(() => {
-  //   props.fetchHeadmasterProfile(1); // change this later with login
-  // }, []);
-  // console.log(profile);
+const { Content } = Layout;
 
-  const { Content, Sider } = Layout;
+const HeadmasterDashboard = () => {
+  const dispatch = useDispatch();
+  const authState = useSelector(state => state.authReducer);
+  const profile = useSelector(
+    state => state.headmasterReducer.headmasterProfile
+  );
+  // sidebar collapsed state
+  const [drawerVisible, setDrawerVisible] = useState(false);
+
+  const onClose = () => setDrawerVisible(prev => !prev);
+
+  useEffect(() => {
+    dispatch(fetchHeadmasterProfile(parseInt(authState.userId)));
+    dispatch(fetchMentees());
+    dispatch(fetchMentors());
+  }, []);
+  useEffect(() => {
+    if (profile.schoolId === undefined) return;
+    dispatch(fetchSchool(profile.schoolId));
+  }, [profile]);
 
   return (
-    <div>
+    <>
+      <Drawer
+        title="Village Book Builder"
+        placement="left"
+        closable={true}
+        onClose={onClose}
+        visible={drawerVisible}
+        width={250}
+        bodyStyle={{ paddingRight: '0px', paddingLeft: '0px' }}
+      >
+        <SidebarMenu profile={profile} />
+      </Drawer>
       <Layout>
-        <Sider
-          theme="light"
-          breakpoint="lg"
-          collapsedWidth="0"
-          onBreakpoint={broken => {
-            console.log(broken);
-          }}
-          onCollapse={(collapsed, type) => {
-            console.log(collapsed, type);
-          }}
-        >
-          <Menu mode="inline" defaultSelectedKeys={['1']}>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                padding: '2rem 1rem',
-              }}
-            >
-              <Avatar style={{ color: '#FF914D' }} icon={<UserOutlined />} />
-              <div style={{ fontSize: '.75rem', padding: '1rem' }}>
-                {profile.last_name}
-              </div>
-            </div>
-            <Menu.Item key="1" icon={<HomeOutlined />}>
-              <NavLink to="/dashboard">Home</NavLink>
-            </Menu.Item>
-            <Menu.Item key="2" icon={<UserOutlined />}>
-              <NavLink to="/profile">Profile</NavLink>
-            </Menu.Item>
-            <Menu.Item key="3" icon={<CalendarOutlined />}>
-              <NavLink to="/mentor-pairings">Mentee List</NavLink>
-            </Menu.Item>
-            <Menu.Item key="4" icon={<UnorderedListOutlined />}>
-              <NavLink to="/mentor-list">Mentor List</NavLink>
-            </Menu.Item>
-            <Menu.Item key="5" icon={<BookOutlined />}>
-              <NavLink to="/school-village">School/Village</NavLink>
-            </Menu.Item>
-            <Menu.Item key="6" icon={<FormOutlined />}>
-              <NavLink to="/student-search">Student Registration</NavLink>
-            </Menu.Item>
-            <Menu.Item key="9">
-              <Link to="/sessions-by-library">Get problems</Link>
-            </Menu.Item>
-            <Menu.Item key="7" icon={<LogoutOutlined />}>
-              <Link to="/logout">Logout</Link>
-            </Menu.Item>
-          </Menu>
-          <div>
-            <img
-              style={{ padding: '2rem 1rem' }}
-              src="/images/vbb-full-logo.png"
-              alt="VBB logo"
-              width="150"
-            ></img>
-          </div>
-        </Sider>
-        <Layout>
-          <PageHeader
-            title={`Hello, Headmaster ${profile.last_name}`}
-            extra={[
-              <Button key="2" type="primary">
-                <a href="/logout">Logout</a>
-              </Button>,
-            ]}
-          ></PageHeader>
-
-          <Content style={{ padding: '2rem', backgroundColor: 'white' }}>
-            <Switch>
-              <Route path="/dashboard" component={HeadmasterCalendar} />
+        <HeadmasterHeader profile={profile} onClose={onClose} />
+        <Content style={{ width: '100%' }} className="switch-wrapper">
+          <Switch>
+            <Layout style={{ width: '100%', backgroundColor: 'white' }}>
+              <Route path="/dashboard">
+                <Layout style={{ backgroundColor: 'white', width: '100%' }}>
+                  <CalendarSideBar />
+                  <HeadmasterCalendar />
+                </Layout>
+              </Route>
               <Route path="/mentor-pairings" component={Mentees} />
               <Route exact path="/profile" component={HeadmasterProfile} />
               <Route path="/profile/edit/:id" component={ProfileForm} />
@@ -149,23 +111,12 @@ const HeadmasterDashboard = props => {
               />
 
               <Route path="/logout" component={Logout} />
-            </Switch>
-          </Content>
-        </Layout>
+            </Layout>
+          </Switch>
+        </Content>
       </Layout>
-    </div>
+    </>
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    loggedIn: state.authReducer.loggedIn,
-    userId: state.authReducer.userId,
-    role: state.authReducer.role,
-    profile: state.headmasterReducer.headmasterProfile,
-  };
-};
-
-export default connect(mapStateToProps, { fetchHeadmasterProfile })(
-  HeadmasterDashboard
-);
+export default HeadmasterDashboard;
