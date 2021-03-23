@@ -13,6 +13,7 @@ import EventDetailsModal from './EventDetailsModal';
 import returnCleanCalObject from '../../../../utils/ReturnCleanCalObj';
 import { EventContent } from './EventContent';
 import styles from './calendar.module.css';
+import Signup from '../Signup';
 
 export default function HeadmasterCalendar() {
   const dispatch = useDispatch();
@@ -30,10 +31,13 @@ export default function HeadmasterCalendar() {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const [showEditmodal, setShowEditmodal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   function toggleEditmodal() {
     setShowEditmodal(prev => !prev);
   }
+
+  const toggleAddModal = () => setShowAddModal(prev => !prev);
 
   const CloseDetailsModal = () => {
     setIsModalVisible(false);
@@ -143,70 +147,35 @@ export default function HeadmasterCalendar() {
     dispatch(CA.requestInitialCalendarEvents(params));
   }, [dispatch, villageId, libraryId, computerId]);
 
-  // const RenderEventContent = eventInfo => {
-  //   const eventFromState = calendarEvents
-  //     .map(ev => {
-  //       return { id: ev.id, mentor: ev.mentor, mentee: ev.mentee };
-  //     })
-  //     .filter(e => e.id === eventInfo.event.id)[0];
+  const handleDateSelect = selectInfo => {
+    // this would open a create meeting modal
+    console.log('SELECT INFO', selectInfo);
+    if (!!selectInfo) {
+      dispatch(CA.setChosenEventDetails(selectInfo));
+      toggleAddModal();
+    }
+    // let title = prompt('Please enter a new title for your event');
+    let calendarApi = selectInfo.view.calendar;
 
-  //   return (
-  //     <div className="calendar__eventDisplay" id={eventInfo.event.id}>
-  //       <p>
-  //         <b>Mentor:</b>{' '}
-  //         <span>{eventFromState.mentor ? eventFromState.mentor.id : 'x'}</span>
-  //       </p>
-  //       <p>
-  //         <b>Student:</b> <span>loading..</span>
-  //       </p>
-  //     </div>
-  //   );
-  // };
+    calendarApi.unselect(); // clear date selection
 
-  // let eventArr = [];
-  // let hasRendered = false;
-  // useEffect(() => {
-  //   if (hasRendered === false) {
-  //     calendarEvents.forEach(evt => {
-  //       let temp = document.getElementById(`${evt.id}`);
-  //       if (temp !== null) {
-  //         // console.log(temp);
-  //         eventArr.push(temp);
-  //       }
-  //     });
-  //   }
-
-  //   if (eventArr.length > 1 && mentors.length > 1) {
-  //     // console.log(eventArr);
-
-  //     eventArr.forEach(el => {
-  //       let id = el.getAttribute('id');
-  //       let [event] = calendarEvents.filter(e => e.id === id);
-  //       let mentor, mentee;
-
-  //       if (event.mentor && event.mentee) {
-  //         mentor = mentors.filter(men => men.id === event.mentor[0])[0]
-  //           .first_name;
-  //         mentee = mentees.filter(stu => stu.id === event.mentee[0])[0]
-  //           .first_name;
-  //       }
-
-  //       // console.log(event.mentor, mentor, mentee);
-  //       el.insertAdjacentHTML(
-  //         'beforebegin',
-  //         `
-  //       <p>
-  //         <b>Mentor:</b> <span>${mentor ? mentor : 'loading..'}</span>
-  //       </p>
-  //       <p>
-  //         <b>Student:</b> <span>${mentee ? mentee : 'loading..'}</span>
-  //       </p>
-  //       `
-  //       );
-  //     });
-  //   }
-  //   hasRendered = true;
-  // }, [eventArr, calendarEvents]);
+    // if form passes validation
+    // if (title) {
+    //   // keep this part
+    //   calendarApi.addEvent(
+    //     {
+    //       id: uuidv4(),
+    //       title,
+    //       start: selectInfo.startStr,
+    //       end: selectInfo.endStr,
+    //       allDay: selectInfo.allDay,
+    //       mentor: [],
+    //       mentee: [],
+    //     },
+    //     true // temporary event, replaced by redux state
+    //   );
+    // }
+  };
 
   addMissingSlotLabels();
 
@@ -269,6 +238,12 @@ export default function HeadmasterCalendar() {
           />
         ) : null}
 
+        <Signup
+          CalendarRef={CalendarRef}
+          showAddModal={showAddModal}
+          toggleAddModal={toggleAddModal}
+        />
+
         <EventDetailsModal
           handleCancel={CloseDetailsModal}
           handleOk={CloseDetailsModal}
@@ -288,31 +263,6 @@ const renderSlotLabelContent = args => {
       {args.text} - {parseInt(args.text[0]) + 1}:00
     </div>
   );
-};
-
-const handleDateSelect = selectInfo => {
-  // this would open a create meeting modal
-  let title = prompt('Please enter a new title for your event');
-  let calendarApi = selectInfo.view.calendar;
-
-  calendarApi.unselect(); // clear date selection
-
-  // if form passes validation
-  if (title) {
-    // keep this part
-    calendarApi.addEvent(
-      {
-        id: uuidv4(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay,
-        mentor: [],
-        mentee: [],
-      },
-      true // temporary event, replaced by redux state
-    );
-  }
 };
 
 /**
