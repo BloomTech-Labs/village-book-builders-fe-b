@@ -1,31 +1,60 @@
-import {
-  CREATE_CALENDAR_EVENT,
-  DELETE_CALENDAR_EVENT,
-  RECIEVED_EVENTS,
-  UPDATE_CALENDAR_EVENT,
-} from '../actions/actionTypes';
+//! AT == actionTypes
+import * as AT from '../actions/actionTypes';
 
 const initialState = {
+  isLoading: true,
+  isError: false,
+  computerId: 1,
   calendarEvents: [],
-  calendarLocation: 'mexico',
+  selectedEventDetails: {},
+  errors: {},
+  unsavedChanges: false,
+  draftEvents: [],
+  eventsToDelete: [],
 };
 
-/**
- *
- * @param {{
- *  calendarEvents: array,
- *  calendarLocation: string
- * }} state
- * @param {*} action
- */
 const CalReducer = (state = initialState, action) => {
   switch (action.type) {
-    case CREATE_CALENDAR_EVENT:
+    case AT.FETCH_CALENDAR_START:
+      return { ...state, isLoading: true, isError: false };
+    case AT.FETCH_CALENDAR_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        calendarEvents: [...action.payload],
+      };
+    case AT.FETCH_CALENDAR_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+        errors: action.payload,
+      };
+
+    case AT.FETCH_SPEC_CAL_START:
+      return { ...state, isLoading: true, isError: false };
+    case AT.FETCH_SPEC_CAL_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        calendarEvents: [...action.payload],
+      };
+    case AT.FETCH_SPEC_CAL_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+        errors: action.payload,
+      };
+
+    case AT.CREATE_CALENDAR_EVENT:
       return {
         ...state,
         calendarEvents: [...state.calendarEvents, action.payload],
       };
-    case UPDATE_CALENDAR_EVENT:
+    case AT.UPDATE_CALENDAR_EVENT:
       const filteredEvents = state.calendarEvents.filter(
         item => item.id !== action.payload.id
       );
@@ -33,8 +62,7 @@ const CalReducer = (state = initialState, action) => {
         ...state,
         calendarEvents: [...filteredEvents, action.payload],
       };
-
-    case DELETE_CALENDAR_EVENT:
+    case AT.DELETE_CALENDAR_EVENT:
       //copy state array
       const tempArr = [...state.calendarEvents];
       // filter from copy to remove in event
@@ -47,11 +75,23 @@ const CalReducer = (state = initialState, action) => {
         calendarEvents: eventsArrayExcludingDeleted,
       };
 
-    case RECIEVED_EVENTS:
+    case AT.SET_COMPUTERID_FILTER:
+      console.log('FILTERING EVENTS');
+      const newCompEvents = state.calendarEvents.filter(
+        e => e.computerId === action.payload
+      );
+      console.log(newCompEvents);
       return {
         ...state,
-        calendarEvents: action.payload,
+        computerId: action.payload,
+        calendarEvents: newCompEvents,
       };
+
+    case AT.SET_EVENT_DETAILS:
+      return { ...state, selectedEventDetails: action.payload };
+    case AT.CLEAR_EVENT_DETAILS:
+      return { ...state, selectedEventDetails: {} };
+
     default:
       return state;
   }

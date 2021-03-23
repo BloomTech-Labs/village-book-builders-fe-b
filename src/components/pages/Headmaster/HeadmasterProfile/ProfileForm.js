@@ -55,12 +55,12 @@ const ProfileForm = props => {
   }, []);
 
   const onChange = e => {
-    console.log('radio checked', e.target.value);
+    // console.log('radio checked', e.target.value);
     setValue(e.target.value);
   };
 
   const handleSubmit = async () => {
-    console.log(formData);
+    // console.log(formData);
     props.editHeadmasterProfile(params, formData);
   };
 
