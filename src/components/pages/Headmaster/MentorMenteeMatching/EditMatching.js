@@ -4,6 +4,7 @@ import axios from 'axios';
 // import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import { Form, Button, Select, DatePicker, TimePicker, Modal } from 'antd';
+import { useSelector } from 'react-redux';
 
 const initialMatch = {
   mentee: '',
@@ -12,13 +13,18 @@ const initialMatch = {
   date: '',
 };
 
-const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+const EditMatching = ({ showEditmodal, toggleEditmodal }) => {
+  const eventDetails = useSelector(
+    state => state.CalReducer.selectedEventDetails
+  );
+
+  // const [match, setMatch] = useState({ ...eventDetails });
   const [match, setMatch] = useState(() => {
-    if (showEditmodal === true && eventDetails != {}) {
+    if (eventDetails != {}) {
       return {
-        mentor: eventDetails.mentorId || '',
-        mentee: eventDetails.menteeId || '',
+        mentee: eventDetails?.mentee || '',
+        mentor: eventDetails?.mentor || '',
+        time: eventDetails.start,
         start: eventDetails.start,
         end: eventDetails.end,
         location: eventDetails.locationß,
@@ -26,12 +32,12 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
     }
   });
 
-  console.log(eventDetails, 'EventDetails');
+  // console.log(eventDetails, 'Event Details');
   const [mentors, setMentors] = useState([]);
   const [mentees, setMentees] = useState([]);
   // const history = useHistory();
 
-  console.log(match);
+  // console.log(match);
   const { id } = useParams();
   // console.log(match.id, 'match.id');
 
@@ -41,13 +47,15 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
     fetchMentee();
   }, []);
 
-  console.log(match);
+  // console.log(match);
   const getMentormatch = () => {
     //  setLoading(true)
-    axios.get(`http://localhost:5000/sessions/${eventDetails.id}`).then(res => {
-      setMatch(res.data);
-      console.log(res.data);
-    });
+    axios
+      .get(`${process.env.REACT_APP_API_URI}/sessions/${eventDetails.id}`)
+      .then(res => {
+        setMatch(res.data);
+        // console.log(res.data);
+      });
   };
 
   // changehandler
@@ -71,13 +79,13 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
 
   const submitHandler = e => {
     e.preventDefault();
-    console.log('Edited');
+    // console.log('Edited');
 
     axios
-      .put(`http://localhost:5000/sessions/${eventDetails.id}`)
+      .put(`${process.env.REACT_APP_API_URI}/sessions/${eventDetails.id}`)
       .then(res => {
-        console.log(res);
-        console.log(res.status);
+        // console.log(res);
+        // console.log(res.status);
       })
       .catch(err => console.log(err))
       .finally(() => toggleEditmodal());
@@ -89,29 +97,29 @@ const EditMatching = ({ showEditmodal, toggleEditmodal, eventDetails }) => {
     setComponentSize(size);
   };
 
-  // Modal
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  // // Modal
+  // const showModal = () => {
+  //   setIsModalVisible(true);
+  // };
+  // const handleOk = () => {
+  //   setIsModalVisible(false);
+  // };
+  // const handleCancel = () => {
+  //   setIsModalVisible(false);
+  // };
   //Modal
 
   function fetchMentor() {
-    axios.get(`http://localhost:5000/mentors`).then(res => {
+    axios.get(`${process.env.REACT_APP_API_URI}/mentors`).then(res => {
       setMentors(res.data);
-      console.log('mentor data', res.data);
+      // console.log('mentor data', res.data);
     });
   }
 
   function fetchMentee() {
-    axios.get(`http://localhost:5000/mentees`).then(res => {
+    axios.get(`${process.env.REACT_APP_API_URI}/mentees`).then(res => {
       setMentees(res.data);
-      console.log('mentee data', res.data);
+      // console.log('mentee data', res.data);
     });
   }
 

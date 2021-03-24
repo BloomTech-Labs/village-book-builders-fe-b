@@ -7,7 +7,7 @@ import MenteeForm from './MenteeForm';
 import MenteeProfile from './MenteeProfile';
 import '../../../../style.css';
 import MenteeAssignmentStatusIcon from './MenteeAssignmentStatusIcon';
-
+import KeyIconStatus from './KeyIconStatus';
 const Mentees = props => {
   let menteesSelection = [...props.mentees];
   const [search, setSearch] = useState('');
@@ -139,6 +139,7 @@ const Mentees = props => {
           <MenteeProfile currentMentee={currentMentee} />
         )}
       </Modal>
+      <KeyIconStatus />
     </div>
   );
 };

@@ -18,7 +18,7 @@ export default function Libraries() {
     axiosWithAuth()
       .get(`/library`)
       .then(libraries => {
-        console.log('libraries from new server', libraries);
+        // console.log('libraries from new server', libraries);
         setLibraries(libraries.data);
       })
       .catch(err => {
