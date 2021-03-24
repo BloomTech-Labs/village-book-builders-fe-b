@@ -24,6 +24,7 @@ import ProfileForm from './HeadmasterProfile/ProfileForm.js';
 import Mentees from './Mentees/Mentees.js';
 import CalendarSideBar from './MentorMenteeMatching/CalendarSideBar';
 import HeadmasterCalendar from './MentorMenteeMatching/HeadmasterCalendar';
+import VillageAddForm from '../Village/VillageAddForm';
 import SidebarMenu from './SidebarMenu';
 
 const { Content } = Layout;
@@ -91,6 +92,11 @@ const HeadmasterDashboard = () => {
                 exact
                 path="/village/edit/:villageId"
                 component={VillageForm}
+              />
+              <Route
+                exact
+                path="/village/add/:villageId"
+                component={VillageAddForm}
               />
               <Route
                 exact
