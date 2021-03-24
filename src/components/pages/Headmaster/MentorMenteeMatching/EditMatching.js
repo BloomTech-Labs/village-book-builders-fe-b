@@ -5,38 +5,20 @@ import 'antd/dist/antd.css';
 import { Form, Button, Select, DatePicker, TimePicker, Modal } from 'antd';
 import { useSelector } from 'react-redux';
 
-const initialMatch = {
-  mentee: '',
-  mentor: '',
-  date: '',
-  start: '',
-  end: '',
-  library: '',
-  school: '',
-  village: '',
-};
-
 const EditMatching = ({ showEditmodal, toggleEditmodal }) => {
   const eventDetails = useSelector(
     state => state.CalReducer.selectedEventDetails
   );
+  const computerID = useSelector(state => state.CalReducer.computerId);
+  const { mentors, mentees } = useSelector(state => state.headmasterReducer);
+  console.log(mentors, mentees, 'this should be Mentor and Mentees');
 
   // const [match, setMatch] = useState({ ...eventDetails });
-  const [match, setMatch] = useState(() => {
-    if (eventDetails != {}) {
-      return {
-        mentee: eventDetails?.mentee || '',
-        mentor: eventDetails?.mentor || '',
-        time: eventDetails.start,
-        start: eventDetails.start,
-        date: eventDetails.start,
-      };
-    }
-  });
+  const [match, setMatch] = useState({});
 
   // console.log(eventDetails, 'Event Details');
-  const [mentors, setMentors] = useState([]);
-  const [mentees, setMentees] = useState([]);
+  // const [mentors, setMentors] = useState([]);
+  // const [mentees, setMentees] = useState([]);
   const [libraries, setLibraries] = useState([]);
   const [schools, setSchools] = useState([]);
   const [villages, setVillages] = useState([]);
@@ -48,14 +30,10 @@ const EditMatching = ({ showEditmodal, toggleEditmodal }) => {
 
   useEffect(() => {
     getMentormatch();
-    fetchMentor();
-    fetchMentee();
-    // fetchSchool();
-    // fetchVillage();
-    // fetchLibrary();
+    getvillages();
   }, []);
 
-  // console.log(match);
+  console.log(match, 'match');
   const getMentormatch = () => {
     //  setLoading(true)
     axios
@@ -64,6 +42,13 @@ const EditMatching = ({ showEditmodal, toggleEditmodal }) => {
         setMatch(res.data);
         // console.log(res.data);
       });
+  };
+
+  const getvillages = () => {
+    axios.get('http://localhost:5000/villages').then(res => {
+      setVillages(res.data);
+      console.log(res.data, 'villages');
+    });
   };
 
   // changehandler
@@ -105,11 +90,23 @@ const EditMatching = ({ showEditmodal, toggleEditmodal }) => {
     e.preventDefault();
     // console.log('Edited');
 
+    const tempForm = {
+      ...match,
+      computerId: computerID,
+      // start: eventDetails.startStr,
+      // end: eventDetails.endStr,
+      title: `Mentor: ${match.mentor} \n Mentee: ${match.mentee}`,
+    };
+    console.log('form submitted!');
+
     axios
-      .put(`${process.env.REACT_APP_API_URI}/sessions/${eventDetails.id}`)
+      .put(
+        `${process.env.REACT_APP_API_URI}/sessions/${eventDetails.id}`,
+        tempForm
+      )
       .then(res => {
-        // console.log(res);
-        // console.log(res.status);
+        console.log(res, 'this is the response');
+        console.log(res.status);
       })
       .catch(err => console.log(err))
       .finally(() => toggleEditmodal());
@@ -132,20 +129,6 @@ const EditMatching = ({ showEditmodal, toggleEditmodal }) => {
   //   setIsModalVisible(false);
   // };
   //Modal
-
-  function fetchMentor() {
-    axios.get(`${process.env.REACT_APP_API_URI}/mentors`).then(res => {
-      setMentors(res.data);
-      // console.log('mentor data', res.data);
-    });
-  }
-
-  function fetchMentee() {
-    axios.get(`${process.env.REACT_APP_API_URI}/mentees`).then(res => {
-      setMentees(res.data);
-      // console.log('mentee data', res.data);
-    });
-  }
 
   return (
     <>
@@ -181,20 +164,19 @@ const EditMatching = ({ showEditmodal, toggleEditmodal }) => {
             padding: '10px',
             borderRadius: '10px',
           }}
+          initialValues={{ first_name: match.first_name }}
         >
           <div style={{ width: '90%', marginLeft: '5%' }}>
             <Form.Item label="Mentor">
-              <Select name="mentor" onChange={selectMentor}>
+              <Select
+                name="mentor"
+                onChange={selectMentor}
+                defaultValue={eventDetails.mentor.first_name}
+              >
                 {mentors.map(mentor => (
                   <Select.Option key={mentor.id} value={mentor.first_name}>
-                    <Popover
-                      content={'teststt'}
-                      title="mentor"
-                      trigger="hover"
-                      placement="left"
-                    >
-                      {mentor.first_name} {mentor.last_name}
-                    </Popover>
+                    {mentor.first_name}
+                    {mentor.last_name}
                   </Select.Option>
                 ))}
               </Select>
@@ -203,18 +185,14 @@ const EditMatching = ({ showEditmodal, toggleEditmodal }) => {
 
           <div style={{ width: '90%', marginLeft: '5%' }}>
             <Form.Item label="Mentee">
-              <Select name="mentee" onChange={selectMentee}>
+              <Select
+                name="mentee"
+                onChange={selectMentee}
+                defaultValue={eventDetails.mentee.first_name}
+              >
                 {mentees.map(mentee => (
                   <Select.Option key={mentee.id} value={mentee.first_name}>
-                    {mentee.first_name}
-                    <Popover
-                      content={'teststt'}
-                      title="mentee"
-                      trigger="hover"
-                      placement="left"
-                    >
-                      {mentee.first_name} {mentee.last_name}
-                    </Popover>
+                    {mentee.first_name} {mentee.last_name}
                   </Select.Option>
                 ))}
               </Select>
