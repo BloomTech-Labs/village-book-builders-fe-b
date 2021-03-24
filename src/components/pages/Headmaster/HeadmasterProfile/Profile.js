@@ -9,7 +9,7 @@ const HeadmasterProfile = props => {
   useEffect(() => {
     props.fetchHeadmasterProfile(2); // change this later with login
   }, []);
-  console.log(profile);
+  // console.log(profile);
 
   return (
     <div className="form-container">
