@@ -249,7 +249,7 @@ const EditMatching = ({ showEditmodal, toggleEditmodal }) => {
             </Form.Item>
           </div> */}
 
-          <div style={{ width: '100%' }}>
+          {/* <div style={{ width: '100%' }}>
             <Form.Item label="Village">
               <Select name="village" onChange={selectVillage}>
                 {villages.map(village => (
@@ -286,7 +286,7 @@ const EditMatching = ({ showEditmodal, toggleEditmodal }) => {
                 ))}
               </Select>
             </Form.Item>
-          </div>
+          </div> */}
         </Form>
       </Modal>
     </>
