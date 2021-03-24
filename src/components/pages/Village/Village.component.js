@@ -18,6 +18,15 @@ const Village = ({ villageData, userId, fetchVillage }) => {
         Schools & Villages
       </h1>
       <Divider orientation="left">Villages</Divider>
+
+      <Link to={`/village/add/${villageData.id}`}>
+        <Button
+          style={{ margin: '.5rem 0', color: '#FF914D', background: '#FFDCC3' }}
+        >
+          Add Village
+        </Button>
+      </Link>
+
       <div className="village-container">
         <div>
           <span>Village Contact:</span> {villageData.village_contact_name}

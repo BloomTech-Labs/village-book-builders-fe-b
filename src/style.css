@@ -157,6 +157,76 @@
   font-size: 28px;
 }
 
+.ant-modal-body {
+  font-weight: 700;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+ 
+}
+/* .box {
+ 
+  padding:2px;
+  border:0;
+  box-shadow:0 0 5px 1px rgb(252, 192, 157);
+  padding: 4px;
+  border-radius:10px;
+  
+}  */
+
+/* .xx {
+  display: flex;
+  flex-flow: wrap;
+  width : 400px;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+  */
+
+  .box {
+    margin-bottom: 25px;
+    width: auto;
+    height: 332px;
+    border-radius: 13px;
+    box-shadow:0 0 10px 0.5px rgb(148, 148, 148);
+   
+  }
+ .box #box2{
+   margin: 6px;
+   margin-bottom: 5px;
+ } 
+#parents {
+  margin-bottom: 8px;
+  margin-top: 1px; 
+} 
+ 
+#box1 {
+  float: left;
+  width: calc(100% - 400px);
+  margin-left: 15px;
+  margin-top: 6px;
+  border-radius: 13px;
+  
+}
+#box2 {
+  display: flex;
+  justify-content: center;
+  float: right;
+  width: 370px;
+  height: 22px;
+  margin: 2px;
+  box-shadow:0 0 10px 0.5px rgb(245, 146, 101);
+  border-radius: 15px;
+}
+
+.box , #box1 {
+ 
+  background-image: linear-gradient(to right, white, rgb(250, 195, 153));
+}
+
+#box2 {
+  background-color: white;
+}
+ 
 /*! calendar slotlabel minor style */
 .fc-timegrid-slot.fc-timegrid-slot-label.fc-timegrid-slot-minor {
   display: flexbox;
