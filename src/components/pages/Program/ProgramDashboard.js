@@ -23,7 +23,7 @@ const ProgramDashboard = props => {
   useEffect(() => {
     props.fetchProgramProfile(1); // change this later with login
   }, []);
-  console.log(profile);
+  // console.log(profile);
 
   const { Content, Sider } = Layout;
 

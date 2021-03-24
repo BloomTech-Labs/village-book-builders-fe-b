@@ -63,7 +63,6 @@ export const fetchHeadmasterProfile = id => dispatch => {
   axiosWithAuth()
     .get(`/headmasters/${id}`) // change this later
     .then(res => {
-      console.log('fetchHeadmasterProfile action --> ', res.data);
       dispatch({
         type: actionTypes.FETCH_HEADMASTER_PROFILE,
         payload: res.data,
@@ -207,7 +206,12 @@ export const fetchSchools = () => dispatch => {
 export const fetchSchool = id => dispatch => {
   axiosWithAuth()
     .get(`/schools/${id}`)
-    .then(res => {})
+    .then(res => {
+      dispatch({
+        type: actionTypes.FETCH_HEADMASTER_SCHOOLS,
+        payload: res.data,
+      });
+    })
     .catch(err => console.dir(err));
 };
 
@@ -317,9 +321,9 @@ export const fetchProgramProfile = id => dispatch => {
     );
 };
 
-// -----------------------
+//! -----------------------
 //! HEADMASTER Calendar
-// -----------------------
+//! -----------------------
 /**
  * This function makes a POST requeust to the backend
  * to create a calendar event
@@ -347,23 +351,67 @@ export const createCalendarEvent = plainEventObject => dispatch => {
 
 /**
  * This function will make a GET request to the backend
- * will update calendar events in redux state
+ * to fetch events for computerID: 1
  *
  * @param {string} startStr
  * @param {string} endStr
  */
-export const requestCalendarEvents = (startStr, endStr) => dispatch => {
-  console.log(`[STUB] requesting events from ${startStr} to ${endStr}`);
+export const requestInitialCalendarEvents = ({
+  start,
+  end,
+  locationId,
+  villageId,
+  libraryId,
+  computerId,
+}) => dispatch => {
+  dispatch({ type: actionTypes.FETCH_CALENDAR_START });
+  // console.log(`[STUB] requesting events from ${startStr} to ${endStr}`);
 
   return axiosWithAuth()
-    .get('/sessions')
+    .get(
+      `/sessions?computerId=${computerId}&location=${locationId}&village=${villageId}&library=${libraryId}&start_gte=${start}&end_lte=${end}`
+    )
     .then(res => {
+      // console.log(res.data);
       dispatch({
-        type: actionTypes.RECIEVED_EVENTS,
+        type: actionTypes.FETCH_CALENDAR_SUCCESS,
         payload: res.data,
       });
     })
-    .catch(err => console.dir(err));
+    .catch(err => {
+      dispatch({
+        type: actionTypes.FETCH_CALENDAR_FAILURE,
+        payload: err,
+      });
+    });
+};
+
+export const requestEventsByDateRange = ({
+  start,
+  end,
+  locationId,
+  villageId,
+  libraryId,
+  computerId,
+}) => dispatch => {
+  dispatch({ type: actionTypes.FETCH_SPEC_CAL_START });
+  return axiosWithAuth()
+    .get(
+      `/sessions?computerId=${computerId}&location=${locationId}&village=${villageId}&library=${libraryId}&start_gte=${start}&end_lte=${end}`
+    )
+    .then(res => {
+      // console.log(res.data);
+      dispatch({
+        type: actionTypes.FETCH_SPEC_CAL_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch(err => {
+      dispatch({
+        type: actionTypes.FETCH_SPEC_CAL_FAILURE,
+        payload: err,
+      });
+    });
 };
 
 /**
@@ -405,4 +453,15 @@ export const removeCalendarEvent = eventId => dispatch => {
       dispatch({ type: actionTypes.DELETE_CALENDAR_EVENT, payload: eventId });
     })
     .catch(err => console.dir(err));
+};
+
+export const setChosenEventDetails = eventInfo => dispatch => {
+  dispatch({ type: actionTypes.SET_EVENT_DETAILS, payload: eventInfo });
+};
+export const clearChosenEventDetails = () => dispatch => {
+  dispatch({ type: actionTypes.CLEAR_EVENT_DETAILS });
+};
+
+export const changeCalComputerIdFilter = id => dispatch => {
+  dispatch({ type: actionTypes.SET_COMPUTERID_FILTER, payload: id });
 };

@@ -1,113 +1,113 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
 
-  #menteeTitle {
-    text-align: center;
-  }
-  
-  .exploreWrapper {
-    margin: 0 6pt;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-  }
-  
-  .listItemWrapper {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-  
-  .listItemButtonWrapper {
-    display: flex;
-    justify-content: flex-end;
-    margin: 6pt 0;
-  }
-  .listItemButton {
-    width: 90px;
-    margin-right: 10px;
-  }
-  
-  .menteeModal {
-    background-color: rgb(236, 166, 73);
-  }
-  
-  .menteeProfileWrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
+#menteeTitle {
+  text-align: center;
+}
 
-  /* Dashboard Menu */
-  .menuIcon {
-    position: fixed;
-    bottom: 0px;
-    width: 100%;
-    transition: 'bottom 200ms linear';
-  }
+.exploreWrapper {
+  margin: 0 6pt;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
 
-  .menuMove {
-    position: fixed;
-    bottom: 500px;
-    width: 100%;
-    transition: 'bottom 200ms linear';
-  }
+.listItemWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
 
-  .menuButton {
-    width: 100%;
-    background: #ea547a;
-    border: 1px solid #549bea;
-    height: 3rem;
-  }
+.listItemButtonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin: 6pt 0;
+}
+.listItemButton {
+  width: 90px;
+  margin-right: 10px;
+}
 
-  /* Profile Pages */
-  .profile-item-title {
-    font-weight: bold;
-  }
+.menteeModal {
+  background-color: rgb(236, 166, 73);
+}
 
-  .profile-item {
-    margin: .5rem 0;
-  }
+.menteeProfileWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
 
-  .profile-pic {
-    margin: 1rem 0;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-  }
+/* Dashboard Menu */
+.menuIcon {
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  transition: 'bottom 200ms linear';
+}
 
-  .page-title {
-    font-size: 1.5rem;
-  }
+.menuMove {
+  position: fixed;
+  bottom: 500px;
+  width: 100%;
+  transition: 'bottom 200ms linear';
+}
 
-  /* School List */
-  .school-container span {
-    font-weight: bold;
-  }
+.menuButton {
+  width: 100%;
+  background: #ea547a;
+  border: 1px solid #549bea;
+  height: 3rem;
+}
 
-  .school-container div {
-    line-height: 2rem;
-  }
+/* Profile Pages */
+.profile-item-title {
+  font-weight: bold;
+}
 
-   /* Village List */
-   .village-container span {
-    font-weight: bold;
-  }
+.profile-item {
+  margin: 0.5rem 0;
+}
 
-  .village-container div {
-    line-height: 2rem;
-  }
+.profile-pic {
+  margin: 1rem 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
 
-  .school-village-container {
-    padding: 0 2rem;
-  }
+.page-title {
+  font-size: 1.5rem;
+}
 
-  /* All Forms */
-  .form-container {
-    display: flex;
-    justify-content: center;
-  }
+/* School List */
+.school-container span {
+  font-weight: bold;
+}
 
-  /* Mentee & Mentor Matching Component Lists Styling */
+.school-container div {
+  line-height: 2rem;
+}
+
+/* Village List */
+.village-container span {
+  font-weight: bold;
+}
+
+.village-container div {
+  line-height: 2rem;
+}
+
+.school-village-container {
+  padding: 0 2rem;
+}
+
+/* All Forms */
+.form-container {
+  display: flex;
+  justify-content: center;
+}
+
+/* Mentee & Mentor Matching Component Lists Styling */
 .miniListContainer {
   display: flex;
   flex-direction: row;
@@ -155,4 +155,82 @@
 }
 .notes-month section {
   font-size: 28px;
+}
+
+.ant-modal-body {
+  font-weight: 700;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+ 
+}
+/* .box {
+ 
+  padding:2px;
+  border:0;
+  box-shadow:0 0 5px 1px rgb(252, 192, 157);
+  padding: 4px;
+  border-radius:10px;
+  
+}  */
+
+/* .xx {
+  display: flex;
+  flex-flow: wrap;
+  width : 400px;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+  */
+
+  .box {
+    margin-bottom: 25px;
+    width: auto;
+    height: 332px;
+    border-radius: 13px;
+    box-shadow:0 0 10px 0.5px rgb(148, 148, 148);
+   
+  }
+ .box #box2{
+   margin: 6px;
+   margin-bottom: 5px;
+ } 
+#parents {
+  margin-bottom: 8px;
+  margin-top: 1px; 
+} 
+ 
+#box1 {
+  float: left;
+  width: calc(100% - 400px);
+  margin-left: 15px;
+  margin-top: 6px;
+  border-radius: 13px;
+  
+}
+#box2 {
+  display: flex;
+  justify-content: center;
+  float: right;
+  width: 370px;
+  height: 22px;
+  margin: 2px;
+  box-shadow:0 0 10px 0.5px rgb(245, 146, 101);
+  border-radius: 15px;
+}
+
+.box , #box1 {
+ 
+  background-image: linear-gradient(to right, white, rgb(250, 195, 153));
+}
+
+#box2 {
+  background-color: white;
+}
+ 
+/*! calendar slotlabel minor style */
+.fc-timegrid-slot.fc-timegrid-slot-label.fc-timegrid-slot-minor {
+  display: flexbox;
+  text-align: center !important;
+  justify-content: center;
+  align-items: center;
 }
