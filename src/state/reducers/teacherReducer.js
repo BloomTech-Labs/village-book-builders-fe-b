@@ -3,7 +3,6 @@ import {
   FETCH_TEACHER_PROFILE,
   FETCH_TEACHER_PROFILE_SUCCESS,
   FETCH_TEACHER_PROFILE_FAILURE,
-  ADD_TEACHER,
 } from '../actions/actionTypes';
 
 import { debugLog } from '../../utils/debugMode.js';

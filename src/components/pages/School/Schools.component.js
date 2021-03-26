@@ -7,7 +7,7 @@ import { Divider } from 'antd';
 const Schools = props => {
   useEffect(() => {
     props.fetchSchools();
-  }, []);
+  }, [props]);
   return (
     <div>
       <div />

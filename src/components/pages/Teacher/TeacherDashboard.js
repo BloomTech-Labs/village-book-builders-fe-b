@@ -22,7 +22,7 @@ const TeacherDashboard = props => {
 
   useEffect(() => {
     props.fetchTeacherProfile(1); // change this later with login
-  }, []);
+  }, [props]);
   console.log(profile);
 
   const { Content, Sider } = Layout;

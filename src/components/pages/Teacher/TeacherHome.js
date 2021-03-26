@@ -7,7 +7,7 @@ const TeacherHome = props => {
 
   useEffect(() => {
     props.fetchTeacherProfile(1); // change this later with login
-  }, []);
+  }, [props]);
   console.log(profile);
 
   return (

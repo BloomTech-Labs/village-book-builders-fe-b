@@ -6,12 +6,10 @@ import { Spin } from 'antd';
 import moment from 'moment-timezone';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
 import * as CA from '../../../../state/actions';
 import EditMatching from './EditMatching';
 import EventDetailsModal from './EventDetailsModal';
 import returnCleanCalObject from '../../../../utils/ReturnCleanCalObj';
-import { EventContent } from './EventContent';
 import styles from './calendar.module.css';
 import Signup from '../Signup';
 
@@ -23,7 +21,6 @@ export default function HeadmasterCalendar() {
   const { villageId, schoolId, libraryId } = useSelector(
     state => state.headmasterReducer.headmasterProfile
   );
-  const { mentors, mentees } = useSelector(state => state.headmasterReducer);
 
   // used for event deletion
   const CalendarRef = useRef(null);
@@ -145,7 +142,7 @@ export default function HeadmasterCalendar() {
       computerId,
     };
     dispatch(CA.requestInitialCalendarEvents(params));
-  }, [dispatch, villageId, libraryId, computerId]);
+  }, [dispatch, villageId, libraryId, computerId, schoolId]);
 
   const handleDateSelect = selectInfo => {
     // this would open a create meeting modal
