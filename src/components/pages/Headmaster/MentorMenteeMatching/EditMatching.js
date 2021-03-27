@@ -1,9 +1,20 @@
-import React, { useState, useEffect, Popover } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import 'antd/dist/antd.css';
-import { Form, Button, Select, DatePicker, TimePicker, Modal } from 'antd';
+import {
+  Form,
+  Button,
+  Select,
+  DatePicker,
+  TimePicker,
+  Modal,
+  Popover,
+} from 'antd';
 import { useSelector } from 'react-redux';
+import { PersonInfo } from '../PersonInfo';
+
+const { Option } = Select;
 
 const EditMatching = ({ showEditmodal, toggleEditmodal }) => {
   const eventDetails = useSelector(
@@ -171,13 +182,19 @@ const EditMatching = ({ showEditmodal, toggleEditmodal }) => {
               <Select
                 name="mentor"
                 onChange={selectMentor}
-                defaultValue={eventDetails.mentor.first_name}
+                // defaultValue={eventDetails.mentor.first_name}
               >
                 {mentors.map(mentor => (
-                  <Select.Option key={mentor.id} value={mentor.first_name}>
-                    {mentor.first_name}
-                    {mentor.last_name}
-                  </Select.Option>
+                  <Option key={mentor.id} value={mentor.first_name}>
+                    <Popover
+                      content={<PersonInfo info={mentor} />}
+                      title="mentor"
+                      trigger="hover"
+                      placement="left"
+                    >
+                      {mentor.first_name} {mentor.last_name}
+                    </Popover>
+                  </Option>
                 ))}
               </Select>
             </Form.Item>
@@ -192,7 +209,14 @@ const EditMatching = ({ showEditmodal, toggleEditmodal }) => {
               >
                 {mentees.map(mentee => (
                   <Select.Option key={mentee.id} value={mentee.first_name}>
-                    {mentee.first_name} {mentee.last_name}
+                    <Popover
+                      content={<PersonInfo info={mentee} />}
+                      title="mentee"
+                      trigger="hover"
+                      placement="left"
+                    >
+                      {mentee.first_name} {mentee.last_name}
+                    </Popover>
                   </Select.Option>
                 ))}
               </Select>
