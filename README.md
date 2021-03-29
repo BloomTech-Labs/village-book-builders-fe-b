@@ -4,9 +4,15 @@ For steps on how to work with this repository [please see here](https://docs.lab
 
 # Village Book Builders
 
-You can find the deployed project at [VBB-Deployment](main.d364h8tamcqe39.amplifyapp.com).
+You can find the deployed project at [VBB-Deployment](https://main.d27lz1sqhlevn7.amplifyapp.com/).
 
 ## Contributors
+|                                                 [Mark Ambrocio](https://github.com/markanator)                                                 |                                           [Kasech Isaac](https://github.com/kasech-isaac)                                           |                                          [Thierno Diallo](https://github.com/thiernodiallo222)                                          |                                             [Remon Abdou](https://github.com/remoo1901)                                              |                                           [Mercy Asante-Ansong](https://github.com/masantea)                                           |
+| :-------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------: |
+|     [<img src="https://ca.slack-edge.com/ESZCHB482-W012H6T0SSH-3df401304b59-512" width = "200" />](https://github.com/Jahteo)     | [<img src="https://ca.slack-edge.com/ESZCHB482-W012JHZKBFU-2a688dad6dc7-512" width = "200" />](https://github.com/ferror18) | [<img src="https://ca.slack-edge.com/ESZCHB482-W0138D5VCSU-b06219714e3e-512" width = "200" />](https://github.com/yirano) | [<img src="https://ca.slack-edge.com/ESZCHB482-W0138D2PSM6-47db9147ccaf-512" width = "200" />](https://github.com/jidelson) | [<img src="https://ca.slack-edge.com/ESZCHB482-W0138D5SKDE-f3ef5a17e108-512" width = "200" />](https://github.com/kima-92) |
+|                        [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Jahteo)                        |                    [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/ferror18)                    |                    [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/yirano)                    |                    [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/jidelson)                    |                    [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/kima-92)                    |
+| [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/josh-glantzhucks/) |        [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)        |       [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)       |        [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)        |       [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)        |
+
 
 |                                                 [Josh Glanz](https://github.com/)                                                 |                                           [Manuel Muratalla](https://github.com/)                                           |                                          [Tiffany Arellano](https://github.com/)                                          |                                             [Joe Idelson](https://github.com/)                                              |                                           [Wilma Rodriguez](https://github.com/)                                           |
 | :-------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------: |
@@ -38,9 +44,9 @@ You can find the deployed project at [VBB-Deployment](main.d364h8tamcqe39.amplif
 - Admin library view, edit, and delete.
 - Headmaster mentee Create, Read, Edit, and Delete.
 
-#### Front end deployed to `AWS-Amplify`
+#### Front end deployed to `https://main.d27lz1sqhlevn7.amplifyapp.com/`
 
-#### [Back end](https://github.com/ferror18/vbb-backend) built using:
+#### [Back end](https://vbb-b-api.herokuapp.com/) built using:
 
 #### Node.js
 
@@ -62,6 +68,10 @@ You can find the deployed project at [VBB-Deployment](main.d364h8tamcqe39.amplif
 - BASEURL/mentees
 - BASEURL/mentors
 - BASEURL/headmasters
+- BASEURL/sessions
+- BASEURL/teachers
+- BASEURL/users
+- BASEURL/programs
 
 # Installation Instructions
 
@@ -108,5 +118,5 @@ Remember that this project is licensed under the MIT license, and by submitting 
 
 ## Documentation
 
-See [Backend Documentation](https://github.com/ferror18/vbb-backend) for details on the backend of our project.
+See [Backend Documentation](https://github.com/Lambda-School-Labs/village-book-builders-b-be) for details on the backend of our project.
 More personal team notes, incl updated roadmaps: https://www.notion.so/Labs-1-b3ff11cad50d4576a3e7bcf2d7269652
