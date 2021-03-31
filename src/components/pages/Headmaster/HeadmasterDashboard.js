@@ -44,11 +44,11 @@ const HeadmasterDashboard = () => {
     dispatch(fetchHeadmasterProfile(parseInt(authState.userId)));
     dispatch(fetchMentees());
     dispatch(fetchMentors());
-  }, []);
+  }, [authState.userId, dispatch]);
   useEffect(() => {
     if (profile.schoolId === undefined) return;
     dispatch(fetchSchool(profile.schoolId));
-  }, [profile]);
+  }, [profile, dispatch]);
 
   return (
     <>

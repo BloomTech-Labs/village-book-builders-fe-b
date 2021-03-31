@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import Button from '../../common/Button';
+import React, { useState } from 'react';
 import Display from '../../common/Display';
 import FormImput from '../../common/FormInput';
 import { axiosWithAuth } from '../../../utils/axiosWithAuth';
 import '../../../../src/styles/findCessionsById.css';
 
 const FilterSessionsByLibrary = () => {
-  const [libId, setId] = useState(0);
+  /* eslint-disable */ const [libId, setId] = useState(0);
   const [Sessions, setSessions] = useState([]);
 
   // useEffect((libId)=>{

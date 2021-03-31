@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchHeadmasterProfile } from '../../../../state/actions';
@@ -8,14 +8,18 @@ const HeadmasterProfile = props => {
   const { profile } = props;
   useEffect(() => {
     props.fetchHeadmasterProfile(2); // change this later with login
-  }, []);
+  }, [props]);
   // console.log(profile);
 
   return (
     <div className="form-container">
       <div>
         <h1 className="page-title">Profile</h1>
-        <img className="profile-pic" src={profile.headmasters_picture} />
+        <img
+          className="profile-pic"
+          src={profile.headmasters_picture}
+          alt={'profile'}
+        />
         <div className="profile-item-title">Name </div>
         <div className="profile-item">
           {profile.first_name} {profile.last_name}

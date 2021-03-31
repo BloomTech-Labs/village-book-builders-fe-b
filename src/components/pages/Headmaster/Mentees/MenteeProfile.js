@@ -25,7 +25,7 @@ const MenteeProfile = ({ currentMentee }) => {
     dynamic_questions,
   } = currentMentee;
 
-  const fetchMentorName = () => {
+  /* eslint-disable */ const fetchMentorName = () => {
     axios
       .get(`${process.env.REACT_APP_API_URI}/mentors/${mentorId}`)
       .then(({ data }) => {
@@ -73,7 +73,7 @@ const MenteeProfile = ({ currentMentee }) => {
 
   useEffect(() => {
     fetchMentorName();
-  }, []);
+  }, [fetchMentorName]);
 
   return (
     <div className="menteeProfileWrapper">

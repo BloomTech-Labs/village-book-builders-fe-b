@@ -1,4 +1,4 @@
-import { Button, Form, Layout, Modal, Popover, Select, Typography } from 'antd';
+import { Button, Form, Modal, Popover, Select, Typography } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -143,9 +143,7 @@ const Signup = ({ CalendarRef, toggleAddModal, showAddModal }) => {
       });
   };
   // **********onchanges Start**********
-  const handleDropdownMethods = value => {
-    setForms({ ...forms, methods: value });
-  };
+
   const handleDropdownTopic = value => {
     setForms({ ...forms, topic: value });
   };

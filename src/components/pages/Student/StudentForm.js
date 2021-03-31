@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, message } from 'antd';
-import { useForm } from 'antd/lib/form/Form';
 import { useHistory } from 'react-router-dom';
 import { axiosWithAuth } from '../../../utils/axiosWithAuth';
 
@@ -8,7 +7,7 @@ import { axiosWithAuth } from '../../../utils/axiosWithAuth';
 
 function StudentForm() {
   const [form] = Form.useForm();
-  const [formValues, setFormValues] = useState();
+  /* eslint-disable */ const [formValues, setFormValues] = useState();
 
   const history = useHistory();
 

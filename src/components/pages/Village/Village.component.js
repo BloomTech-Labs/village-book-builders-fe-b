@@ -9,7 +9,7 @@ const Village = ({ villageData, userId, fetchVillage }) => {
   useEffect(() => {
     // console.log("village component useEffect", villageData);
     fetchVillage(userId); // !This headmaster ID is being hardcoded right now
-  }, []);
+  }, [fetchVillage, userId]);
   // console.log("village component, villageData", villageData);
 
   return (

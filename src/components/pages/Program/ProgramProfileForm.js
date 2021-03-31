@@ -6,7 +6,6 @@ import {
   editProgramProfile,
   fetchProgramProfile,
 } from '../../../state/actions/index';
-import { debugLog } from '../../../utils/debugMode';
 
 const initialState = {
   name: '',
@@ -32,7 +31,7 @@ const ProgramProfileForm = ({
       form.setFieldsValue(programProfile);
       setFormValues(programProfile);
     }
-  }, [fetchProgramProfile]);
+  }, [fetchProgramProfile, form, pathname, programProfile]);
 
   const handleSubmit = e => {
     editProgramProfile(params, formValues);

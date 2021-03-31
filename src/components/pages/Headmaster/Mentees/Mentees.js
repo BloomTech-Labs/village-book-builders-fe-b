@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Divider, Input, Modal, List, Avatar, Tooltip } from 'antd';
+import { Button, Divider, Input, Modal, List, Avatar } from 'antd';
 import { connect } from 'react-redux';
-import { FaExclamationCircle, FaCheckCircle } from 'react-icons/fa';
 import { checkToken, fetchMentees } from '../../../../state/actions/index';
 import MenteeForm from './MenteeForm';
 import MenteeProfile from './MenteeProfile';
@@ -49,11 +48,12 @@ const Mentees = props => {
     if (fullname.includes(search.toLowerCase())) {
       return mentee;
     }
+    return null;
   });
 
   useEffect(() => {
     props.fetchMentees();
-  }, []);
+  }, [props]);
 
   return (
     <div className="menteeContainer">

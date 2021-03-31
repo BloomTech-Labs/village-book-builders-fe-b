@@ -1,12 +1,6 @@
 import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-
-const sleep = async ms => new Promise(res => setTimeout(res, ms));
 
 export function EventContent({ event, mentor, mentee }) {
-  const { mentees, mentors } = useSelector(state => state.headmasterReducer);
   // const { mentor, mentee } = event.extendedProps;
 
   console.log('ALL GOOD, EVENT DISPLAY', event);

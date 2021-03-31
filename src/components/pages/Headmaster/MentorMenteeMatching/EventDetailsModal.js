@@ -1,7 +1,6 @@
 import React from 'react';
 import Modal from 'antd/lib/modal/Modal';
 import { Button, Divider } from 'antd';
-import EditMatching from './EditMatching';
 import { useSelector } from 'react-redux';
 
 /**

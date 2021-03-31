@@ -1,5 +1,5 @@
-import React, { useState, useEffect, Popover } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import 'antd/dist/antd.css';
 import { Form, Button, Select, DatePicker, TimePicker, Modal } from 'antd';
@@ -19,9 +19,9 @@ const EditMatching = ({ showEditmodal, toggleEditmodal }) => {
   // console.log(eventDetails, 'Event Details');
   // const [mentors, setMentors] = useState([]);
   // const [mentees, setMentees] = useState([]);
-  const [libraries, setLibraries] = useState([]);
-  const [schools, setSchools] = useState([]);
-  const [villages, setVillages] = useState([]);
+  /* eslint-disable */ const [libraries, setLibraries] = useState([]);
+  /* eslint-disable */ const [schools, setSchools] = useState([]);
+  /* eslint-disable */ const [villages, setVillages] = useState([]);
   // const history = useHistory();
 
   // console.log(match);

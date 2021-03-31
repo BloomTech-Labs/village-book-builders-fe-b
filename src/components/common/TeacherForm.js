@@ -14,7 +14,9 @@ const initialFormValues = {
 
 function TeacherForm() {
   const [form] = Form.useForm();
-  const [formValues, setFormValues] = useState(initialFormValues);
+  /* eslint-disable */ const [formValues, setFormValues] = useState(
+    initialFormValues
+  );
 
   const history = useHistory();
 
