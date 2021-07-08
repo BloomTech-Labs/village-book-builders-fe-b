@@ -46,7 +46,7 @@ function SidebarMenu({ profile }) {
           <NavLink to="/student-search">Student Registration</NavLink>
         </Menu.Item>
         <Menu.Item key="7">
-          <NavLink to="/sessions-by-library">Get problems</NavLink>
+          <NavLink to="/sessions-by-library">Get Computers</NavLink>
         </Menu.Item>
         <Menu.Item key="8" icon={<LogoutOutlined />}>
           <Link to="/logout">Logout</Link>
